@@ -12,6 +12,6 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 
-    List<Person> findByName(String name);
+    List<Person> findByNameContaining(String name);
 
 }

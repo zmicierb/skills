@@ -28,6 +28,8 @@ public class CompanyInfo {
     @OneToOne(targetEntity = Position.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Position position;
 
+    private boolean deleted;
+
     public CompanyInfo() {
     }
 
@@ -69,5 +71,13 @@ public class CompanyInfo {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

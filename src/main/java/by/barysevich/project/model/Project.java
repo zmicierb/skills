@@ -27,6 +27,8 @@ public class Project {
 
     private String responsibility;
 
+    private boolean deleted;
+
     public Project() {
     }
 
@@ -68,5 +70,13 @@ public class Project {
 
     public void setResponsibility(String responsibility) {
         this.responsibility = responsibility;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
