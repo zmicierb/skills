@@ -41,7 +41,7 @@ public class PersonController {
 
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Response> delete(@PathVariable Long id) {
-        personRepository.delete(id);
+        personRepository.remove(id);
         return ResponseEntity.ok(Response.success());
     }
 

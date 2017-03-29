@@ -19,7 +19,7 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 
     @Modifying
     @Query("UPDATE Person p SET p.deleted=1 WHERE p.id = :id ")
-    void delete(@Param("id") Long id);
+    void remove(@Param("id") Long id);
 
     @Query("SELECT p FROM Person p WHERE p.deleted<>1")
     Iterable<Person> findAll();

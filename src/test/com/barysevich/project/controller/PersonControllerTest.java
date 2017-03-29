@@ -1,39 +1,70 @@
 package com.barysevich.project.controller;
 
+import com.barysevich.project.controller.dto.Response;
+import com.barysevich.project.model.Person;
 import com.barysevich.project.repository.PersonRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by dima on 3/26/17.
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(PersonController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PersonControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private PersonRepository personRepositoryMock;
+    private TestRestTemplate restTemplate;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private PersonRepository personRepository;
+
+    @Before
+    public void populateDB() {
+        Arrays.asList(
+                "Test1,Test2,Test3".split(","))
+                .forEach(
+                        a -> {
+                            Person person = personRepository.save(new Person(a));
+                        }
+                );
+    }
+
+    @After
+    public void cleanDB() {
+
+        List<Person> persons = personRepository.findByNameContainingIgnoreCase("test");
+
+        persons.forEach(
+                a -> {
+                    personRepository.delete(a.getId());
+                }
+        );
+    }
 
     @Test
-    public void savePerson() throws Exception {
-        mockMvc.perform(get("/api/person/find/name=Di").accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+    public void save() {
+        ResponseEntity<Response> responseEntity =
+                restTemplate.postForEntity("/api/person", new Person("Test4"), Response.class);
+
+        Response person = responseEntity.getBody();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals(person.getName(), "Test4");
     }
+
 
 }

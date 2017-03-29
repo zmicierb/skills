@@ -26,13 +26,6 @@ public class PersonRepositoryTest {
     private PersonRepository personRepository;
 
     @Test
-    public void findAllFromEmptyRepository() {
-        Iterable<Person> persons = personRepository.findAll();
-
-        assertThat(persons).isEmpty();
-    }
-
-    @Test
     public void save() {
         Person customer = personRepository.save(new Person("Jack"));
 
@@ -41,24 +34,25 @@ public class PersonRepositoryTest {
 
     @Test
     public void delete() {
-        Person person1 = entityManager.persist(new Person("Jack"));
-        Person person2 = entityManager.persist(new Person("Adam"));
+        Person person1 = entityManager.persist(new Person("Test1"));
+        Person person2 = entityManager.persist(new Person("Test2"));
 
-        personRepository.delete(person1.getId());
-        personRepository.delete(person2.getId());
+        personRepository.remove(person1.getId());
+        personRepository.remove(person2.getId());
 
-        assertThat(personRepository.findAll()).isEmpty();
+        assertThat(personRepository.findAll()).doesNotContain(person1);
+        assertThat(personRepository.findAll()).doesNotContain(person2);
     }
 
     @Test
     public void findAll() {
-        Person person1 = new Person("Jack");
+        Person person1 = new Person("Test1");
         entityManager.persist(person1);
 
-        Person person2 = new Person("Dima");
+        Person person2 = new Person("Test2");
         entityManager.persist(person2);
 
-        Person person3 = new Person("Kate");
+        Person person3 = new Person("Test3");
         entityManager.persist(person3);
 
 
@@ -69,10 +63,10 @@ public class PersonRepositoryTest {
 
     @Test
     public void findOne() {
-        Person person1 = new Person("Jack");
+        Person person1 = new Person("Test1");
         entityManager.persist(person1);
 
-        Person person2 = new Person("Adam");
+        Person person2 = new Person("Test2");
         entityManager.persist(person2);
 
         Person foundCustomer = personRepository.findOne(person2.getId());
@@ -82,10 +76,10 @@ public class PersonRepositoryTest {
 
     @Test
     public void findByName() {
-        Person person1 = entityManager.persist(new Person("Dima"));
-        Person person2 = entityManager.persist(new Person("Kate"));
+        Person person1 = entityManager.persist(new Person("Test1"));
+        Person person2 = entityManager.persist(new Person("Test2"));
 
-        Iterable<Person> persons = personRepository.findByNameContainingIgnoreCase("im");
+        Iterable<Person> persons = personRepository.findByNameContainingIgnoreCase("ST1");
 
         assertThat(persons).contains(person1);
         assertThat(persons).doesNotContain(person2);
