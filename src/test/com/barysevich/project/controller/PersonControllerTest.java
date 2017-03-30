@@ -1,8 +1,9 @@
 package com.barysevich.project.controller;
 
-import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.repository.PersonRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by dima on 3/26/17.
@@ -31,6 +34,9 @@ public class PersonControllerTest {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @Before
     public void populateDB() {
@@ -56,15 +62,31 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void save() {
-        ResponseEntity<Response> responseEntity =
-                restTemplate.postForEntity("/api/person", new Person("Test4"), Response.class);
+    public void save() throws IOException {
 
-        Response person = responseEntity.getBody();
+        String test = "Test4";
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        assertEquals(person.getName(), "Test4");
+        ResponseEntity<String> response =
+                restTemplate.postForEntity("/api/person", new Person(test), String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        JsonNode root = mapper.readTree(response.getBody());
+        JsonNode name = root.path("data").path("name");
+        assertEquals(name.asText(), test);
     }
 
+    @Test
+    public void find() throws IOException {
 
+        String test = "Test";
+
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/person/find/name=" + test, String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode root = mapper.readTree(response.getBody());
+        JsonNode data = root.path("data");
+        data.forEach(d -> assertTrue(d.path("name").asText().toUpperCase().contains(test.toUpperCase())));
+    }
 }

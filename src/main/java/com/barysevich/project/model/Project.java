@@ -37,6 +37,13 @@ public class Project implements Serializable {
     protected Project() {
     }
 
+    public Project(Position position, String description, String result, String responsibility) {
+        this.position = position;
+        this.description = description;
+        this.result = result;
+        this.responsibility = responsibility;
+    }
+
     public Long getId() {
         return id;
     }

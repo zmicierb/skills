@@ -22,6 +22,10 @@ public class Position implements Serializable {
     protected Position() {
     }
 
+    public Position(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

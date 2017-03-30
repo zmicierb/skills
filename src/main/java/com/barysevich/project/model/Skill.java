@@ -22,6 +22,10 @@ public class Skill implements Serializable {
     protected Skill() {
     }
 
+    public Skill(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
