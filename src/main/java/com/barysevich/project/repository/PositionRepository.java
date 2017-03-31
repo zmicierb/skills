@@ -12,6 +12,6 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface PositionRepository extends PagingAndSortingRepository<Position, Long> {
 
-    List<Position> findByName(String name);
+    List<Position> findByNameContainingIgnoreCase(String name);
 
 }

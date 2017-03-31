@@ -1,13 +1,14 @@
 package com.barysevich.project.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class Position implements Serializable {
+public class Position extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "position_id_seq",
@@ -19,7 +20,7 @@ public class Position implements Serializable {
 
     private String name;
 
-    protected Position() {
+    public Position() {
     }
 
     public Position(String name) {

@@ -1,7 +1,8 @@
 package com.barysevich.project.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 import static javax.persistence.CascadeType.*;
 
@@ -9,7 +10,7 @@ import static javax.persistence.CascadeType.*;
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class SkillRowLink implements Serializable {
+public class SkillRowLink extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "skill_row_link_id_seq",
@@ -33,7 +34,7 @@ public class SkillRowLink implements Serializable {
 
     private Integer weight;
 
-    protected SkillRowLink() {
+    public SkillRowLink() {
     }
 
     public Long getId() {

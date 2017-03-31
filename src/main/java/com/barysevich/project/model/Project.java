@@ -1,9 +1,9 @@
 package com.barysevich.project.model;
 
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 import static javax.persistence.CascadeType.*;
 
@@ -11,7 +11,7 @@ import static javax.persistence.CascadeType.*;
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class Project implements Serializable {
+public class Project extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "project_id_seq",
@@ -34,7 +34,7 @@ public class Project implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
-    protected Project() {
+    public Project() {
     }
 
     public Project(Position position, String description, String result, String responsibility) {

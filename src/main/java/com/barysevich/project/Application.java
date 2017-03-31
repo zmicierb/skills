@@ -12,18 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EntityScan(basePackages = {"com.barysevich.project.model"})
 @EnableJpaRepositories(basePackages = {"com.barysevich.project.repository"})
-@ComponentScan(basePackages = {"com.barysevich.project.controller"})
+@ComponentScan(basePackages = {"com.barysevich.project.controller", "com.barysevich.project.service"})
 public class Application {
-
-//    @Bean
-//    CommandLineRunner init(PersonRepository personRepository) {
-//        return (evt) -> Arrays.asList(
-//                "jhoeller,dsyer,pwebb,ogierke,rwinch,mfisher,mpollack,jlong".split(","))
-//                .forEach(
-//                        a -> {
-//                            Person person = personRepository.save(new Person(a));
-//                        });
-//    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

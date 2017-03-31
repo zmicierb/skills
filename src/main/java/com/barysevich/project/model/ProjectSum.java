@@ -1,7 +1,8 @@
 package com.barysevich.project.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 import static javax.persistence.CascadeType.*;
 
@@ -9,7 +10,7 @@ import static javax.persistence.CascadeType.*;
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class ProjectSum implements Serializable {
+public class ProjectSum extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "project_sum_id_seq",
@@ -34,7 +35,7 @@ public class ProjectSum implements Serializable {
     @OneToOne(targetEntity = CompanyInfo.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private CompanyInfo companyInfo;
 
-    protected ProjectSum() {
+    public ProjectSum() {
     }
 
     public Long getId() {

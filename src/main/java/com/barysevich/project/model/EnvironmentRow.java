@@ -1,7 +1,8 @@
 package com.barysevich.project.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 import static javax.persistence.CascadeType.*;
 
@@ -9,7 +10,7 @@ import static javax.persistence.CascadeType.*;
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class EnvironmentRow implements Serializable {
+public class EnvironmentRow extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "environment_row_id_seq",
@@ -31,7 +32,7 @@ public class EnvironmentRow implements Serializable {
     @OneToOne(targetEntity = Skill.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Skill skill;
 
-    protected EnvironmentRow() {
+    public EnvironmentRow() {
     }
 
     public Long getId() {

@@ -1,9 +1,9 @@
 package com.barysevich.project.model;
 
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 import static javax.persistence.CascadeType.*;
@@ -12,7 +12,7 @@ import static javax.persistence.CascadeType.*;
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class CompanyInfo implements Serializable {
+public class CompanyInfo extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "company_info_id_seq",
@@ -35,7 +35,14 @@ public class CompanyInfo implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
-    protected CompanyInfo() {
+    public CompanyInfo() {
+    }
+
+    public CompanyInfo(String name, Date startDate, Date endDate, Position position) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.position = position;
     }
 
     public Long getId() {

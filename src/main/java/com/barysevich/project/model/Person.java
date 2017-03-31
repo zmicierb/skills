@@ -1,15 +1,15 @@
 package com.barysevich.project.model;
 
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class Person implements Serializable {
+public class Person extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "person_id_seq",
@@ -26,7 +26,7 @@ public class Person implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
-    protected Person() {
+    public Person() {
     }
 
     public Person(String name) {

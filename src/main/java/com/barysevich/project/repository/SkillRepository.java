@@ -12,6 +12,6 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface SkillRepository extends PagingAndSortingRepository<Skill, Long> {
 
-    List<Skill> findByName(String name);
+    List<Skill> findByNameContainingIgnoreCase(String name);
 
 }

@@ -1,13 +1,14 @@
 package com.barysevich.project.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class Skill implements Serializable {
+public class Skill extends AbstractPersistable<Long> {
 
     @Id
     @SequenceGenerator(name = "skill_id_seq",
@@ -19,7 +20,7 @@ public class Skill implements Serializable {
 
     private String name;
 
-    protected Skill() {
+    public Skill() {
     }
 
     public Skill(String name) {
