@@ -21,4 +21,8 @@ public class CompanyInfoServiceImpl extends GenericServiceImpl<CompanyInfo, Long
         this.repository = repository;
     }
 
+    @Override
+    public void remove(Long id) {
+        repository.remove(id);
+    }
 }

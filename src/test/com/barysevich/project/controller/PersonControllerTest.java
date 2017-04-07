@@ -1,7 +1,7 @@
 package com.barysevich.project.controller;
 
 import com.barysevich.project.model.Person;
-import com.barysevich.project.repository.PersonRepository;
+import com.barysevich.project.service.PersonService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +34,7 @@ public class PersonControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     @Autowired
     private ObjectMapper mapper;
@@ -47,7 +46,7 @@ public class PersonControllerTest {
                 "Test1,Test2,Test3".split(","))
                 .forEach(
                         a -> {
-                            Person person = personRepository.save(new Person(a));
+                            Person person = personService.save(new Person(a));
                         }
                 );
     }
@@ -55,11 +54,11 @@ public class PersonControllerTest {
     @After
     public void cleanDB() {
 
-        List<Person> persons = personRepository.findByNameContainingIgnoreCase("test");
+        Iterable<Person> persons = personService.findByNameContainingIgnoreCase("test");
 
         persons.forEach(
                 a -> {
-                    personRepository.delete(a.getId());
+                    personService.delete(a.getId());
                 }
         );
     }
@@ -77,7 +76,7 @@ public class PersonControllerTest {
         JsonNode root = mapper.readTree(response.getBody());
         Long id = root.path("data").get(0).path("id").asLong();
 
-        Person person = personRepository.findOne(id);
+        Person person = personService.findOne(id);
 
         HttpEntity<Person> requestEntity = new HttpEntity<Person>(person);
 
@@ -130,7 +129,7 @@ public class PersonControllerTest {
         JsonNode root = mapper.readTree(response.getBody());
         Long id = root.path("data").get(0).path("id").asLong();
 
-        Person person = personRepository.findOne(id);
+        Person person = personService.findOne(id);
         person.setName(test2);
 
         HttpEntity<Person> requestEntity = new HttpEntity<Person>(person);

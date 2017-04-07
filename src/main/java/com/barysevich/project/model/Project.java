@@ -1,7 +1,6 @@
 package com.barysevich.project.model;
 
 import org.hibernate.annotations.Type;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 
@@ -44,10 +43,12 @@ public class Project extends AbstractPersistable<Long> {
         this.responsibility = responsibility;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

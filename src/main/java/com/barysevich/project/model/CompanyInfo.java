@@ -1,7 +1,6 @@
 package com.barysevich.project.model;
 
 import org.hibernate.annotations.Type;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -45,10 +44,12 @@ public class CompanyInfo extends AbstractPersistable<Long> {
         this.position = position;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

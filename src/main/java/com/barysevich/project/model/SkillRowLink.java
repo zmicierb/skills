@@ -1,7 +1,5 @@
 package com.barysevich.project.model;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
 import javax.persistence.*;
 
 import static javax.persistence.CascadeType.*;
@@ -37,10 +35,12 @@ public class SkillRowLink extends AbstractPersistable<Long> {
     public SkillRowLink() {
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

@@ -21,4 +21,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
         this.repository = repository;
     }
 
+    @Override
+    public void remove(Long id) {
+        repository.remove(id);
+    }
 }

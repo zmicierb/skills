@@ -2,7 +2,7 @@ package com.barysevich.project.controller;
 
 import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Row;
-import com.barysevich.project.repository.RowRepository;
+import com.barysevich.project.service.RowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +15,21 @@ import org.springframework.web.bind.annotation.*;
 public class RowController {
 
     @Autowired
-    private RowRepository rowRepository;
+    private RowService rowService;
 
     @RequestMapping(value = "/rows", method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Row>>> findAll() {
-        return ResponseEntity.ok(Response.success(rowRepository.findAll()));
+        return ResponseEntity.ok(Response.success(rowService.findAll()));
     }
 
     @RequestMapping(value = "/row/{id}", method = RequestMethod.GET)
     public ResponseEntity<Response<Row>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(Response.success(rowRepository.findOne(id)));
+        return ResponseEntity.ok(Response.success(rowService.findOne(id)));
     }
 
     @RequestMapping(value = "/row", method = RequestMethod.POST)
     public ResponseEntity<Response<Row>> save(@RequestBody Row row) {
-        return ResponseEntity.ok(Response.success(rowRepository.save(row)));
+        return ResponseEntity.ok(Response.success(rowService.save(row)));
     }
 
 }

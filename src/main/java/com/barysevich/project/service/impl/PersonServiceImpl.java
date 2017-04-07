@@ -21,4 +21,13 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
         this.repository = repository;
     }
 
+    @Override
+    public void remove(Long id) {
+        repository.remove(id);
+    }
+
+    @Override
+    public Iterable<Person> findByNameContainingIgnoreCase(String name) {
+        return repository.findByNameContainingIgnoreCase(name);
+    }
 }

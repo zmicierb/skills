@@ -21,4 +21,8 @@ public class PositionServiceImpl extends GenericServiceImpl<Position, Long> impl
         this.repository = repository;
     }
 
+    @Override
+    public Iterable<Position> findByNameContainingIgnoreCase(String name) {
+        return repository.findByNameContainingIgnoreCase(name);
+    }
 }
