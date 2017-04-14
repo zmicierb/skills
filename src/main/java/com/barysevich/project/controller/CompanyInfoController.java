@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.*;
  * Created by BarysevichD on 2017-03-31.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/app/api/company")
 public class CompanyInfoController {
 
     @Autowired
     private CompanyInfoService companyInfoService;
 
-    @RequestMapping(value = "/company/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Response<CompanyInfo>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(Response.success(companyInfoService.findOne(id)));
     }
 
-    @RequestMapping(value = "/company", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Response<CompanyInfo>> save(@RequestBody CompanyInfo company) {
         return ResponseEntity.ok(Response.success(companyInfoService.save(company)));
     }
 
-    @RequestMapping(value = "/company/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Response<CompanyInfo>> update(@PathVariable Long id, @RequestBody CompanyInfo company) {
         CompanyInfo update = companyInfoService.findOne(id);
         update.setPosition(company.getPosition());
@@ -37,7 +37,7 @@ public class CompanyInfoController {
         return ResponseEntity.ok(Response.success(companyInfoService.save(update)));
     }
 
-    @RequestMapping(value = "/company/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Response> delete(@PathVariable Long id) {
         companyInfoService.remove(id);
         return ResponseEntity.ok(Response.success());

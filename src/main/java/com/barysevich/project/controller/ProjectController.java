@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.*;
  * Created by BarysevichD on 2017-03-31.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/app/api/project")
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
 
-    @RequestMapping(value = "/project/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Response<Project>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(Response.success(projectService.findOne(id)));
     }
 
-    @RequestMapping(value = "/project", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Response<Project>> save(@RequestBody Project project) {
         return ResponseEntity.ok(Response.success(projectService.save(project)));
     }
 
-    @RequestMapping(value = "/project/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Response<Project>> update(@PathVariable Long id, @RequestBody Project project) {
         Project update = projectService.findOne(id);
         update.setPosition(project.getPosition());
@@ -37,7 +37,7 @@ public class ProjectController {
         return ResponseEntity.ok(Response.success(projectService.save(update)));
     }
 
-    @RequestMapping(value = "/project/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Response> delete(@PathVariable Long id) {
         projectService.remove(id);
         return ResponseEntity.ok(Response.success());

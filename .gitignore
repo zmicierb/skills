@@ -12,3 +12,9 @@
 hs_err_pid*
 .idea/*
 target/*
+.idea/
+replay_pid9924.log
+skills.iml
+target/
+src/main/webapp/app/bower_components/
+src/main/webapp/node_modules/

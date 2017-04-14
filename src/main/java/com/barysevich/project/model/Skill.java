@@ -1,5 +1,7 @@
 package com.barysevich.project.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 
 /**
@@ -16,6 +18,7 @@ public class Skill extends AbstractPersistable<Long> {
             generator = "skill_id_seq")
     private Long id;
 
+    @NotEmpty
     private String name;
 
     public Skill() {

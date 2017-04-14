@@ -11,28 +11,28 @@ import org.springframework.web.bind.annotation.*;
  * Created by BarysevichD on 2017-03-31.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/app/api/position")
 public class PositionController {
 
     @Autowired
     private PositionService positionService;
 
-    @RequestMapping(value = "/positions", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Position>>> findAll() {
         return ResponseEntity.ok(Response.success(positionService.findAll()));
     }
 
-    @RequestMapping(value = "/position/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Response<Position>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(Response.success(positionService.findOne(id)));
     }
 
-    @RequestMapping(value = "/position", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Response<Position>> save(@RequestBody Position position) {
         return ResponseEntity.ok(Response.success(positionService.save(position)));
     }
 
-    @RequestMapping(value = "/position/find/name={name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/name={name}", method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Position>>> findByName(@PathVariable String name) {
         return ResponseEntity.ok(Response.success(positionService.findByNameContainingIgnoreCase(name)));
     }

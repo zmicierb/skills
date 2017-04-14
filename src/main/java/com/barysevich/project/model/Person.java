@@ -1,6 +1,7 @@
 package com.barysevich.project.model;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 
@@ -19,6 +20,7 @@ public class Person extends AbstractPersistable<Long> {
     private Long id;
 
     @Column(name = "name", length = 1000)
+    @NotEmpty
     private String name;
 
     @Column(columnDefinition = "SMALLINT")

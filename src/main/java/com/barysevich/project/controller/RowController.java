@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.*;
  * Created by BarysevichD on 2017-03-31.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/app/api/row")
 public class RowController {
 
     @Autowired
     private RowService rowService;
 
-    @RequestMapping(value = "/rows", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Row>>> findAll() {
         return ResponseEntity.ok(Response.success(rowService.findAll()));
     }
 
-    @RequestMapping(value = "/row/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Response<Row>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(Response.success(rowService.findOne(id)));
     }
 
-    @RequestMapping(value = "/row", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Response<Row>> save(@RequestBody Row row) {
         return ResponseEntity.ok(Response.success(rowService.save(row)));
     }

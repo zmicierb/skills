@@ -1,6 +1,7 @@
 package com.barysevich.project.model;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class CompanyInfo extends AbstractPersistable<Long> {
             generator = "company_info_id_seq")
     private Long id;
 
+    @NotEmpty
     private String name;
 
     private Date startDate;
