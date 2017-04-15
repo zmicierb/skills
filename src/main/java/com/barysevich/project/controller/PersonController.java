@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by BarysevichD on 2017-03-15.
  */
 @RestController
-@RequestMapping("/app/api/person")
+@RequestMapping("/api/person")
 public class PersonController {
 
     @Autowired

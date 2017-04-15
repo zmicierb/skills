@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by BarysevichD on 2017-03-31.
  */
 @RestController
-@RequestMapping("/app/api/position")
+@RequestMapping("/api/position")
 public class PositionController {
 
     @Autowired

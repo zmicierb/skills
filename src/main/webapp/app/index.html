@@ -6,16 +6,13 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="app.css"/>
     <script src="bower_components/angular/angular.js"></script>
-    <!--<script src="bower_components/jquery/dist/jquery.js"></script>-->
-    <script src="app.js"></script>
+    <script src="app.module.js"></script>
+    <script src="person-list/person-list.component.js"></script>
+    <script src="person-list/person-list.module.js"></script>
 </head>
-<body ng-controller="PersonController">
+<body>
 
-<ul>
-    <li ng-repeat="person in persons">
-        <span>{{person.name}}</span>
-    </li>
-</ul>
+<person-list></person-list>
 
 </body>
 </html>
