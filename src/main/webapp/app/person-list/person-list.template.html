@@ -1,5 +1,30 @@
-<ul>
-    <li ng-repeat="person in $ctrl.persons">
-        <span>{{person.name}}</span>
-    </li>
-</ul>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <!--Sidebar content-->
+            <p>
+                Search:
+                <input ng-model="$ctrl.query"/>
+            </p>
+            <p>
+                Sort by:
+                <select ng-model="$ctrl.orderProp">
+                    <option value="name">Name</option>
+                    <option value="id">Id</option>
+                </select>
+            </p>
+
+        </div>
+        <div class="col-md-10">
+            <!--Body content-->
+
+            <ul class="phones">
+                <li ng-repeat="person in $ctrl.persons | filter:$ctrl.query | orderBy:$ctrl.orderProp">
+                    <span>{{person.id}}</span>
+                    <span>{{person.name}}</span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
