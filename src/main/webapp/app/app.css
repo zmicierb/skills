@@ -1,3 +1,16 @@
 body {
-    padding-top: 20px;
+    padding: 20px;
+}
+
+h1 {
+    border-bottom: 1px solid gray;
+}
+
+.persons {
+    list-style: none;
+}
+
+.persons li {
+    clear: both;
+    padding-top: 15px;
 }

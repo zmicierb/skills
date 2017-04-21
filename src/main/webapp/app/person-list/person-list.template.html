@@ -18,10 +18,10 @@
         <div class="col-md-10">
             <!--Body content-->
 
-            <ul class="phones">
+            <ul class="persons">
                 <li ng-repeat="person in $ctrl.persons | filter:$ctrl.query | orderBy:$ctrl.orderProp">
-                    <span>{{person.id}}</span>
-                    <span>{{person.name}}</span>
+                    <a href="#!/persons/{{person.id}}">{{person.name}}</a>
+                    <span>{{!person.deleted | checkmark}}</span>
                 </li>
             </ul>
 

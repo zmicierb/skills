@@ -5,7 +5,6 @@ describe('personList', function () {
 
     // Test the controller
     describe('PersonListController', function () {
-
         var $httpBackend, ctrl;
 
         beforeEach(inject(function ($componentController, _$httpBackend_) {

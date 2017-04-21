@@ -1,9 +1,14 @@
 describe('Skills Application', function () {
 
-    describe('personList', function () {
+    it('should redirect `index.html` to `index.html#!/persons', function () {
+        browser.get('index.html');
+        expect(browser.getLocationAbsUrl()).toBe('/persons');
+    });
+
+    describe('View: Person list', function () {
 
         beforeEach(function () {
-            browser.get('index.html');
+            browser.get('index.html#!/phones');
         });
 
         it('should filter the person list as a user types into the search box', function () {
@@ -17,7 +22,7 @@ describe('Skills Application', function () {
 
             query.clear();
             query.sendKeys('Kate');
-            expect(personList.count()).toBe(1);
+            expect(personList.count()).toBe(0);
         });
 
         it('should be possible to control person order via drop-down menu', function () {
@@ -32,21 +37,41 @@ describe('Skills Application', function () {
                     });
                 };
 
-                queryField.sendKeys('a');   // Let's narrow the dataset to make the assertions shorter
+            queryField.sendKeys('j');   // Let's narrow the dataset to make the assertions shorter
 
                 expect(getNames()).toEqual([
-                    'DIMA',
-                    'KATE'
+                    'jlong',
+                    'jhoeller'
                 ]);
 
                 nameOption.click();
 
                 expect(getNames()).toEqual([
-                    'DIMA',
-                    'KATE'
+                    'jhoeller',
+                    'jlong'
                 ]);
             }
         );
+
+        it('should render person specific links', function () {
+            var query = element(by.model('$ctrl.query'));
+            query.sendKeys('Dima');
+
+            element.all(by.css('.persons li a')).first().click();
+            expect(browser.getLocationAbsUrl()).toBe('/persons/1');
+        })
+    });
+
+    describe('View: Person detail', function () {
+
+        beforeEach(function () {
+            browser.get('index.html#!/persons/1');
+        });
+
+        it('should display placeholder page with `personId`', function () {
+            expect(element(by.binding('$ctrl.person.name')).getText()).toBe('Dima');
+        });
+
     });
 
 });
