@@ -5,8 +5,7 @@ angular.module('core.person').factory('Person', ['$resource',
         return $resource('/api/person/:personId', {}, {
             query: {
                 method: 'GET',
-                params: {personId: 'person'},
-                isArray: true
+                isArray: false
             }
         });
     }

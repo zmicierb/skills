@@ -3,11 +3,15 @@
 describe('Person', function () {
     var $httpBackend;
     var Person;
-    var personsData = [
-        {name: 'Name X'},
-        {name: 'Name Y'},
-        {name: 'Name Z'}
-    ];
+    var personsData = {
+        "success": true,
+        "message": "Completed successfully",
+        "errors": null,
+        "total": null,
+        "data": [{name: 'Name X'},
+            {name: 'Name Y'},
+            {name: 'Name Z'}]
+    };
 
     // Add a custom equality tester before each test
     beforeEach(function () {
@@ -20,7 +24,7 @@ describe('Person', function () {
     // Instantiate the service and "train" `$httpBackend` before each test
     beforeEach(inject(function (_$httpBackend_, _Person_) {
         $httpBackend = _$httpBackend_;
-        $httpBackend.expectGET('/api/person/').respond(personsData);
+        $httpBackend.expectGET('/api/person').respond(personsData);
 
         Person = _Person_;
     }));
@@ -34,7 +38,7 @@ describe('Person', function () {
     it('should fetch the persons data from `/api/person`', function () {
         var persons = Person.query();
 
-        expect(persons).toEqual([]);
+        expect(persons).toEqual({});
 
         $httpBackend.flush();
         expect(persons).toEqual(personsData);

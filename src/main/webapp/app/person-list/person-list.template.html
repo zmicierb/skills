@@ -19,7 +19,8 @@
             <!--Body content-->
 
             <ul class="persons">
-                <li ng-repeat="person in $ctrl.persons | filter:$ctrl.query | orderBy:$ctrl.orderProp">
+                <li ng-repeat="person in $ctrl.persons | filter:$ctrl.query | orderBy:$ctrl.orderProp"
+                    class="phone-list-item">
                     <a href="#!/persons/{{person.id}}">{{person.name}}</a>
                     <span>{{!person.deleted | checkmark}}</span>
                 </li>

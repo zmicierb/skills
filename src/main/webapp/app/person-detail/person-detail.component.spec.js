@@ -23,6 +23,8 @@ describe('personDetail', function () {
         }));
 
         it('should fetch the person details', function () {
+            jasmine.addCustomEqualityTester(angular.equals);
+
             expect(ctrl.person).toBeUndefined();
 
             $httpBackend.flush();

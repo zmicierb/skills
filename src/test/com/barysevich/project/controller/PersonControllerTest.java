@@ -1,7 +1,11 @@
 package com.barysevich.project.controller;
 
+import com.barysevich.project.model.Department;
 import com.barysevich.project.model.Person;
+import com.barysevich.project.model.Position;
+import com.barysevich.project.service.DepartmentService;
 import com.barysevich.project.service.PersonService;
+import com.barysevich.project.service.PositionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
@@ -18,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -37,16 +43,28 @@ public class PersonControllerTest {
     private PersonService personService;
 
     @Autowired
+    private PositionService positionService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
     private ObjectMapper mapper;
 
     @Before
     public void populateDB() {
 
+        Department department = departmentService.save(new Department("test"));
+        Position position = positionService.save(new Position("test"));
+
         Arrays.asList(
                 "Test1,Test2,Test3".split(","))
                 .forEach(
                         a -> {
-                            Person person = personService.save(new Person(a));
+                            personService.save(new Person(a,
+                                    position,
+                                    department,
+                                    LocalDate.of(1970, Month.JANUARY, 1)));
                         }
                 );
     }
@@ -59,6 +77,22 @@ public class PersonControllerTest {
         persons.forEach(
                 a -> {
                     personService.delete(a.getId());
+                }
+        );
+
+        Iterable<Department> departments = departmentService.findByNameContainingIgnoreCase("test");
+
+        departments.forEach(
+                a -> {
+                    departmentService.delete(a.getId());
+                }
+        );
+
+        Iterable<Position> positions = positionService.findByNameContainingIgnoreCase("test");
+
+        positions.forEach(
+                a -> {
+                    positionService.delete(a.getId());
                 }
         );
     }
@@ -91,8 +125,14 @@ public class PersonControllerTest {
 
         String test = "Test4";
 
+        Department department = departmentService.save(new Department("test"));
+        Position position = positionService.save(new Position("test"));
+
         ResponseEntity<String> response =
-                restTemplate.postForEntity("/api/person", new Person(test), String.class);
+                restTemplate.postForEntity("/api/person", new Person(test,
+                        position,
+                        department,
+                        LocalDate.of(1970, Month.JANUARY, 1)), String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         JsonNode root = mapper.readTree(response.getBody());

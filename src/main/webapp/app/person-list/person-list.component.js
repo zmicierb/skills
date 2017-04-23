@@ -2,12 +2,12 @@
 
 angular.module('skillsApp').component('personList', {
     templateUrl: 'person-list/person-list.template.html',
-    controller: ['$http',
-        function PersonListController($http) {
+    controller: ['Person',
+        function PersonListController(Person) {
             var self = this;
-            self.orderProp = 'id';
-            $http.get('/api/person').then(function (response) {
-                self.persons = response.data.data;
+            var persons = Person.query(function () {
+                self.persons = persons.data;
             });
+            this.orderProp = 'id';
         }]
 });

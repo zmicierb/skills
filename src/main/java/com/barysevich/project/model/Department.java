@@ -5,27 +5,27 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 
 /**
- * Created by BarysevichD on 2017-03-14.
+ * Created by dima on 4/23/17.
  */
 @Entity
-public class Position extends AbstractPersistable<Long> {
+public class Department extends AbstractPersistable<Long> {
 
     @Id
-    @SequenceGenerator(name = "position_id_seq",
-            sequenceName = "position_id_seq",
+    @SequenceGenerator(name = "department_id_seq",
+            sequenceName = "department_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "position_id_seq")
+            generator = "department_id_seq")
     private Long id;
 
-    @Column(name = "name", length = 1000)
+    @Column(name = "name", length = 500)
     @NotEmpty
     private String name;
 
-    public Position() {
+    public Department() {
     }
 
-    public Position(String name) {
+    public Department(String name) {
         this.name = name;
     }
 

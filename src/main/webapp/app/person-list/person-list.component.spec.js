@@ -22,6 +22,8 @@ describe('personList', function () {
         }));
 
         it('should create a `persons` model', function () {
+            jasmine.addCustomEqualityTester(angular.equals);
+
             expect(ctrl.persons).toBeUndefined();
             $httpBackend.flush();
             expect(ctrl.persons.length).toBeGreaterThan(0);

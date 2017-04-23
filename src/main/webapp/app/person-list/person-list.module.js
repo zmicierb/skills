@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('personList', []);
+angular.module('personList', ['core.person']);

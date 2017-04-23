@@ -8,7 +8,7 @@ describe('Skills Application', function () {
     describe('View: Person list', function () {
 
         beforeEach(function () {
-            browser.get('index.html#!/phones');
+            browser.get('index.html#!/persons');
         });
 
         it('should filter the person list as a user types into the search box', function () {
@@ -17,7 +17,7 @@ describe('Skills Application', function () {
 
             expect(personList.count()).toBeGreaterThan(0);
 
-            query.sendKeys('Dima');
+            query.sendKeys('Dzmitry');
             expect(personList.count()).toBe(1);
 
             query.clear();
@@ -37,25 +37,23 @@ describe('Skills Application', function () {
                     });
                 };
 
-            queryField.sendKeys('j');   // Let's narrow the dataset to make the assertions shorter
+            queryField.sendKeys('a');   // Let's narrow the dataset to make the assertions shorter
 
                 expect(getNames()).toEqual([
-                    'jlong',
-                    'jhoeller'
+                    'Dzmitry Barysevich'
                 ]);
 
                 nameOption.click();
 
                 expect(getNames()).toEqual([
-                    'jhoeller',
-                    'jlong'
+                    'Dzmitry Barysevich'
                 ]);
             }
         );
 
         it('should render person specific links', function () {
             var query = element(by.model('$ctrl.query'));
-            query.sendKeys('Dima');
+            query.sendKeys('Dzmitry');
 
             element.all(by.css('.persons li a')).first().click();
             expect(browser.getLocationAbsUrl()).toBe('/persons/1');
@@ -69,7 +67,7 @@ describe('Skills Application', function () {
         });
 
         it('should display placeholder page with `personId`', function () {
-            expect(element(by.binding('$ctrl.person.name')).getText()).toBe('Dima');
+            expect(element(by.binding('$ctrl.person.name')).getText()).toBe('Dzmitry Barysevich');
         });
 
     });

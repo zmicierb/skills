@@ -1,9 +1,14 @@
 package com.barysevich.project.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+
+import static javax.persistence.CascadeType.*;
 
 /**
  * Created by BarysevichD on 2017-03-14.
@@ -23,6 +28,17 @@ public class Person extends AbstractPersistable<Long> {
     @NotEmpty
     private String name;
 
+    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    private Position position;
+
+    //some issue with Cascade.PERSIST in test PersonControllerTest.populateDB()
+    @OneToOne(targetEntity = Department.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    private Department department;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalDate birthDate;
+
     @Column(columnDefinition = "SMALLINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
@@ -30,8 +46,11 @@ public class Person extends AbstractPersistable<Long> {
     public Person() {
     }
 
-    public Person(String name) {
+    public Person(String name, Position position, Department department, LocalDate birthDate) {
         this.name = name;
+        this.position = position;
+        this.department = department;
+        this.birthDate = birthDate;
     }
 
     @Override
@@ -50,6 +69,30 @@ public class Person extends AbstractPersistable<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public boolean isDeleted() {
