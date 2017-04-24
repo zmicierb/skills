@@ -22,6 +22,7 @@ public class Row extends AbstractPersistable<Long> {
     private String name;
 
     public Row() {
+        //default constructor
     }
 
     public Row(String name) {

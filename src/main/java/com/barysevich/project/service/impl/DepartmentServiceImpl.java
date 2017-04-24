@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 public class DepartmentServiceImpl extends GenericServiceImpl<Department, Long> implements DepartmentService {
 
     @Autowired
-    private DepartmentRepository repository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
     public DepartmentServiceImpl(DepartmentRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.departmentRepository = repository;
     }
 
     @Override
     public Iterable<Department> findByNameContainingIgnoreCase(String name) {
-        return repository.findByNameContainingIgnoreCase(name);
+        return departmentRepository.findByNameContainingIgnoreCase(name);
     }
 
 }

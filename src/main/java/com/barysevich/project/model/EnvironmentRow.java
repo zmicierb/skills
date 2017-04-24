@@ -31,6 +31,7 @@ public class EnvironmentRow extends AbstractPersistable<Long> {
     private Skill skill;
 
     public EnvironmentRow() {
+        //default constructor
     }
 
     @Override

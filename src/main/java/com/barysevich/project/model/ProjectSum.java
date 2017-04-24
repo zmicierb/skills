@@ -34,6 +34,7 @@ public class ProjectSum extends AbstractPersistable<Long> {
     private CompanyInfo companyInfo;
 
     public ProjectSum() {
+        //default constructor
     }
 
     @Override

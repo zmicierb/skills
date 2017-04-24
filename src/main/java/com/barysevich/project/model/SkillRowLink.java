@@ -33,6 +33,7 @@ public class SkillRowLink extends AbstractPersistable<Long> {
     private Integer weight;
 
     public SkillRowLink() {
+        //default constructor
     }
 
     @Override

@@ -44,6 +44,7 @@ public class Person extends AbstractPersistable<Long> {
     private boolean deleted;
 
     public Person() {
+        //default constructor
     }
 
     public Person(String name, Position position, Department department, LocalDate birthDate) {

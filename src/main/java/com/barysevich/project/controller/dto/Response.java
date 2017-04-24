@@ -14,7 +14,7 @@ import java.util.Locale;
  */
 public class Response<T> {
 
-    private static String SUCCESS_TEXT = "Completed successfully";
+    private static final String SUCCESS_TEXT = "Completed successfully";
     private Boolean success;
     private String message;
     private MultiValueMap<String, String> errors;
@@ -25,9 +25,9 @@ public class Response<T> {
     }
 
     public static Response<Object> error(Errors result, MessageSource ms, Locale locale) {
-        Response<Object> r = new Response<Object>();
+        Response<Object> r = new Response<>();
         r.setSuccess(false);
-        MultiValueMap<String, String> errors = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> errors = new LinkedMultiValueMap<>();
 
         if (result.hasGlobalErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -44,9 +44,9 @@ public class Response<T> {
     }
 
     public static Response<Object> error(Errors result) {
-        Response<Object> r = new Response<Object>();
+        Response<Object> r = new Response<>();
         r.setSuccess(false);
-        MultiValueMap<String, String> errors = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> errors = new LinkedMultiValueMap<>();
 
         if (result.hasGlobalErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -63,7 +63,7 @@ public class Response<T> {
     }
 
     public static <T> Response<T> success(T data) {
-        Response<T> r = new Response<T>();
+        Response<T> r = new Response<>();
         r.setSuccess(true);
         r.setData(data);
         r.setMessage(SUCCESS_TEXT);
@@ -71,7 +71,7 @@ public class Response<T> {
     }
 
     public static <T> Response<T> success(T data, Long total) {
-        Response<T> r = new Response<T>();
+        Response<T> r = new Response<>();
         r.setSuccess(true);
         r.setData(data);
         r.setTotal(total);
@@ -80,14 +80,14 @@ public class Response<T> {
     }
 
     public static <T> Response<T> error(T data) {
-        Response<T> r = new Response<T>();
+        Response<T> r = new Response<>();
         r.setSuccess(false);
         r.setData(data);
         return r;
     }
 
     public static <T> Response<T> success(T data, String message) {
-        Response<T> r = new Response<T>();
+        Response<T> r = new Response<>();
         r.setSuccess(true);
         r.setData(data);
         r.setMessage(message == null ? SUCCESS_TEXT : message);
@@ -95,7 +95,7 @@ public class Response<T> {
     }
 
     public static <T> Response<T> error(T data, String message) {
-        Response<T> r = new Response<T>();
+        Response<T> r = new Response<>();
         r.setSuccess(false);
         r.setData(data);
         r.setMessage(message);

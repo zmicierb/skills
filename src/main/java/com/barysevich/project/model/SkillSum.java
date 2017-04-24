@@ -31,6 +31,7 @@ public class SkillSum extends AbstractPersistable<Long> {
     private SkillRowLink skillRowLink;
 
     public SkillSum() {
+        //default constructor
     }
 
     @Override

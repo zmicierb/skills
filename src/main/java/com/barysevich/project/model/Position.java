@@ -23,6 +23,7 @@ public class Position extends AbstractPersistable<Long> {
     private String name;
 
     public Position() {
+        //default constructor
     }
 
     public Position(String name) {

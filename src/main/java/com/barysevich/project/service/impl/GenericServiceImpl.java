@@ -22,6 +22,7 @@ public class GenericServiceImpl<T extends Persistable<ID>, ID extends Serializab
         return repository;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public T findOne(ID id) {
         if (id == null)
@@ -29,11 +30,13 @@ public class GenericServiceImpl<T extends Persistable<ID>, ID extends Serializab
         return getRepository().findOne(id);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Iterable<T> findAll() {
         return getRepository().findAll();
     }
 
+    @Override
     @Transactional
     public void delete(ID id) {
         T e = getRepository().findOne(id);
@@ -41,6 +44,7 @@ public class GenericServiceImpl<T extends Persistable<ID>, ID extends Serializab
             getRepository().delete(e);
     }
 
+    @Override
     @Transactional
     public T save(T entity) {
         getRepository().save(entity);

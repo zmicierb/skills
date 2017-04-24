@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> implements SkillSumService {
 
     @Autowired
-    private SkillSumRepository repository;
+    private SkillSumRepository skillSumRepository;
 
     @Autowired
     public SkillSumServiceImpl(SkillSumRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.skillSumRepository = repository;
     }
 
 }

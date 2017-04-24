@@ -22,6 +22,7 @@ public class Skill extends AbstractPersistable<Long> {
     private String name;
 
     public Skill() {
+        //default constructor
     }
 
     public Skill(String name) {

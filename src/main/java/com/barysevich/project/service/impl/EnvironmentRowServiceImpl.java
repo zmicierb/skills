@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class EnvironmentRowServiceImpl extends GenericServiceImpl<EnvironmentRow, Long> implements EnvironmentRowService {
 
     @Autowired
-    private EnvironmentRowRepository repository;
+    private EnvironmentRowRepository environmentRowRepository;
 
     @Autowired
     public EnvironmentRowServiceImpl(EnvironmentRowRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.environmentRowRepository = repository;
     }
 
 }

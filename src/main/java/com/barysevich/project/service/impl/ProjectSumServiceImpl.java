@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class ProjectSumServiceImpl extends GenericServiceImpl<ProjectSum, Long> implements ProjectSumService {
 
     @Autowired
-    private ProjectSumRepository repository;
+    private ProjectSumRepository projectSumRepository;
 
     @Autowired
     public ProjectSumServiceImpl(ProjectSumRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.projectSumRepository = repository;
     }
 
 }

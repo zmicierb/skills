@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class SkillServiceImpl extends GenericServiceImpl<Skill, Long> implements SkillService {
 
     @Autowired
-    private SkillRepository repository;
+    private SkillRepository skillRepository;
 
     @Autowired
     public SkillServiceImpl(SkillRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.skillRepository = repository;
     }
 
     @Override
     public Iterable<Skill> findByNameContainingIgnoreCase(String name) {
-        return repository.findByNameContainingIgnoreCase(name);
+        return skillRepository.findByNameContainingIgnoreCase(name);
     }
 }

@@ -20,7 +20,7 @@ public class Project extends AbstractPersistable<Long> {
             generator = "project_id_seq")
     private Long id;
 
-    @OneToOne(targetEntity = Position.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Position position;
 
     private String description;
@@ -34,6 +34,7 @@ public class Project extends AbstractPersistable<Long> {
     private boolean deleted;
 
     public Project() {
+        //default constructor
     }
 
     public Project(Position position, String description, String result, String responsibility) {

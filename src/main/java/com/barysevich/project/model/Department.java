@@ -23,6 +23,7 @@ public class Department extends AbstractPersistable<Long> {
     private String name;
 
     public Department() {
+        //default constructor
     }
 
     public Department(String name) {

@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class RowServiceImpl extends GenericServiceImpl<Row, Long> implements RowService {
 
     @Autowired
-    private RowRepository repository;
+    private RowRepository rowRepository;
 
     @Autowired
     public RowServiceImpl(RowRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.rowRepository = repository;
     }
 
 }

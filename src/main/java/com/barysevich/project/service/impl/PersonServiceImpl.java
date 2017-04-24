@@ -13,21 +13,21 @@ import org.springframework.stereotype.Service;
 public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implements PersonService {
 
     @Autowired
-    private PersonRepository repository;
+    private PersonRepository personRepository;
 
     @Autowired
     public PersonServiceImpl(PersonRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.personRepository = repository;
     }
 
     @Override
     public void remove(Long id) {
-        repository.remove(id);
+        personRepository.remove(id);
     }
 
     @Override
     public Iterable<Person> findByNameContainingIgnoreCase(String name) {
-        return repository.findByNameContainingIgnoreCase(name);
+        return personRepository.findByNameContainingIgnoreCase(name);
     }
 }

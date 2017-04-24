@@ -29,7 +29,7 @@ public class CompanyInfo extends AbstractPersistable<Long> {
 
     private Date endDate;
 
-    @OneToOne(targetEntity = Position.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Position position;
 
     @Column(columnDefinition = "SMALLINT")
@@ -37,6 +37,7 @@ public class CompanyInfo extends AbstractPersistable<Long> {
     private boolean deleted;
 
     public CompanyInfo() {
+        //default constructor
     }
 
     public CompanyInfo(String name, Date startDate, Date endDate, Position position) {

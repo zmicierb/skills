@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class CompanyInfoServiceImpl extends GenericServiceImpl<CompanyInfo, Long> implements CompanyInfoService {
 
     @Autowired
-    private CompanyInfoRepository repository;
+    private CompanyInfoRepository companyInfoRepository;
 
     @Autowired
     public CompanyInfoServiceImpl(CompanyInfoRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.companyInfoRepository = repository;
     }
 
     @Override
     public void remove(Long id) {
-        repository.remove(id);
+        companyInfoRepository.remove(id);
     }
 }

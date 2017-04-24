@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implements ProjectService {
 
     @Autowired
-    private ProjectRepository repository;
+    private ProjectRepository projectRepository;
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.projectRepository = repository;
     }
 
     @Override
     public void remove(Long id) {
-        repository.remove(id);
+        projectRepository.remove(id);
     }
 }

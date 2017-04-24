@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class PositionServiceImpl extends GenericServiceImpl<Position, Long> implements PositionService {
 
     @Autowired
-    private PositionRepository repository;
+    private PositionRepository positionRepository;
 
     @Autowired
     public PositionServiceImpl(PositionRepository repository) {
         super(repository);
-        this.repository = repository;
+        this.positionRepository = repository;
     }
 
     @Override
     public Iterable<Position> findByNameContainingIgnoreCase(String name) {
-        return repository.findByNameContainingIgnoreCase(name);
+        return positionRepository.findByNameContainingIgnoreCase(name);
     }
 }
