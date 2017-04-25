@@ -24,12 +24,10 @@ INSERT INTO skill (id, name) VALUES (1, 'Java 6'),
   (43, 'Sonar'), (44, 'Scrum'), (45, 'JDBC'), (46, 'Jasper Report'), (47, 'SAP BI'),
   (48, 'Crystal Report'), (49, 'XSLT'), (50, 'docx4j');
 
-INSERT INTO skill_row_link (id, skill_id, row_id, weight) VALUES (1, 1, 1, 1),
-  (2, 2, 1, 2), (3, 7, 2, 1), (4, 8, 2, 2), (5, 16, 3, 1), (6, 17, 3, 2), (7, 21, 4, 1),
-  (8, 23, 4, 2), (9, 29, 5, 1), (10, 30, 5, 2), (11, 42, 6, 1), (12, 45, 6, 2);
-
-INSERT INTO skill_sum (id, person_id, skill_row_id) VALUES (1, 1, 1), (2, 1, 2), (3, 1, 3), (4, 1, 4), (5, 1, 5),
-  (6, 1, 6), (7, 1, 7), (8, 1, 8), (9, 1, 9), (10, 1, 10), (11, 1, 11), (12, 1, 12);
+INSERT INTO skill_sum (id, person_id, skill_id, row_id, weight) VALUES (1, 1, 1, 1, 1), (2, 1, 2, 1, 2),
+  (3, 1, 7, 2, 1), (4, 1, 8, 2, 2), (5, 1, 16, 3, 1),
+  (6, 1, 17, 3, 2), (7, 1, 21, 4, 1), (8, 1, 23, 4, 2), (9, 1, 29, 5, 1), (10, 1, 30, 5, 2), (11, 1, 42, 6, 1),
+  (12, 1, 45, 6, 2);
 
 INSERT INTO project (id, position_id, description, result, responsibility, deleted)
 VALUES (1, 1, 'Intranet web-portal for company.', 'Project in progress.', 'Developing portlet.', 0),

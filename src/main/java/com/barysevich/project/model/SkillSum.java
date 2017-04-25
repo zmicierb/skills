@@ -24,11 +24,19 @@ public class SkillSum extends AbstractPersistable<Long> {
     @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Person person;
 
-    @Column(name = "skill_row_id", insertable = false, updatable = false)
-    private Long skillRowLinkId;
+    @Column(name = "skill_id", insertable = false, updatable = false)
+    private Long skillId;
 
-    @OneToOne(targetEntity = SkillRowLink.class, fetch = FetchType.LAZY, cascade = {ALL})
-    private SkillRowLink skillRowLink;
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    private Skill skill;
+
+    @Column(name = "row_id", insertable = false, updatable = false)
+    private Long rowId;
+
+    @OneToOne(targetEntity = Row.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    private Row row;
+
+    private Integer weight;
 
     public SkillSum() {
         //default constructor
@@ -60,19 +68,43 @@ public class SkillSum extends AbstractPersistable<Long> {
         this.person = person;
     }
 
-    public Long getSkillRowLinkId() {
-        return skillRowLinkId;
+    public Long getSkillId() {
+        return skillId;
     }
 
-    public void setSkillRowLinkId(Long skillRowLinkId) {
-        this.skillRowLinkId = skillRowLinkId;
+    public void setSkillId(Long skillId) {
+        this.skillId = skillId;
     }
 
-    public SkillRowLink getSkillRowLink() {
-        return skillRowLink;
+    public Skill getSkill() {
+        return skill;
     }
 
-    public void setSkillRowLink(SkillRowLink skillRowLink) {
-        this.skillRowLink = skillRowLink;
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public Long getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(Long rowId) {
+        this.rowId = rowId;
+    }
+
+    public Row getRow() {
+        return row;
+    }
+
+    public void setRow(Row row) {
+        this.row = row;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }
