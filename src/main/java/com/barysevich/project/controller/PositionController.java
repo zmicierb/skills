@@ -4,6 +4,7 @@ import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Position;
 import com.barysevich.project.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class PositionController {
     private PositionService positionService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Position>>> findAll() {
-        return ResponseEntity.ok(Response.success(positionService.findAll()));
+    public ResponseEntity<Response<Iterable<Position>>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(Response.success(positionService.findAll(pageable)));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -33,8 +34,8 @@ public class PositionController {
     }
 
     @RequestMapping(value = "/find/name={name}", method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Position>>> findByName(@PathVariable String name) {
-        return ResponseEntity.ok(Response.success(positionService.findByNameContainingIgnoreCase(name)));
+    public ResponseEntity<Response<Iterable<Position>>> findByName(@PathVariable String name, Pageable pageable) {
+        return ResponseEntity.ok(Response.success(positionService.findByNameContainingIgnoreCase(name, pageable)));
     }
 
 }

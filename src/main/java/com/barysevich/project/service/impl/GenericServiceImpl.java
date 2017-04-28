@@ -1,8 +1,9 @@
 package com.barysevich.project.service.impl;
 
 import com.barysevich.project.service.GenericService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -12,13 +13,13 @@ import java.io.Serializable;
  */
 public class GenericServiceImpl<T extends Persistable<ID>, ID extends Serializable> implements GenericService<T, ID> {
 
-    protected CrudRepository<T, ID> repository;
+    protected PagingAndSortingRepository<T, ID> repository;
 
-    public GenericServiceImpl(CrudRepository<T, ID> repository) {
+    public GenericServiceImpl(PagingAndSortingRepository<T, ID> repository) {
         this.repository = repository;
     }
 
-    protected CrudRepository<T, ID> getRepository() {
+    protected PagingAndSortingRepository<T, ID> getRepository() {
         return repository;
     }
 
@@ -32,8 +33,8 @@ public class GenericServiceImpl<T extends Persistable<ID>, ID extends Serializab
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<T> findAll() {
-        return getRepository().findAll();
+    public Iterable<T> findAll(Pageable pageable) {
+        return getRepository().findAll(pageable);
     }
 
     @Override

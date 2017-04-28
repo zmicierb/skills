@@ -1,5 +1,6 @@
 package com.barysevich.project.service;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ public interface GenericService<T extends Persistable<ID>, ID extends Serializab
 
     T findOne(ID id);
 
-    Iterable<T> findAll();
+    Iterable<T> findAll(Pageable pageable);
 
     void delete(ID id);
 

@@ -1,6 +1,7 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.Skill;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -12,6 +13,6 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface SkillRepository extends PagingAndSortingRepository<Skill, Long> {
 
-    List<Skill> findByNameContainingIgnoreCase(String name);
+    List<Skill> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
 }

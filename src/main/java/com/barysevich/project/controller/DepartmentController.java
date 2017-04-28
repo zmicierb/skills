@@ -4,6 +4,7 @@ import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Department;
 import com.barysevich.project.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Department>>> findAll() {
-        return ResponseEntity.ok(Response.success(departmentService.findAll()));
+    public ResponseEntity<Response<Iterable<Department>>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(Response.success(departmentService.findAll(pageable)));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -33,8 +34,8 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/find/name={name}", method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Department>>> findByName(@PathVariable String name) {
-        return ResponseEntity.ok(Response.success(departmentService.findByNameContainingIgnoreCase(name)));
+    public ResponseEntity<Response<Iterable<Department>>> findByName(@PathVariable String name, Pageable pageable) {
+        return ResponseEntity.ok(Response.success(departmentService.findByNameContainingIgnoreCase(name, pageable)));
     }
 
 }

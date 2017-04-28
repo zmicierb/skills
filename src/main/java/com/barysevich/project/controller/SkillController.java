@@ -4,6 +4,7 @@ import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Skill;
 import com.barysevich.project.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class SkillController {
     private SkillService skillService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Skill>>> findAll() {
-        return ResponseEntity.ok(Response.success(skillService.findAll()));
+    public ResponseEntity<Response<Iterable<Skill>>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(Response.success(skillService.findAll(pageable)));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -33,8 +34,8 @@ public class SkillController {
     }
 
     @RequestMapping(value = "/find/name={name}", method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Skill>>> findByName(@PathVariable String name) {
-        return ResponseEntity.ok(Response.success(skillService.findByNameContainingIgnoreCase(name)));
+    public ResponseEntity<Response<Iterable<Skill>>> findByName(@PathVariable String name, Pageable pageable) {
+        return ResponseEntity.ok(Response.success(skillService.findByNameContainingIgnoreCase(name, pageable)));
     }
 
 }

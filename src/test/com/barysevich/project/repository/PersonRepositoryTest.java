@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -58,8 +59,8 @@ public class PersonRepositoryTest {
         personRepository.remove(person1.getId());
         personRepository.remove(person2.getId());
 
-        assertThat(personRepository.findAll()).doesNotContain(person1);
-        assertThat(personRepository.findAll()).doesNotContain(person2);
+        assertThat(personRepository.findByNameContainingIgnoreCase("test", new PageRequest(0, 10))).doesNotContain(person1);
+        assertThat(personRepository.findByNameContainingIgnoreCase("test", new PageRequest(0, 10))).doesNotContain(person2);
     }
 
     @Test
@@ -133,7 +134,7 @@ public class PersonRepositoryTest {
                 LocalDate.of(1970, Month.JANUARY, 1));
         entityManager.persist(person2);
 
-        Iterable<Person> persons = personRepository.findByNameContainingIgnoreCase("ST1");
+        Iterable<Person> persons = personRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 10));
 
         assertThat(persons).contains(person1);
         assertThat(persons).doesNotContain(person2);

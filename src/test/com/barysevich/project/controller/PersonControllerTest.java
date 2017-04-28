@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -72,7 +73,7 @@ public class PersonControllerTest {
     @After
     public void cleanDB() {
 
-        Iterable<Person> persons = personService.findByNameContainingIgnoreCase("test");
+        Iterable<Person> persons = personService.findByNameContainingIgnoreCase("test", new PageRequest(0, 10));
 
         persons.forEach(
                 a -> {
@@ -80,7 +81,7 @@ public class PersonControllerTest {
                 }
         );
 
-        Iterable<Department> departments = departmentService.findByNameContainingIgnoreCase("test");
+        Iterable<Department> departments = departmentService.findByNameContainingIgnoreCase("test", new PageRequest(0, 10));
 
         departments.forEach(
                 a -> {
@@ -88,7 +89,7 @@ public class PersonControllerTest {
                 }
         );
 
-        Iterable<Position> positions = positionService.findByNameContainingIgnoreCase("test");
+        Iterable<Position> positions = positionService.findByNameContainingIgnoreCase("test", new PageRequest(0, 10));
 
         positions.forEach(
                 a -> {
@@ -198,5 +199,8 @@ public class PersonControllerTest {
         response = restTemplate.exchange("/api/person/" + id.toString(), HttpMethod.DELETE, requestEntity, String.class);
 
         assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        //for cleaning DB
+        personService.delete(id);
     }
 }

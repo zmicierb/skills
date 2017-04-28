@@ -12,5 +12,14 @@ h1 {
 
 .persons li {
     clear: both;
-    padding-top: 15px;
+    padding-top: 5px;
+}
+
+.persons li h4 {
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.persons li p {
+    margin: 0px;
 }

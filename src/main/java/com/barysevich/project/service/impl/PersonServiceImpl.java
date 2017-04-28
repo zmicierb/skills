@@ -4,6 +4,8 @@ import com.barysevich.project.model.Person;
 import com.barysevich.project.repository.PersonRepository;
 import com.barysevich.project.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,7 +29,8 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
     }
 
     @Override
-    public Iterable<Person> findByNameContainingIgnoreCase(String name) {
-        return personRepository.findByNameContainingIgnoreCase(name);
+    public Page<Person> findByNameContainingIgnoreCase(String name, Pageable pageable) {
+        return personRepository.findByNameContainingIgnoreCase(name, pageable);
     }
+
 }

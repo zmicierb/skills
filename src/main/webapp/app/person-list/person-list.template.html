@@ -6,26 +6,25 @@
                 Search:
                 <input ng-model="$ctrl.query"/>
             </p>
-            <p>
-                Sort by:
-                <select ng-model="$ctrl.orderProp">
-                    <option value="name">Name</option>
-                    <option value="id">Id</option>
-                </select>
-            </p>
-
         </div>
         <div class="col-md-10">
-            <!--Body content-->
-
+            <!--body content-->
+            <ul uib-pagination
+                total-items="$ctrl.totalItems" ng-model="$ctrl.currentPage"
+                max-size="$ctrl.maxSize" items-per-page="$ctrl.itemsPerPage"
+                boundary-links="true" force-ellipses="true" ng-change="$ctrl.pageChanged()"
+                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                last-text="&raquo;">
+            </ul>
             <ul class="persons">
-                <li ng-repeat="person in $ctrl.persons | filter:$ctrl.query | orderBy:$ctrl.orderProp"
-                    class="phone-list-item">
-                    <a href="#!/persons/{{person.id}}">{{person.name}}</a>
-                    <span>{{!person.deleted | checkmark}}</span>
+                <li class="person-list-item" ng-repeat="person in $ctrl.persons | filter:$ctrl.query">
+                    <a href="#!/persons/{{person.id}}">
+                        <h4>{{person.name}}</h4></a>
+                    <p>{{person.birthDate}}</p>
+                    <p>{{person.position.name}}</p>
+                    <p>{{person.department.name}}</p>
                 </li>
             </ul>
-
         </div>
     </div>
 </div>

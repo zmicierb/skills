@@ -4,6 +4,7 @@ import com.barysevich.project.model.Department;
 import com.barysevich.project.repository.DepartmentRepository;
 import com.barysevich.project.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,8 +23,8 @@ public class DepartmentServiceImpl extends GenericServiceImpl<Department, Long> 
     }
 
     @Override
-    public Iterable<Department> findByNameContainingIgnoreCase(String name) {
-        return departmentRepository.findByNameContainingIgnoreCase(name);
+    public Iterable<Department> findByNameContainingIgnoreCase(String name, Pageable pageable) {
+        return departmentRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 
 }

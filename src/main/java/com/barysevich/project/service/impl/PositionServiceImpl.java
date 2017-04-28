@@ -4,6 +4,7 @@ import com.barysevich.project.model.Position;
 import com.barysevich.project.repository.PositionRepository;
 import com.barysevich.project.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +23,7 @@ public class PositionServiceImpl extends GenericServiceImpl<Position, Long> impl
     }
 
     @Override
-    public Iterable<Position> findByNameContainingIgnoreCase(String name) {
-        return positionRepository.findByNameContainingIgnoreCase(name);
+    public Iterable<Position> findByNameContainingIgnoreCase(String name, Pageable pageable) {
+        return positionRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 }

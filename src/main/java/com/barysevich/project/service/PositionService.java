@@ -1,11 +1,12 @@
 package com.barysevich.project.service;
 
 import com.barysevich.project.model.Position;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Created by BarysevichD on 2017-03-31.
  */
 public interface PositionService extends GenericService<Position, Long> {
 
-    Iterable<Position> findByNameContainingIgnoreCase(String name);
+    Iterable<Position> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

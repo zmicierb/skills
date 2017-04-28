@@ -4,6 +4,7 @@ import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Row;
 import com.barysevich.project.service.RowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class RowController {
     private RowService rowService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Row>>> findAll() {
-        return ResponseEntity.ok(Response.success(rowService.findAll()));
+    public ResponseEntity<Response<Iterable<Row>>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(Response.success(rowService.findAll(pageable)));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
