@@ -1,4 +1,4 @@
 'use strict';
 
 // Define the `core` module
-angular.module('core', ['core.person', 'core.personSearch']);
+angular.module('core', ['core.person', 'core.personSearch', 'core.personSearchForm']);

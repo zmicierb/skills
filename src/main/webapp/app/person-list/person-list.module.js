@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('personList', ['core.person', 'core.personSearch', 'ngAnimate', 'ui.bootstrap']);
+angular.module('personList', ['core.person', 'core.personSearch', 'core.personSearchForm', 'ngAnimate', 'ui.bootstrap']);

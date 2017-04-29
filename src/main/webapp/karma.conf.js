@@ -10,10 +10,16 @@ module.exports = function (config) {
             'bower_components/angular-resource/angular-resource.js',
             'bower_components/angular-route/angular-route.js',
             'bower_components/angular-mocks/angular-mocks.js',
+            'bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-2.5.0.min.js',
             '**/*.module.js',
             '*!(.module|.spec).js',
             '!(bower_components)/**/*!(.module|.spec).js',
             '**/*.spec.js'
+        ],
+
+        exclude: [
+            'bower_components/**/*.spec.js',
+            'bower_components/**/*.module.js'
         ],
 
         autoWatch: true,

@@ -23,3 +23,8 @@ h1 {
 .persons li p {
     margin: 0px;
 }
+
+.my-form {
+    transition: all linear 0.5s;
+    background: transparent;
+}

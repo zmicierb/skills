@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('core.personSearch', []);
+angular.module('core.personSearch', ['ngResource']);

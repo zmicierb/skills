@@ -15,12 +15,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {"com.barysevich.project.controller", "com.barysevich.project.service"})
 public class Application {
 
-//    @Bean
-//    CommandLineRunner init(PersonRepository personRepository, PositionRepository positionRepository, DepartmentRepository departmentRepository) {
-//        DataLoader dataLoader = new DataLoader(personRepository, positionRepository, departmentRepository);
-//        return (evt) -> dataLoader.run(new DefaultApplicationArguments(new String[0]));
-//    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

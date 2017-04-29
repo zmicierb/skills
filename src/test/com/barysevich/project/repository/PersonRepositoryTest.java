@@ -59,8 +59,8 @@ public class PersonRepositoryTest {
         personRepository.remove(person1.getId());
         personRepository.remove(person2.getId());
 
-        assertThat(personRepository.findByNameContainingIgnoreCase("test", new PageRequest(0, 10))).doesNotContain(person1);
-        assertThat(personRepository.findByNameContainingIgnoreCase("test", new PageRequest(0, 10))).doesNotContain(person2);
+        assertThat(personRepository.findByNameContainingIgnoreCase("test", new PageRequest(0, 20))).doesNotContain(person1);
+        assertThat(personRepository.findByNameContainingIgnoreCase("test", new PageRequest(0, 20))).doesNotContain(person2);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class PersonRepositoryTest {
                 LocalDate.of(1970, Month.JANUARY, 1));
         entityManager.persist(person2);
 
-        Iterable<Person> persons = personRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 10));
+        Iterable<Person> persons = personRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 20));
 
         assertThat(persons).contains(person1);
         assertThat(persons).doesNotContain(person2);
