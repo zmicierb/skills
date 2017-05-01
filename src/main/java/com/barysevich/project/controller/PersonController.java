@@ -2,7 +2,11 @@ package com.barysevich.project.controller;
 
 import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Person;
+import com.barysevich.project.model.ProjectSum;
+import com.barysevich.project.model.SkillSum;
 import com.barysevich.project.service.PersonService;
+import com.barysevich.project.service.ProjectSumService;
+import com.barysevich.project.service.SkillSumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,12 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private ProjectSumService projectSumService;
+
+    @Autowired
+    private SkillSumService skillSumService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Person>>> findAll(Pageable pageable) {
@@ -46,9 +56,19 @@ public class PersonController {
         return ResponseEntity.ok(Response.success());
     }
 
-    @RequestMapping(value = "/find/name={name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/{name}", method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Person>>> findByName(@PathVariable String name, Pageable pageable) {
         return ResponseEntity.ok(Response.success(personService.findByNameContainingIgnoreCase(name, pageable)));
+    }
+
+    @RequestMapping(value = "/{id}/skills")
+    public ResponseEntity<Response<Iterable<SkillSum>>> findSkillsById(@PathVariable Long id) {
+        return ResponseEntity.ok(Response.success(skillSumService.findByPersonId(id)));
+    }
+
+    @RequestMapping(value = "/{id}/projects")
+    public ResponseEntity<Response<Iterable<ProjectSum>>> findProjectsById(@PathVariable Long id) {
+        return ResponseEntity.ok(Response.success(projectSumService.findByPersonId(id)));
     }
 
 }

@@ -21,4 +21,8 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
         this.skillSumRepository = repository;
     }
 
+    public Iterable<SkillSum> findByPersonId(Long id) {
+        return skillSumRepository.findByPersonId(id);
+    }
+
 }

@@ -33,7 +33,7 @@ public class DepartmentController {
         return ResponseEntity.ok(Response.success(departmentService.save(department)));
     }
 
-    @RequestMapping(value = "/find/name={name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/{name}", method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Department>>> findByName(@PathVariable String name, Pageable pageable) {
         return ResponseEntity.ok(Response.success(departmentService.findByNameContainingIgnoreCase(name, pageable)));
     }

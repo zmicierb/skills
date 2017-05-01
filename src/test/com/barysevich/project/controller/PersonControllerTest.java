@@ -104,7 +104,7 @@ public class PersonControllerTest {
         String test1 = "Test1";
 
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/api/person/find/name=" + test1, String.class);
+                restTemplate.getForEntity("/api/person/find/" + test1, String.class);
 
         assertEquals(response.getStatusCode(), HttpStatus.OK);
 
@@ -147,7 +147,7 @@ public class PersonControllerTest {
         String test = "Test";
 
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/api/person/find/name=" + test, String.class);
+                restTemplate.getForEntity("/api/person/find/" + test, String.class);
 
         assertEquals(response.getStatusCode(), HttpStatus.OK);
 
@@ -163,7 +163,7 @@ public class PersonControllerTest {
         String test2 = "TestUpdated";
 
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/api/person/find/name=" + test1, String.class);
+                restTemplate.getForEntity("/api/person/find/" + test1, String.class);
 
         assertEquals(response.getStatusCode(), HttpStatus.OK);
 
@@ -187,7 +187,7 @@ public class PersonControllerTest {
         String test1 = "Test3";
 
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/api/person/find/name=" + test1, String.class);
+                restTemplate.getForEntity("/api/person/find/" + test1, String.class);
 
         assertEquals(response.getStatusCode(), HttpStatus.OK);
 

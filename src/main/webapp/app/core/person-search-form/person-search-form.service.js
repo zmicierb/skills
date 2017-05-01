@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('core.personSearchForm').factory('PersonSearchForm', function () {
+angular.module('core.personSearchFormSrv').factory('PersonSearchFormSrv', function () {
         var formData = {};
 
         return {

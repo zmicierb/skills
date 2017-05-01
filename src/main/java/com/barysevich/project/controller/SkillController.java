@@ -33,7 +33,7 @@ public class SkillController {
         return ResponseEntity.ok(Response.success(skillService.save(skill)));
     }
 
-    @RequestMapping(value = "/find/name={name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/{name}", method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Skill>>> findByName(@PathVariable String name, Pageable pageable) {
         return ResponseEntity.ok(Response.success(skillService.findByNameContainingIgnoreCase(name, pageable)));
     }

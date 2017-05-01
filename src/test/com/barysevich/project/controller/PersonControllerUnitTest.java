@@ -34,7 +34,7 @@
 //
 //    @Test
 //    public void savePerson() throws Exception {
-//        mockMvc.perform(get("/api/person/find/name=Di").accept(MediaType.APPLICATION_JSON)
+//        mockMvc.perform(get("/api/person/find/Di").accept(MediaType.APPLICATION_JSON)
 //        ).andExpect(status().isOk());
 //    }
 //

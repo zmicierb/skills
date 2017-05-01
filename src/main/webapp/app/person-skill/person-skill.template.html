@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-repeat="personSkillOuter in $ctrl.personSkills | filter:$ctrl.filterRows">
+                <div class="row">
+                    <div class="col-md-2">
+                        <span>{{personSkillOuter.row.name}}</span>
+                    </div>
+                    <!--<div class="col-md-6"-->
+                    <!--ng-repeat="personSkill in $ctrl.personSkills | filter:{row: personSkillOuter.row}">-->
+                    <!--<span>{{personSkill.skill.name}}</span>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

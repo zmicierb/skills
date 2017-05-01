@@ -1,5 +1,7 @@
 package com.barysevich.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import static javax.persistence.CascadeType.*;
@@ -21,19 +23,20 @@ public class SkillSum extends AbstractPersistable<Long> {
     @Column(name = "person_id", insertable = false, updatable = false)
     private Long personId;
 
+    @JsonIgnore
     @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Person person;
 
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
 
-    @OneToOne(targetEntity = Skill.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Skill skill;
 
     @Column(name = "row_id", insertable = false, updatable = false)
     private Long rowId;
 
-    @OneToOne(targetEntity = Row.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Row.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Row row;
 
     private Integer weight;

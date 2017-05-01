@@ -46,7 +46,7 @@ describe('personList', function () {
             jasmine.addCustomEqualityTester(angular.equals);
 
             ctrl.query = 'di';
-            $httpBackend.expectGET('/api/person/find/name=di?page=0&size=5')
+            $httpBackend.expectGET('/api/person/find/di?page=0&size=5')
                 .respond({
                     "success": true,
                     "message": "Completed successfully",
@@ -58,6 +58,25 @@ describe('personList', function () {
             $httpBackend.flush();
             expect(ctrl.persons.length).toBe(1);
         });
+
+        it('should request second page', function () {
+            jasmine.addCustomEqualityTester(angular.equals);
+
+            ctrl.currentPage = 2;
+            ctrl.query = '';
+            $httpBackend.expectGET('/api/person?page=1&size=5')
+                .respond({
+                    "success": true,
+                    "message": "Completed successfully",
+                    "errors": null,
+                    "total": null,
+                    "data": [{"id": 57, "name": "DIMA", "deleted": false, "new": false},
+                        {"id": 58, "name": "KATE", "deleted": false, "new": false}]
+                });
+            ctrl.pageChanged();
+            $httpBackend.flush();
+            expect(ctrl.persons.length).toBeGreaterThan(1);
+        })
 
     });
 });

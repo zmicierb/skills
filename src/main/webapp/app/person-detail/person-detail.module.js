@@ -2,5 +2,5 @@
 
 angular.module('personDetail', [
     'ngRoute',
-    'core.person'
+    'core.personSrv'
 ]);

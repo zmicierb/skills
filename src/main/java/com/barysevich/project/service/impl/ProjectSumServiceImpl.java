@@ -21,4 +21,8 @@ public class ProjectSumServiceImpl extends GenericServiceImpl<ProjectSum, Long> 
         this.projectSumRepository = repository;
     }
 
+    public Iterable<ProjectSum> findByPersonId(Long id) {
+        return projectSumRepository.findByPersonId(id);
+    }
+
 }

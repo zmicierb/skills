@@ -1,5 +1,7 @@
 package com.barysevich.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import static javax.persistence.CascadeType.*;
@@ -21,16 +23,18 @@ public class ProjectSum extends AbstractPersistable<Long> {
     @Column(name = "person_id", insertable = false, updatable = false)
     private Long personId;
 
+    @JsonIgnore
     @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
     private Person person;
 
     @Column(name = "project_id", insertable = false, updatable = false)
     private Long projectId;
 
-    @OneToOne(targetEntity = Project.class, fetch = FetchType.LAZY, cascade = {ALL})
+    @OneToOne(targetEntity = Project.class, fetch = FetchType.EAGER, cascade = {ALL})
     private Project project;
 
-    @OneToOne(targetEntity = CompanyInfo.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = CompanyInfo.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @JoinColumn(name = "company_id")
     private CompanyInfo companyInfo;
 
     public ProjectSum() {

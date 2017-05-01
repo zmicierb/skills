@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('core.personSrv').factory('PersonSrv', ['$resource',
+angular.module('core.personSkillSrv').factory('PersonSkillSrv', ['$resource',
     function ($resource) {
-        return $resource('/api/person/:personId', {}, {
+        return $resource('/api/person/:personId/skills', {}, {
             query: {
                 method: 'GET'
                 , isArray: false

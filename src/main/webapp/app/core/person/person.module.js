@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('core.person', ['ngResource']);
+angular.module('core.personSrv', ['ngResource']);

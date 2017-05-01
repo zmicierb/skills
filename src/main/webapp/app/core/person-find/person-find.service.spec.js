@@ -1,16 +1,14 @@
 'use strict';
 
-describe('PersonSrv', function () {
+describe('PersonFindSrv', function () {
     var $httpBackend;
-    var PersonSrv;
-    var personsData = {
+    var PersonFindSrv;
+    var personData = {
         "success": true,
         "message": "Completed successfully",
         "errors": null,
         "total": null,
-        "data": [{name: 'Name X'},
-            {name: 'Name Y'},
-            {name: 'Name Z'}]
+        "data": {name: 'TestName'}
     };
 
     // Add a custom equality tester before each test
@@ -18,15 +16,15 @@ describe('PersonSrv', function () {
         jasmine.addCustomEqualityTester(angular.equals);
     });
 
-    // Load the module that contains the `Person` service before each test
-    beforeEach(module('core.personSrv'));
+    // Load the module that contains the `PersonFind` service before each test
+    beforeEach(module('core.personFindSrv'));
 
     // Instantiate the service and "train" `$httpBackend` before each test
-    beforeEach(inject(function (_$httpBackend_, _PersonSrv_) {
+    beforeEach(inject(function (_$httpBackend_, _PersonFindSrv_) {
         $httpBackend = _$httpBackend_;
-        $httpBackend.expectGET('/api/person').respond(personsData);
+        $httpBackend.expectGET('/api/person/find/TestName?page=0&size=5').respond(personData);
 
-        PersonSrv = _PersonSrv_;
+        PersonFindSrv = _PersonFindSrv_;
     }));
 
     // Verify that there are no outstanding expectations or requests after each test
@@ -35,13 +33,13 @@ describe('PersonSrv', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should fetch the persons data from `/api/person`', function () {
-        var persons = PersonSrv.query();
+    it('should find person data be name', function () {
+        var person = PersonFindSrv.get({query: "TestName", page: 0, size: 5});
 
-        expect(persons).toEqual({});
+        expect(person).toEqual({});
 
         $httpBackend.flush();
-        expect(persons).toEqual(personsData);
+        expect(person).toEqual(personData);
     });
 
 });

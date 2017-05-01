@@ -2,6 +2,7 @@ package com.barysevich.project.repository;
 
 import com.barysevich.project.model.ProjectSum;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -10,4 +11,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(exported = false)
 public interface ProjectSumRepository extends PagingAndSortingRepository<ProjectSum, Long> {
 
+    Iterable<ProjectSum> findByPersonId(@Param("id") Long id);
 }
