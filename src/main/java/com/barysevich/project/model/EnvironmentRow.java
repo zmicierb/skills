@@ -18,20 +18,25 @@ public class EnvironmentRow extends AbstractPersistable<Long> {
             generator = "environment_row_id_seq")
     private Long id;
 
-    @Column(name = "project_id", insertable = false, updatable = false)
+    @Column
     private Long projectId;
-
-    @OneToOne(targetEntity = Project.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
-    private Project project;
 
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
 
-    @OneToOne(targetEntity = Skill.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
     private Skill skill;
+
+    private Integer weight;
 
     public EnvironmentRow() {
         //default constructor
+    }
+
+    public EnvironmentRow(Long projectId, Skill skill, Integer weight) {
+        this.projectId = projectId;
+        this.skill = skill;
+        this.weight = weight;
     }
 
     @Override
@@ -52,14 +57,6 @@ public class EnvironmentRow extends AbstractPersistable<Long> {
         this.projectId = projectId;
     }
 
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
     public Long getSkillId() {
         return skillId;
     }
@@ -74,5 +71,13 @@ public class EnvironmentRow extends AbstractPersistable<Long> {
 
     public void setSkill(Skill skill) {
         this.skill = skill;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }

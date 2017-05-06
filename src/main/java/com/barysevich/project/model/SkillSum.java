@@ -24,25 +24,32 @@ public class SkillSum extends AbstractPersistable<Long> {
     private Long personId;
 
     @JsonIgnore
-    @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {MERGE, REFRESH, DETACH})
     private Person person;
 
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
 
-    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
     private Skill skill;
 
     @Column(name = "row_id", insertable = false, updatable = false)
     private Long rowId;
 
-    @OneToOne(targetEntity = Row.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Row.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
     private Row row;
 
     private Integer weight;
 
     public SkillSum() {
         //default constructor
+    }
+
+    public SkillSum(Person person, Skill skill, Row row, Integer weight) {
+        this.person = person;
+        this.skill = skill;
+        this.row = row;
+        this.weight = weight;
     }
 
     @Override

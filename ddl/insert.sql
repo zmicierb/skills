@@ -37,7 +37,7 @@ VALUES (1, 1, 'Intranet web-portal for company.', 'Project in progress.', 'Devel
   (4, 1, 'Enterprise web-application for organization with branches in every regional city in Belarus.',
    'Long term cooperation in full-stack developer team.',
    'Developing functionality for printing indetifier card of applicants from web-browser.', 0),
-  (5, 2, 'System integration.', 'All projects are in prodaction.', 'Configuring OS, installing Oracle.', 0);
+  (5, 2, 'System integration.', 'All projects are in production.', 'Configuring OS, installing Oracle.', 0);
 
 INSERT INTO company_info (id, name, start_date, end_date, position_id, deleted)
 VALUES (1, 'IBA', '2016-11-01', NULL, 1, 0), (2, 'BELHARD', '2015-09-01', '2016-10-30', 1, 0),

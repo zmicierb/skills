@@ -1,6 +1,8 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.Project;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -18,5 +20,8 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, L
     @Modifying
     @Query("UPDATE Project p SET p.deleted=1 WHERE p.id = :id ")
     void remove(@Param("id") Long id);
+
+    @Query("SELECT p FROM Project p WHERE lower(p.responsibility) like lower(concat('%',concat(:responsibility, '%'))) and p.deleted<>1")
+    Page<Project> findByResponsibilityContainingIgnoreCase(@Param("responsibility") String responsibility, Pageable pageable);
 
 }

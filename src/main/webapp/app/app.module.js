@@ -4,7 +4,6 @@
 var skillsApp = angular.module('skillsApp', [
     'ngAnimate'
     , 'ngRoute'
+    , 'angular.filter'
     , 'core'
-    , 'personDetail'
-    , 'personList'
 ]);

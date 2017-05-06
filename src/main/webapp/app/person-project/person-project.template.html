@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="person-detail-separator">PROFESSIONAL EXPERIENCE</h4>
+            <div ng-repeat="(key, value) in $ctrl.personProjects | orderBy: -'companyInfo.startDate'
+            | groupBy: '[companyInfo.name, project.position.name, companyInfo.startDate, companyInfo.endDate]'">
+                <div class="row">
+                    <div class="col-md-3">
+                        <span><b>{{key.split(",")[1]}}</b></span><br/>
+                        <span>
+                            <b>{{key.split(",")[2] | date:'MMM yyyy'}} -
+                                {{key.split(",")[3] === "" ? "now" : key.split(",")[3] | date:'MMM yyyy'}}</b>
+                        </span>
+                    </div>
+                    <div class="col-md-9">
+                        <span><b>{{key.split(",")[0]}}</b></span>
+                    </div>
+                </div>
+                <div class="person-detail-project" ng-repeat="project in value">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span><b>{{project.project.position.name}}</b></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span>{{project.project.description}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span>Responsibilities:</span>
+                        </div>
+                        <div class="col-md-10">
+                            <span>{{project.project.responsibility}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span>Environment:</span>
+                        </div>
+                        <div class="col-md-10">
+                            <span ng-repeat="skill in project.project.environmentRow
+                            | orderBy: 'project.project.environmentRow.weight'"> {{skill.skill.name}} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span>Project results:</span>
+                        </div>
+                        <div class="col-md-10">
+                            <span>{{project.project.result}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

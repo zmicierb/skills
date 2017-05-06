@@ -4,6 +4,8 @@ import com.barysevich.project.model.Project;
 import com.barysevich.project.repository.ProjectRepository;
 import com.barysevich.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,5 +26,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
     @Override
     public void remove(Long id) {
         projectRepository.remove(id);
+    }
+
+    @Override
+    public Page<Project> findByResponsibilityContainingIgnoreCase(String name, Pageable pageable) {
+        return projectRepository.findByResponsibilityContainingIgnoreCase(name, pageable);
     }
 }

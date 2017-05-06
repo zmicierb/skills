@@ -3,11 +3,20 @@ body {
 }
 
 .person-detail-header {
-    border-bottom: 1px solid gray;
+    padding-bottom: 20px;
 }
 
 .person-detail-header p {
     margin: 0px;
+}
+
+.person-detail-separator {
+    background-color: #d7d7d7;
+    padding: 5px;
+}
+
+.person-detail-project {
+    padding: 10px;
 }
 
 .persons {
@@ -28,7 +37,7 @@ body {
     margin: 0px;
 }
 
-.my-form {
+.search-form {
     transition: all linear 0.5s;
     background: transparent;
 }

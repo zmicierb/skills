@@ -3,6 +3,7 @@ package com.barysevich.project.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 
 import static javax.persistence.CascadeType.*;
 
@@ -20,10 +21,13 @@ public class Project extends AbstractPersistable<Long> {
             generator = "project_id_seq")
     private Long id;
 
-    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
     private Position position;
 
     private String description;
+
+    @OneToMany(targetEntity = EnvironmentRow.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH, REMOVE}, mappedBy = "projectId")
+    private List<EnvironmentRow> environmentRow;
 
     private String result;
 
@@ -68,6 +72,14 @@ public class Project extends AbstractPersistable<Long> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<EnvironmentRow> getEnvironmentRow() {
+        return environmentRow;
+    }
+
+    public void setEnvironmentRow(List<EnvironmentRow> environmentRow) {
+        this.environmentRow = environmentRow;
     }
 
     public String getResult() {

@@ -1,15 +1,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div ng-repeat="personSkillOuter in $ctrl.personSkills | filter:$ctrl.filterRows">
+            <h4 class="person-detail-separator">SKILLS SUMMARY</h4>
+            <div ng-repeat="(key, value) in $ctrl.personSkills | orderBy: 'row.id' | groupBy: 'row.name'">
                 <div class="row">
                     <div class="col-md-2">
-                        <span>{{personSkillOuter.row.name}}</span>
+                        <span>{{key}}</span>
                     </div>
-                    <!--<div class="col-md-6"-->
-                    <!--ng-repeat="personSkill in $ctrl.personSkills | filter:{row: personSkillOuter.row}">-->
-                    <!--<span>{{personSkill.skill.name}}</span>-->
-                    <!--</div>-->
+                    <div class="col-md-6">
+                        <span ng-repeat="personSkill in value | orderBy: 'weight'"> {{personSkill.skill.name}} </span>
+                    </div>
                 </div>
             </div>
         </div>

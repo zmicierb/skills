@@ -1,11 +1,7 @@
 package com.barysevich.project.controller;
 
-import com.barysevich.project.model.Department;
-import com.barysevich.project.model.Person;
-import com.barysevich.project.model.Position;
-import com.barysevich.project.service.DepartmentService;
-import com.barysevich.project.service.PersonService;
-import com.barysevich.project.service.PositionService;
+import com.barysevich.project.model.*;
+import com.barysevich.project.service.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
@@ -25,7 +21,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -50,22 +49,57 @@ public class PersonControllerTest {
     private DepartmentService departmentService;
 
     @Autowired
+    private SkillService skillService;
+
+    @Autowired
+    private RowService rowService;
+
+    @Autowired
+    private SkillSumService skillSumService;
+
+    @Autowired
+    private CompanyInfoService companyInfoService;
+
+    @Autowired
+    private EnvironmentRowService environmentRowService;
+
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private ProjectSumService projectSumService;
+
+    @Autowired
     private ObjectMapper mapper;
+
+    private String test = "test";
+
+    private String[] testUserArray = new String[]{"Test1,Test2,Test3"};
 
     @Before
     public void populateDB() {
 
-        Department department = departmentService.save(new Department("test"));
-        Position position = positionService.save(new Position("test"));
+        Department department = departmentService.save(new Department(test));
+        Position position = positionService.save(new Position(test));
+
+        Skill skill = skillService.save(new Skill(test));
+        Row row = rowService.save(new Row(test));
+
+        CompanyInfo companyInfo = companyInfoService.save(new CompanyInfo(test, new Date(), new Date(), position));
+        Project project = projectService.save(new Project(position, test, test, test));
+        List<EnvironmentRow> environmentRows = new ArrayList<EnvironmentRow>();
+        environmentRows.add(environmentRowService.save(new EnvironmentRow(project.getId(), skill, 1)));
 
         Arrays.asList(
-                "Test1,Test2,Test3".split(","))
+                testUserArray)
                 .forEach(
                         a -> {
-                            personService.save(new Person(a,
+                            Person person = personService.save(new Person(a,
                                     position,
                                     department,
                                     LocalDate.of(1970, Month.JANUARY, 1)));
+                            skillSumService.save(new SkillSum(person, skill, row, 1));
+                            projectSumService.save(new ProjectSum(person, project, companyInfo));
                         }
                 );
     }
@@ -73,7 +107,7 @@ public class PersonControllerTest {
     @After
     public void cleanDB() {
 
-        Iterable<Person> persons = personService.findByNameContainingIgnoreCase("test", new PageRequest(0, 10));
+        Iterable<Person> persons = personService.findByNameContainingIgnoreCase(test, new PageRequest(0, 100));
 
         persons.forEach(
                 a -> {
@@ -81,7 +115,23 @@ public class PersonControllerTest {
                 }
         );
 
-        Iterable<Department> departments = departmentService.findByNameContainingIgnoreCase("test", new PageRequest(0, 10));
+        Iterable<CompanyInfo> companyInfos = companyInfoService.findByNameContainingIgnoreCase(test, new PageRequest(0, 100));
+
+        companyInfos.forEach(
+                a -> {
+                    companyInfoService.delete(a.getId());
+                }
+        );
+
+        Iterable<Project> projects = projectService.findByResponsibilityContainingIgnoreCase(test, new PageRequest(0, 100));
+
+        projects.forEach(
+                a -> {
+                    projectService.delete(a.getId());
+                }
+        );
+
+        Iterable<Department> departments = departmentService.findByNameContainingIgnoreCase(test, new PageRequest(0, 100));
 
         departments.forEach(
                 a -> {
@@ -89,11 +139,27 @@ public class PersonControllerTest {
                 }
         );
 
-        Iterable<Position> positions = positionService.findByNameContainingIgnoreCase("test", new PageRequest(0, 10));
+        Iterable<Position> positions = positionService.findByNameContainingIgnoreCase(test, new PageRequest(0, 100));
 
         positions.forEach(
                 a -> {
                     positionService.delete(a.getId());
+                }
+        );
+
+        Iterable<Skill> skills = skillService.findByNameContainingIgnoreCase(test, new PageRequest(0, 100));
+
+        skills.forEach(
+                a -> {
+                    skillService.delete(a.getId());
+                }
+        );
+
+        Iterable<Row> rows = rowService.findByNameContainingIgnoreCase(test, new PageRequest(0, 100));
+
+        rows.forEach(
+                a -> {
+                    rowService.delete(a.getId());
                 }
         );
     }
@@ -113,8 +179,6 @@ public class PersonControllerTest {
 
         Person person = personService.findOne(id);
 
-        HttpEntity<Person> requestEntity = new HttpEntity<Person>(person);
-
         response = restTemplate.getForEntity("/api/person/" + id.toString(), String.class);
 
         root = mapper.readTree(response.getBody());
@@ -126,8 +190,8 @@ public class PersonControllerTest {
 
         String test = "Test4";
 
-        Department department = departmentService.save(new Department("test"));
-        Position position = positionService.save(new Position("test"));
+        Department department = departmentService.save(new Department(test));
+        Position position = positionService.save(new Position(test));
 
         ResponseEntity<String> response =
                 restTemplate.postForEntity("/api/person", new Person(test,
@@ -202,5 +266,51 @@ public class PersonControllerTest {
 
         //for cleaning DB
         personService.delete(id);
+    }
+
+    @Test
+    public void getSkillById() throws IOException {
+
+        String test1 = "Test1";
+
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/person/find/" + test1, String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode root = mapper.readTree(response.getBody());
+        Long id = root.path("data").get(0).path("id").asLong();
+
+        response = restTemplate.getForEntity("/api/person/" + id.toString() + "/skills", String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode body = mapper.readTree(response.getBody());
+        JsonNode data = body.path("data");
+        data.forEach(d -> assertTrue(d.path("row").path("name").asText().equalsIgnoreCase(test)));
+        data.forEach(d -> assertTrue(d.path("skill").path("name").asText().equalsIgnoreCase(test)));
+    }
+
+    @Test
+    public void getProjectById() throws IOException {
+
+        String test1 = "Test1";
+
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/person/find/" + test1, String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode root = mapper.readTree(response.getBody());
+        Long id = root.path("data").get(0).path("id").asLong();
+
+        response = restTemplate.getForEntity("/api/person/" + id.toString() + "/projects", String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode body = mapper.readTree(response.getBody());
+        JsonNode data = body.path("data");
+        data.forEach(d -> assertTrue(d.path("companyInfo").path("name").asText().equalsIgnoreCase(test)));
+        data.forEach(d -> assertTrue(d.path("project").path("position").path("name").asText().equalsIgnoreCase(test)));
     }
 }

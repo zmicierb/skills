@@ -24,21 +24,27 @@ public class ProjectSum extends AbstractPersistable<Long> {
     private Long personId;
 
     @JsonIgnore
-    @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {MERGE, REFRESH, DETACH})
     private Person person;
 
     @Column(name = "project_id", insertable = false, updatable = false)
     private Long projectId;
 
-    @OneToOne(targetEntity = Project.class, fetch = FetchType.EAGER, cascade = {ALL})
+    @OneToOne(targetEntity = Project.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH, REMOVE})
     private Project project;
 
-    @OneToOne(targetEntity = CompanyInfo.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = CompanyInfo.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
     @JoinColumn(name = "company_id")
     private CompanyInfo companyInfo;
 
     public ProjectSum() {
         //default constructor
+    }
+
+    public ProjectSum(Person person, Project project, CompanyInfo companyInfo) {
+        this.person = person;
+        this.project = project;
+        this.companyInfo = companyInfo;
     }
 
     @Override

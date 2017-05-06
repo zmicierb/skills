@@ -32,7 +32,7 @@ public class CompanyInfo extends AbstractPersistable<Long> {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
-    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
     private Position position;
 
     @Column(columnDefinition = "SMALLINT")

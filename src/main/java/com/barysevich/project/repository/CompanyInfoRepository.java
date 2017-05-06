@@ -1,6 +1,8 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.CompanyInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -18,5 +20,8 @@ public interface CompanyInfoRepository extends PagingAndSortingRepository<Compan
     @Modifying
     @Query("UPDATE CompanyInfo c SET c.deleted=1 WHERE c.id = :id ")
     void remove(@Param("id") Long id);
+
+    @Query("SELECT c FROM CompanyInfo c WHERE lower(c.name) like lower(concat('%',concat(:name, '%'))) and c.deleted<>1")
+    Page<CompanyInfo> findByNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
 
 }
