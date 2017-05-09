@@ -2,15 +2,25 @@
     <div class="row">
         <div class="col-md-12">
             <h4 class="person-detail-separator">SKILLS SUMMARY</h4>
-            <div ng-repeat="(key, value) in $ctrl.personSkills | orderBy: 'row.id' | groupBy: 'row.name'">
-                <div class="row">
+            <div ng-repeat="(listName, list) in $ctrl.personSkills">
+                <!--<div class="row">-->
                     <div class="col-md-2">
-                        <span>{{key}}</span>
+                        <span>{{listName}}</span>
                     </div>
                     <div class="col-md-6">
-                        <span ng-repeat="personSkill in value | orderBy: 'weight'"> {{personSkill.skill.name}} </span>
+                        <!--<span ng-repeat="personSkill in value | orderBy: 'weight'"> {{personSkill.skill.name}} </span>-->
+                        <ul dnd-list="list">
+                            <li ng-repeat="item in list"
+                                dnd-draggable="item"
+                                dnd-moved="list.splice($index, 1)"
+                                dnd-effect-allowed="move"
+                                dnd-selected="models.selected = item"
+                                ng-class="{'selected': models.selected === item}">
+                                {{item.skills.skillName}}
+                            </li>
+                        </ul>
                     </div>
-                </div>
+                <!--</div>-->
             </div>
         </div>
     </div>

@@ -1,9 +1,10 @@
 package com.barysevich.project.controller;
 
+import com.barysevich.project.controller.dto.PersonSkillsDto;
 import com.barysevich.project.controller.dto.Response;
+import com.barysevich.project.controller.dto.SkillDto;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.model.ProjectSum;
-import com.barysevich.project.model.SkillSum;
 import com.barysevich.project.service.PersonService;
 import com.barysevich.project.service.ProjectSumService;
 import com.barysevich.project.service.SkillSumService;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * Created by BarysevichD on 2017-03-15.
@@ -62,8 +65,17 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/{id}/skills")
-    public ResponseEntity<Response<Iterable<SkillSum>>> findSkillsById(@PathVariable Long id) {
-        return ResponseEntity.ok(Response.success(skillSumService.findByPersonId(id)));
+    public ResponseEntity<Response<HashMap<Long, PersonSkillsDto>>> findSkillsById(@PathVariable Long id) {
+        HashMap<Long, PersonSkillsDto> personSkillsDto = new HashMap<>();
+        skillSumService.findByPersonId(id).forEach(a -> {
+            if (personSkillsDto.containsKey(a.getRowId())) {
+                personSkillsDto.get(a.getRowId()).getSkills()
+                        .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getWeight()));
+            } else {
+                personSkillsDto.put(a.getRowId(), new PersonSkillsDto(a));
+            }
+        });
+        return ResponseEntity.ok(Response.success(personSkillsDto));
     }
 
     @RequestMapping(value = "/{id}/projects")

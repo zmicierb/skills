@@ -45,8 +45,16 @@ describe('Skills Application', function () {
             browser.get('index.html#!/persons/1');
         });
 
-        it('should display placeholder page with `personId`', function () {
+        it('should display person name', function () {
             expect(element(by.binding('$ctrl.person.name')).getText()).toBe('Dzmitry Barysevich');
+        });
+
+        it('should display skills', function () {
+            expect(element.all(by.binding('personSkill.skill.name')).count()).toBeGreaterThan(0);
+        });
+
+        it('should display projects', function () {
+            expect(element.all(by.repeater('$ctrl.personProjects')).count()).toBeGreaterThan(0);
         });
 
     });

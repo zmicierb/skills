@@ -5,5 +5,6 @@ var skillsApp = angular.module('skillsApp', [
     'ngAnimate'
     , 'ngRoute'
     , 'angular.filter'
+    , 'dndLists'
     , 'core'
 ]);

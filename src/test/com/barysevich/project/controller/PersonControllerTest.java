@@ -287,8 +287,8 @@ public class PersonControllerTest {
 
         JsonNode body = mapper.readTree(response.getBody());
         JsonNode data = body.path("data");
-        data.forEach(d -> assertTrue(d.path("row").path("name").asText().equalsIgnoreCase(test)));
-        data.forEach(d -> assertTrue(d.path("skill").path("name").asText().equalsIgnoreCase(test)));
+        data.forEach(d -> assertTrue(d.path("rowName").asText().equalsIgnoreCase(test)));
+        data.forEach(d -> assertTrue(d.path("skills").get(0).path("skillName").asText().equalsIgnoreCase(test)));
     }
 
     @Test
