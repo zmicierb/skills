@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -85,7 +84,7 @@ public class PersonControllerTest {
         Skill skill = skillService.save(new Skill(test));
         Row row = rowService.save(new Row(test));
 
-        CompanyInfo companyInfo = companyInfoService.save(new CompanyInfo(test, new Date(), new Date(), position));
+        CompanyInfo companyInfo = companyInfoService.save(new CompanyInfo(test, LocalDate.now(), LocalDate.now(), position));
         Project project = projectService.save(new Project(position, test, test, test));
         List<EnvironmentRow> environmentRows = new ArrayList<EnvironmentRow>();
         environmentRows.add(environmentRowService.save(new EnvironmentRow(project.getId(), skill, 1)));

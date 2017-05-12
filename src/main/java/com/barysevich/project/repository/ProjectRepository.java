@@ -24,4 +24,7 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, L
     @Query("SELECT p FROM Project p WHERE lower(p.responsibility) like lower(concat('%',concat(:responsibility, '%'))) and p.deleted<>1")
     Page<Project> findByResponsibilityContainingIgnoreCase(@Param("responsibility") String responsibility, Pageable pageable);
 
+    @Query("SELECT p FROM Project p WHERE p.deleted<>1")
+    Page<Project> findAll(Pageable pageable);
+
 }

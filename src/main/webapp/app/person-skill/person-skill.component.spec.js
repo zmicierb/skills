@@ -14,25 +14,42 @@ describe('personSkill', function () {
                     "message": "Completed successfully",
                     "errors": null,
                     "total": null,
-                    "data": [{
-                        "id": 1,
-                        "personId": 1,
-                        "skillId": 1,
-                        "skill": {"id": 1, "name": "Java 6", "new": false},
-                        "rowId": 1,
-                        "row": {"id": 1, "name": "Programming Languages", "new": false},
-                        "weight": 1,
-                        "new": false
-                    }, {
-                        "id": 2,
-                        "personId": 1,
-                        "skillId": 2,
-                        "skill": {"id": 2, "name": "Java 7", "new": false},
-                        "rowId": 1,
-                        "row": {"id": 1, "name": "Programming Languages", "new": false},
-                        "weight": 2,
-                        "new": false
-                    }]
+                    "data": {
+                        "1": {
+                            "personId": 1,
+                            "rowId": 1,
+                            "rowName": "Programming Languages",
+                            "skills": [
+                                {
+                                    "skillId": 1,
+                                    "skillName": "Java 6",
+                                    "weight": 2
+                                },
+                                {
+                                    "skillId": 2,
+                                    "skillName": "Java 7",
+                                    "weight": 1
+                                }
+                            ]
+                        },
+                        "2": {
+                            "personId": 1,
+                            "rowId": 2,
+                            "rowName": "Web Technologies",
+                            "skills": [
+                                {
+                                    "skillId": 7,
+                                    "skillName": "Java EE 6",
+                                    "weight": 1
+                                },
+                                {
+                                    "skillId": 8,
+                                    "skillName": "EJB 3.0",
+                                    "weight": 2
+                                }
+                            ]
+                        }
+                    }
                 });
 
             $routeParams.personId = '1';
@@ -43,10 +60,38 @@ describe('personSkill', function () {
         it('should fetch the person skills', function () {
             jasmine.addCustomEqualityTester(angular.equals);
 
-            expect(ctrl.personSkills).toBeUndefined();
+            expect(ctrl.models.lists).toEqual({});
 
             $httpBackend.flush();
-            expect(ctrl.personSkills.length).toEqual(2);
+            expect(ctrl.models.lists).toEqual({
+                "Programming Languages": {
+                    skills: [{
+                        skillId: 2,
+                        skillName: 'Java 7',
+                        weight: 1
+                    },
+                        {
+                            skillId: 1,
+                            skillName: 'Java 6',
+                            weight: 2
+                        }],
+                    type: 'Programming Languages'
+                },
+                "Web Technologies": {
+                    skills: [{
+                        skillId: 7,
+                        skillName: 'Java EE 6',
+                        weight: 1
+                    },
+                        {
+                            skillId: 8,
+                            skillName: 'EJB 3.0',
+                            weight: 2
+                        }],
+                    type: 'Web Technologies'
+                }
+            })
+            ;
         });
 
     });

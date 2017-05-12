@@ -50,7 +50,7 @@ describe('Skills Application', function () {
         });
 
         it('should display skills', function () {
-            expect(element.all(by.binding('personSkill.skill.name')).count()).toBeGreaterThan(0);
+            expect(element.all(by.binding('skill.skillName')).count()).toBeGreaterThan(0);
         });
 
         it('should display projects', function () {

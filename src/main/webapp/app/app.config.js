@@ -6,7 +6,7 @@ angular.module('skillsApp').config(['$locationProvider', '$routeProvider',
 
         $routeProvider.when('/persons', {
             template: '<person-list></person-list>'
-        }).when('/persons/:personId', {
+        }).when('/person/:personId', {
             template: '<person-detail></person-detail>' +
             '<person-skill></person-skill>' +
             '<person-project></person-project>'

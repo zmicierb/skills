@@ -1,6 +1,10 @@
 'use strict';
 
 angular.module('personDetail', [
-    'ngRoute',
-    'core.personSrv'
+    'ngRoute'
+    , 'ngAnimate'
+    , 'ui.bootstrap'
+    , 'core.personSrv'
+    , 'core.positionSrv'
+    , 'core.positionFindSrv'
 ]);

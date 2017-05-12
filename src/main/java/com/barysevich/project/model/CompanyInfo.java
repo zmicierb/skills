@@ -3,9 +3,10 @@ package com.barysevich.project.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 import static javax.persistence.CascadeType.*;
 
@@ -27,10 +28,12 @@ public class CompanyInfo extends AbstractPersistable<Long> {
     private String name;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalDate startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalDate endDate;
 
     @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
     private Position position;
@@ -43,7 +46,7 @@ public class CompanyInfo extends AbstractPersistable<Long> {
         //default constructor
     }
 
-    public CompanyInfo(String name, Date startDate, Date endDate, Position position) {
+    public CompanyInfo(String name, LocalDate startDate, LocalDate endDate, Position position) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -68,19 +71,19 @@ public class CompanyInfo extends AbstractPersistable<Long> {
         this.name = name;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

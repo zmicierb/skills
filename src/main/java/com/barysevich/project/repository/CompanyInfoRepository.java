@@ -24,4 +24,7 @@ public interface CompanyInfoRepository extends PagingAndSortingRepository<Compan
     @Query("SELECT c FROM CompanyInfo c WHERE lower(c.name) like lower(concat('%',concat(:name, '%'))) and c.deleted<>1")
     Page<CompanyInfo> findByNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
 
+    @Query("SELECT c FROM CompanyInfo c WHERE c.deleted<>1")
+    Page<CompanyInfo> findAll(Pageable pageable);
+
 }

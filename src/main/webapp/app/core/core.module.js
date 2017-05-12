@@ -7,4 +7,6 @@ angular.module('core', [
     , 'core.personSearchFormSrv'
     , 'core.personSkillSrv'
     , 'core.personProjectSrv'
+    , 'core.positionSrv'
+    , 'core.positionFindSrv'
 ]);

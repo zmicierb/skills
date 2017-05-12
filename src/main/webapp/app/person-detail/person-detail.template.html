@@ -1,12 +1,32 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="person-detail-header">
-                <h3>{{$ctrl.person.name}}</h3>
+            <div ng-if="!$ctrl.editFlag" class="person-detail-header">
+                <h3>{{$ctrl.person.name}}<a href="" ng-click="$ctrl.toggleEditFlag()">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a></h3>
                 <p>{{$ctrl.person.birthDate}}</p>
                 <p>{{$ctrl.person.position.name}}</p>
                 <p>{{$ctrl.person.department.name}}</p>
             </div>
+
+            <!--for edit-->
+
+            <div class="col-md-4" ng-if="$ctrl.editFlag" class="person-detail-header">
+                <input type="text" ng-model="$ctrl.person.name" class="form-control">
+                <input type="text" ng-model="$ctrl.person.birthDate" class="form-control">
+                <input type="text" ng-model="$ctrl.person.position.name" placeholder="position"
+                       uib-typeahead="position.name for position in $ctrl.getPosition($viewValue)"
+                       typeahead-loading="loadingPositions"
+                       typeahead-no-results="noResults" class="form-control"
+                       typeahead-min-length="0">
+                <i ng-show="loadingPositions" class="glyphicon glyphicon-refresh"></i>
+                <div ng-show="noResults">
+                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                </div>
+                <input type="text" ng-model="$ctrl.person.department.name" class="form-control">
+            </div>
+
         </div>
     </div>
 </div>

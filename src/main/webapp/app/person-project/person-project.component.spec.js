@@ -117,6 +117,14 @@ describe('personProject', function () {
 
             $httpBackend.flush();
             expect(ctrl.personProjects.length).toEqual(2);
+
+            angular.forEach(ctrl.personProjects, function (project) {
+                project.project.environmentRow.forEach(function (skill, i) {
+                    if (i > 0) {
+                        expect(skill.weight).toBeGreaterThan(project.project.environmentRow[i - 1].weight);
+                    }
+                })
+            });
         });
 
     });
