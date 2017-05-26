@@ -9,4 +9,6 @@ angular.module('core', [
     , 'core.personProjectSrv'
     , 'core.positionSrv'
     , 'core.positionFindSrv'
+    , 'core.departmentSrv'
+    , 'core.departmentFindSrv'
 ]);

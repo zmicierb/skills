@@ -1,31 +1,24 @@
 'use strict';
 
-describe('PersonSrv', function () {
+describe('PositionSrv', function () {
     var $httpBackend;
-    var PersonSrv;
-    var personsData = {
+    var PositionSrv;
+    var positionsData = {
         "success": true,
         "message": "Completed successfully",
         "errors": null,
         "total": null,
-        "data": [{name: 'Name X'},
-            {name: 'Name Y'},
-            {name: 'Name Z'}]
+        "data": [{id: 1, name: "Position1", new: false},
+            {id: 2, name: "Position2", new: false}
+        ]
     };
-    var personDetailData = {
+
+    var positionData = {
         "success": true,
         "message": "Completed successfully",
         "errors": null,
         "total": null,
-        "data": [{
-            "id": 1,
-            "name": "Dzmitry Barysevich",
-            "position": {"id": 1, "name": "Java Developer", "new": false},
-            "department": {"id": 1, "name": "Application Development department", "new": false},
-            "birthDate": "1987-06-20",
-            "deleted": false,
-            "new": false
-        }]
+        "data": {id: 1, name: "Position1", new: false}
     };
 
     // Add a custom equality tester before each test
@@ -33,14 +26,14 @@ describe('PersonSrv', function () {
         jasmine.addCustomEqualityTester(angular.equals);
     });
 
-    // Load the module that contains the `Person` service before each test
-    beforeEach(module('core.personSrv'));
+    // Load the module that contains the `PersonFind` service before each test
+    beforeEach(module('core.positionSrv'));
 
     // Instantiate the service and "train" `$httpBackend` before each test
-    beforeEach(inject(function (_$httpBackend_, _PersonSrv_) {
+    beforeEach(inject(function (_$httpBackend_, _PositionSrv_) {
         $httpBackend = _$httpBackend_;
 
-        PersonSrv = _PersonSrv_;
+        PositionSrv = _PositionSrv_;
     }));
 
     // Verify that there are no outstanding expectations or requests after each test
@@ -49,24 +42,24 @@ describe('PersonSrv', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should fetch the persons data from `/api/person`', function () {
-        $httpBackend.expectGET('/api/person').respond(personsData);
-        var persons = PersonSrv.query();
+    it('should find positions data', function () {
+        $httpBackend.expectGET('/api/position').respond(positionsData);
+        var positions = PositionSrv.get();
 
-        expect(persons).toEqual({});
+        expect(positions).toEqual({});
 
         $httpBackend.flush();
-        expect(persons).toEqual(personsData);
+        expect(positions).toEqual(positionsData);
     });
 
-    it('should fetch the person details from `/api/person/1`', function () {
-        $httpBackend.expectGET('/api/person/1').respond(personDetailData);
-        var personDetail = PersonSrv.get({personId: 1});
+    it('should find position data by id', function () {
+        $httpBackend.expectGET('/api/position/1').respond(positionData);
+        var position = PositionSrv.get({positionId: 1});
 
-        expect(personDetail).toEqual({});
+        expect(position).toEqual({});
 
         $httpBackend.flush();
-        expect(personDetail).toEqual(personDetailData);
+        expect(position).toEqual(positionData);
     });
 
 });

@@ -7,4 +7,6 @@ angular.module('personDetail', [
     , 'core.personSrv'
     , 'core.positionSrv'
     , 'core.positionFindSrv'
+    , 'core.departmentSrv'
+    , 'core.departmentFindSrv'
 ]);

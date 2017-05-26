@@ -2,12 +2,13 @@
 
 angular.module('skillsApp').component('personDetail', {
     templateUrl: 'person-detail/person-detail.template.html',
-    controller: ['$http', '$routeParams', 'PersonSrv', 'PositionSrv', 'PositionFindSrv',
-        function PersonDetailController($http, $routeParams, PersonSrv, PositionSrv, PositionFindSrv) {
+    controller: ['$http', '$routeParams', 'PersonSrv', 'PositionSrv', 'PositionFindSrv', 'DepartmentSrv', 'DepartmentFindSrv',
+        function PersonDetailController($http, $routeParams, PersonSrv, PositionSrv, PositionFindSrv, DepartmentSrv, DepartmentFindSrv) {
             var self = this;
             self.editFlag = false;
             var person = PersonSrv.get({personId: $routeParams.personId}, function () {
                 self.person = person.data;
+                self.person.dt = new Date(self.person.birthDate);
             });
 
             self.toggleEditFlag = function () {
@@ -15,33 +16,49 @@ angular.module('skillsApp').component('personDetail', {
             };
 
             self.getPosition = function (val) {
-                return $http.get('/api/position/find/' + val).then(function (response) {
-                    return response.data.data;
-                });
-                // var output = [];
-                // var positions;
-                // // return ['Alabama', 'Alaska', 'Arizona', 'Arkansas',
-                // //     'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida',
-                // //     'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
-                // //     'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
-                // //     'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-                // //     'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-                // //     'New Jersey', 'New Mexico', 'New York', 'North Dakota',
-                // //     'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
-                // //     'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
-                // //     'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
-                // //     'West Virginia', 'Wisconsin', 'Wyoming'];
-                // if (val) {
-                //     // return ['Alabama', 'Alaska', 'Arizona'];
-                //     positions = PositionFindSrv.get({query: val, page: 0, size: 10}, function () {
-                //         output = positions.data;
-                //         return output;
-                //     });
-                // } else {
-                //     PositionSrv.get({page: 0, size: 10}).$promise.then(function (response) {
-                //         return response.data;
-                //     });
-                // }
+                if (val) {
+                    return PositionFindSrv.get({query: val}).$promise.then(function (response) {
+                            return response.data;
+                        }
+                    );
+                } else {
+                    return PositionSrv.get().$promise.then(function (response) {
+                            return response.data;
+                        }
+                    );
+                }
             };
+
+            self.getDepartment = function (val) {
+                if (val) {
+                    return DepartmentFindSrv.get({query: val}).$promise.then(function (response) {
+                            return response.data;
+                        }
+                    );
+                } else {
+                    return DepartmentSrv.get().$promise.then(function (response) {
+                            return response.data;
+                        }
+                    );
+                }
+            };
+
+            self.clear = function () {
+                self.person.dt = null;
+            };
+
+            self.dateOptions = {
+                formatYear: 'yyyy',
+                startingDay: 1
+            };
+
+            self.popup = {
+                opened: false
+            };
+
+            self.open = function () {
+                self.popup.opened = true;
+            };
+
         }]
 });

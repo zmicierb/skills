@@ -1,3 +1,18 @@
+<script type="text/ng-template" id="datepopup-template.html">
+    <ul role="presentation" class="uib-datepicker-popup dropdown-menu uib-position-measure" dropdown-nested
+        ng-if="isOpen" ng-keydown="keydown($event)" ng-click="$event.stopPropagation()">
+        <li ng-transclude></li>
+        <li ng-if="showButtonBar" class="uib-button-bar">
+    <span class="btn-group pull-left">
+      <button type="button" class="btn btn-sm btn-danger uib-clear" ng-click="select(null, $event)">{{ getText('clear') }}</button>
+    </span>
+            <button type="button" class="btn btn-sm btn-success pull-right uib-close" ng-click="close($event)">{{
+                getText('close') }}
+            </button>
+        </li>
+    </ul>
+</script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -13,20 +28,54 @@
             <!--for edit-->
 
             <div class="col-md-4" ng-if="$ctrl.editFlag" class="person-detail-header">
-                <input type="text" ng-model="$ctrl.person.name" class="form-control">
-                <input type="text" ng-model="$ctrl.person.birthDate" class="form-control">
-                <input type="text" ng-model="$ctrl.person.position.name" placeholder="position"
-                       uib-typeahead="position.name for position in $ctrl.getPosition($viewValue)"
-                       typeahead-loading="loadingPositions"
-                       typeahead-no-results="noResults" class="form-control"
-                       typeahead-min-length="0">
-                <i ng-show="loadingPositions" class="glyphicon glyphicon-refresh"></i>
-                <div ng-show="noResults">
-                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" ng-model="$ctrl.person.name" class="form-control">
+                    </div>
                 </div>
-                <input type="text" ng-model="$ctrl.person.department.name" class="form-control">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="input-group">
+                            <input type="text" ng-model="$ctrl.person.dt" class="form-control"
+                                   uib-datepicker-popup is-open="$ctrl.popup.opened"
+                                   datepicker-popup-template-url="datepopup-template.html"
+                                   datepicker-options="$ctrl.dateOptions" ng-required="true" close-text="Close"/>
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="$ctrl.open()"><i
+                                    class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" ng-model="$ctrl.person.position.name"
+                               placeholder="position"
+                               uib-typeahead="position.name for position in $ctrl.getPosition($viewValue)"
+                               typeahead-loading="loadingPositions"
+                               class="form-control"
+                               typeahead-min-length="0"
+                        >
+                        <!--typeahead-no-results="noResults"-->
+                    </div>
+                    <div class="col-md-4" ng-show="loadingPositions"><i class="glyphicon glyphicon-refresh"></i></div>
+                    <!--<div class="col-md-4" ng-show="noResults">-->
+                    <!--<i class="glyphicon glyphicon-remove"></i> No Results Found-->
+                    <!--</div>-->
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" ng-model="$ctrl.person.department.name"
+                               placeholder="department"
+                               uib-typeahead="department.name for department in $ctrl.getDepartment($viewValue)"
+                               typeahead-loading="loadingDepartments"
+                               class="form-control"
+                               typeahead-min-length="0"
+                        >
+                    </div>
+                    <div class="col-md-4" ng-show="loadingDepartments"><i class="glyphicon glyphicon-refresh"></i></div>
+                </div>
             </div>
-
         </div>
     </div>
 </div>

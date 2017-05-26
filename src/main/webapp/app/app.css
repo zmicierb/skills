@@ -41,6 +41,10 @@ body {
     margin: 0px;
 }
 
+.input-group {
+    margin: 0px;
+}
+
 .search-form {
     transition: all linear 0.5s;
     background: transparent;

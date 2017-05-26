@@ -35,14 +35,14 @@ describe('Skills Application', function () {
             query.sendKeys('Dzmitry');
 
             element.all(by.css('.persons li a')).first().click();
-            expect(browser.getLocationAbsUrl()).toBe('/persons/1');
+            expect(browser.getLocationAbsUrl()).toBe('/person/1');
         })
     });
 
     describe('View: Person detail', function () {
 
         beforeEach(function () {
-            browser.get('index.html#!/persons/1');
+            browser.get('index.html#!/person/1');
         });
 
         it('should display person name', function () {

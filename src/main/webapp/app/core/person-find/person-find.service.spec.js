@@ -33,7 +33,7 @@ describe('PersonFindSrv', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should find person data be name', function () {
+    it('should find person data by name', function () {
         var person = PersonFindSrv.get({query: "TestName", page: 0, size: 5});
 
         expect(person).toEqual({});

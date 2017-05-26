@@ -5,6 +5,14 @@ describe('personDetail', function () {
     // Test the controller
     describe('PersonDetailController', function () {
         var $httpBackend, ctrl;
+        var personData = {
+            "id": 1,
+            "name": "test name",
+            "deleted": false,
+            "new": false,
+            "birthDate": "1987-06-20",
+            "dt": new Date("1987-06-20")
+        };
 
         beforeEach(inject(function ($componentController, _$httpBackend_, $routeParams) {
             $httpBackend = _$httpBackend_;
@@ -14,7 +22,7 @@ describe('personDetail', function () {
                     "message": "Completed successfully",
                     "errors": null,
                     "total": null,
-                    "data": {"id": 1, "name": "test name", "deleted": false, "new": false}
+                    "data": personData
                 });
 
             $routeParams.personId = '1';
@@ -28,7 +36,7 @@ describe('personDetail', function () {
             expect(ctrl.person).toBeUndefined();
 
             $httpBackend.flush();
-            expect(ctrl.person).toEqual({"id": 1, "name": "test name", "deleted": false, "new": false});
+            expect(ctrl.person).toEqual(personData);
         });
 
     });
