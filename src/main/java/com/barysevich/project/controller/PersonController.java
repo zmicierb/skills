@@ -48,8 +48,7 @@ public class PersonController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Response<Person>> update(@PathVariable Long id, @RequestBody Person person) {
-        Person update = personService.findOne(id);
-        update.setName(person.getName());
+        Person update = personService.update(id, person);
         return ResponseEntity.ok(Response.success(personService.save(update)));
     }
 

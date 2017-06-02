@@ -28,53 +28,69 @@
             <!--for edit-->
 
             <div class="col-md-4" ng-if="$ctrl.editFlag" class="person-detail-header">
-                <div class="row">
-                    <div class="col-md-8">
-                        <input type="text" ng-model="$ctrl.person.name" class="form-control">
+                <form name="personDetail" class="form-horizontal" ng-submit="$ctrl.submit(personDetail)">
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input required type="text" ng-model="$ctrl.person.name" class="form-control">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <p class="input-group">
-                            <input type="text" ng-model="$ctrl.person.dt" class="form-control"
-                                   uib-datepicker-popup is-open="$ctrl.popup.opened"
-                                   datepicker-popup-template-url="datepopup-template.html"
-                                   datepicker-options="$ctrl.dateOptions" ng-required="true" close-text="Close"/>
-                            <span class="input-group-btn">
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <p class="input-group">
+                                <input type="text" ng-model="$ctrl.person.dt" class="form-control"
+                                       required
+                                       uib-datepicker-popup is-open="$ctrl.popup.opened"
+                                       datepicker-popup-template-url="datepopup-template.html"
+                                       datepicker-options="$ctrl.dateOptions" ng-required="true" close-text="Close"/>
+                                <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="$ctrl.open()"><i
                                     class="glyphicon glyphicon-calendar"></i></button>
                             </span>
-                        </p>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <input type="text" ng-model="$ctrl.person.position.name"
-                               placeholder="position"
-                               uib-typeahead="position.name for position in $ctrl.getPosition($viewValue)"
-                               typeahead-loading="loadingPositions"
-                               class="form-control"
-                               typeahead-min-length="0"
-                        >
-                        <!--typeahead-no-results="noResults"-->
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input type="text" ng-model="$ctrl.person.position"
+                                   placeholder="position"
+                                   uib-typeahead="position as position.name for position in $ctrl.getPosition($viewValue)"
+                                   typeahead-loading="loadingPositions"
+                                   class="form-control"
+                                   typeahead-min-length="0"
+                                   required
+                            >
+                        </div>
+                        <div class="col-md-4" ng-show="loadingPositions"><i class="glyphicon glyphicon-refresh"></i>
+                        </div>
                     </div>
-                    <div class="col-md-4" ng-show="loadingPositions"><i class="glyphicon glyphicon-refresh"></i></div>
-                    <!--<div class="col-md-4" ng-show="noResults">-->
-                    <!--<i class="glyphicon glyphicon-remove"></i> No Results Found-->
-                    <!--</div>-->
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <input type="text" ng-model="$ctrl.person.department.name"
-                               placeholder="department"
-                               uib-typeahead="department.name for department in $ctrl.getDepartment($viewValue)"
-                               typeahead-loading="loadingDepartments"
-                               class="form-control"
-                               typeahead-min-length="0"
-                        >
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input type="text" ng-model="$ctrl.person.department"
+                                   placeholder="department"
+                                   uib-typeahead="department as department.name for department in $ctrl.getDepartment($viewValue)"
+                                   typeahead-loading="loadingDepartments"
+                                   class="form-control"
+                                   typeahead-min-length="0"
+                                   required
+                            >
+                        </div>
+                        <div class="col-md-4" ng-show="loadingDepartments"><i class="glyphicon glyphicon-refresh"></i>
+                        </div>
                     </div>
-                    <div class="col-md-4" ng-show="loadingDepartments"><i class="glyphicon glyphicon-refresh"></i></div>
-                </div>
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <button type="submit" ng-disabled="personDetail.$pristine"
+                                    class="btn btn-primary">Save
+                            </button>
+                            <button class="btn" ng-disabled="personDetail.$pristine"
+                                    ng-click="$ctrl.reset(personDetail)">Reset
+                            </button>
+                            <button class="btn" ng-disabled="personDetail.$invalid || !personDetail.$pristine"
+                                    ng-click="$ctrl.cancel()">Back
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

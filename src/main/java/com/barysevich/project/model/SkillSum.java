@@ -30,13 +30,13 @@ public class SkillSum extends AbstractPersistable<Long> {
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
 
-    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Skill skill;
 
     @Column(name = "row_id", insertable = false, updatable = false)
     private Long rowId;
 
-    @OneToOne(targetEntity = Row.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Row.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Row row;
 
     private Integer weight;

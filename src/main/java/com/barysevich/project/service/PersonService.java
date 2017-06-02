@@ -13,4 +13,6 @@ public interface PersonService extends GenericService<Person, Long> {
 
     Page<Person> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
+    Person update(Long id, Person person);
+
 }

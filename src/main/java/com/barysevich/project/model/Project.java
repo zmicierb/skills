@@ -21,7 +21,7 @@ public class Project extends AbstractPersistable<Long> {
             generator = "project_id_seq")
     private Long id;
 
-    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Position position;
 
     private String description;

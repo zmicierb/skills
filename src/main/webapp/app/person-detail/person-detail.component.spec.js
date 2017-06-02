@@ -30,7 +30,7 @@ describe('personDetail', function () {
             ctrl = $componentController('personDetail');
         }));
 
-        it('should fetch the person details', function () {
+        it('should fetch person details', function () {
             jasmine.addCustomEqualityTester(angular.equals);
 
             expect(ctrl.person).toBeUndefined();

@@ -46,7 +46,7 @@ VALUES (1, 'IBA', '2016-11-01', NULL, 1, 0), (2, 'BELHARD', '2015-09-01', '2016-
 INSERT INTO project_sum (id, person_id, project_id, company_id)
 VALUES (1, 1, 1, 1), (2, 1, 2, 1), (3, 1, 3, 2), (4, 1, 4, 2), (5, 1, 5, 3);
 
-INSERT INTO environment_row (id, project_id, skill_id, weigth)
+INSERT INTO environment_row (id, project_id, skill_id, weight)
 VALUES (1, 1, 7, 1), (2, 1, 20, 2), (3, 1, 25, 3), (4, 2, 7, 1), (5, 2, 17, 2),
   (6, 2, 18, 3), (7, 3, 3, 1), (8, 3, 12, 2), (9, 3, 21, 3), (10, 4, 2, 1),
   (11, 4, 5, 2), (12, 4, 46, 3), (13, 5, 29, 2), (14, 5, 23, 1);

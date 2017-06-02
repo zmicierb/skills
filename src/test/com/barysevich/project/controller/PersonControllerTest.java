@@ -242,6 +242,8 @@ public class PersonControllerTest {
 
         root = mapper.readTree(response.getBody());
         assertTrue(root.path("data").path("name").asText().equalsIgnoreCase(test2));
+        // shouldn't change position name
+        assertTrue(!root.path("data").path("position").path("name").asText().equalsIgnoreCase(test2));
     }
 
     @Test

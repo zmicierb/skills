@@ -27,6 +27,28 @@ describe('PersonSrv', function () {
             "new": false
         }]
     };
+    var personDetailUpdate = {
+        "success": true,
+        "message": "Completed successfully",
+        "errors": null,
+        "data": {
+            "id": 1,
+            "name": "Dzmitry Barysevich",
+            "position": {"id": 1, "name": "Java Developer", "new": false},
+            "department": {"id": 1, "name": "Application Development department", "new": false},
+            "birthDate": "1987-06-20",
+            "deleted": false,
+            "new": false
+        },
+        "first": false,
+        "last": false,
+        "totalPages": 0,
+        "totalElements": 0,
+        "size": 0,
+        "number": 0,
+        "numberOfElements": 0,
+        "sort": null
+    };
 
     // Add a custom equality tester before each test
     beforeEach(function () {
@@ -49,7 +71,7 @@ describe('PersonSrv', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should fetch the persons data from `/api/person`', function () {
+    it('should fetch persons data from `/api/person`', function () {
         $httpBackend.expectGET('/api/person').respond(personsData);
         var persons = PersonSrv.query();
 
@@ -59,7 +81,7 @@ describe('PersonSrv', function () {
         expect(persons).toEqual(personsData);
     });
 
-    it('should fetch the person details from `/api/person/1`', function () {
+    it('should fetch person details from `/api/person/1`', function () {
         $httpBackend.expectGET('/api/person/1').respond(personDetailData);
         var personDetail = PersonSrv.get({personId: 1});
 
@@ -67,6 +89,16 @@ describe('PersonSrv', function () {
 
         $httpBackend.flush();
         expect(personDetail).toEqual(personDetailData);
+    });
+
+    it('should update person details from `/api/person/1`', function () {
+        $httpBackend.expectPUT('/api/person/1').respond(personDetailUpdate);
+        var personDetail = PersonSrv.update({personId: 1}, personDetailUpdate.data);
+
+        expect(personDetail).toEqual(personDetailUpdate.data);
+
+        $httpBackend.flush();
+        expect(personDetail).toEqual(personDetailUpdate);
     });
 
 });

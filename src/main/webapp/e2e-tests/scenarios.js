@@ -49,6 +49,17 @@ describe('Skills Application', function () {
             expect(element(by.binding('$ctrl.person.name')).getText()).toBe('Dzmitry Barysevich');
         });
 
+        it('should display/hide inputs', function () {
+            var headerHref = element(by.css("div.person-detail-header > h3 > a"));
+            headerHref.click();
+            expect(element(by.model('$ctrl.person.name')).isPresent()).toBe(true);
+
+            var btnBack = element(by.css('[ng-disabled="personDetail.$invalid"]'));
+            btnBack.click();
+            expect(element(by.model('$ctrl.person.name')).isPresent()).toBe(false);
+
+        });
+
         it('should display skills', function () {
             expect(element.all(by.binding('skill.skillName')).count()).toBeGreaterThan(0);
         });

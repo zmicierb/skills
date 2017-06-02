@@ -8,7 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.REFRESH;
 
 /**
  * Created by BarysevichD on 2017-03-14.
@@ -28,11 +29,11 @@ public class Person extends AbstractPersistable<Long> {
     @NotEmpty
     private String name;
 
-    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Position position;
 
     //some issue with Cascade.PERSIST in test PersonControllerTest.populateDB()
-    @OneToOne(targetEntity = Department.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Department.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Department department;
 
     @JsonFormat(pattern = "yyyy-MM-dd")

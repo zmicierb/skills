@@ -2,7 +2,8 @@ package com.barysevich.project.model;
 
 import javax.persistence.*;
 
-import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.REFRESH;
 
 /**
  * Created by BarysevichD on 2017-03-14.
@@ -24,7 +25,7 @@ public class EnvironmentRow extends AbstractPersistable<Long> {
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
 
-    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Skill skill;
 
     private Integer weight;
