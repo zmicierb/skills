@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('personSkill', [
-    'ngRoute',
-    'core.personSkillSrv'
+    'ngRoute'
+    , 'core.personSkillSrv'
+    , 'core.skillSrv'
+    , 'core.skillFindSrv'
 ]);

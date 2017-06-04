@@ -54,7 +54,7 @@ describe('Skills Application', function () {
             headerHref.click();
             expect(element(by.model('$ctrl.person.name')).isPresent()).toBe(true);
 
-            var btnBack = element(by.css('[ng-disabled="personDetail.$invalid"]'));
+            var btnBack = element(by.css('[ng-disabled="personDetail.$invalid || !personDetail.$pristine"]'));
             btnBack.click();
             expect(element(by.model('$ctrl.person.name')).isPresent()).toBe(false);
 

@@ -94,3 +94,12 @@ body {
     line-height: 32px;
     text-align: justify;
 }
+
+.tag-list {
+    display: inline-flex;
+}
+
+.tag-list span {
+    padding: 5px;
+    font-size: 18px;
+}

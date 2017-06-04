@@ -28,12 +28,12 @@ public class CompanyInfo extends AbstractPersistable<Long> {
     @NotEmpty
     private String name;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @JsonFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.NONE)
     private LocalDate startDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @JsonFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.NONE)
     private LocalDate endDate;
 
     @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})

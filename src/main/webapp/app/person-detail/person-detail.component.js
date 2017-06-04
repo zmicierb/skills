@@ -8,7 +8,7 @@ angular.module('skillsApp').component('personDetail', {
             self.editFlag = false;
             var person = PersonSrv.get({personId: $routeParams.personId}, function () {
                 self.person = person.data;
-                self.person.dt = new Date(self.person.birthDate);
+                self.person.dt = Date.parse(self.person.birthDate);
             });
 
             self.toggleEditFlag = function () {
@@ -17,12 +17,12 @@ angular.module('skillsApp').component('personDetail', {
 
             self.getPosition = function (val) {
                 if (val) {
-                    return PositionFindSrv.get({query: val}).$promise.then(function (response) {
+                    return PositionFindSrv.get({query: val, page: 0, size: 10}).$promise.then(function (response) {
                             return response.data;
                         }
                     );
                 } else {
-                    return PositionSrv.get().$promise.then(function (response) {
+                    return PositionSrv.get({page: 0, size: 10}).$promise.then(function (response) {
                             return response.data;
                         }
                     );
@@ -31,12 +31,12 @@ angular.module('skillsApp').component('personDetail', {
 
             self.getDepartment = function (val) {
                 if (val) {
-                    return DepartmentFindSrv.get({query: val}).$promise.then(function (response) {
+                    return DepartmentFindSrv.get({query: val, page: 0, size: 10}).$promise.then(function (response) {
                             return response.data;
                         }
                     );
                 } else {
-                    return DepartmentSrv.get().$promise.then(function (response) {
+                    return DepartmentSrv.get({page: 0, size: 10}).$promise.then(function (response) {
                             return response.data;
                         }
                     );
@@ -61,11 +61,11 @@ angular.module('skillsApp').component('personDetail', {
             };
 
             self.submit = function (form) {
-                self.person.birthDate = $filter('date')(self.person.dt, "yyyy-MM-dd");
+                self.person.birthDate = $filter('date')(self.person.dt, "yyyy/MM/dd");
                 console.log(self.person);
                 PersonSrv.update({personId: $routeParams.personId}, self.person).$promise.then(function (response) {
                     self.person = response.data;
-                    self.person.dt = new Date(self.person.birthDate);
+                    self.person.dt = Date.parse(self.person.birthDate);
                 });
                 form.$setPristine();
             };
@@ -77,7 +77,7 @@ angular.module('skillsApp').component('personDetail', {
             self.reset = function (form) {
                 person = PersonSrv.get({personId: $routeParams.personId}, function () {
                     self.person = person.data;
-                    self.person.dt = new Date(self.person.birthDate);
+                    self.person.dt = Date.parse(self.person.birthDate);
                 });
                 form.$setPristine();
             };

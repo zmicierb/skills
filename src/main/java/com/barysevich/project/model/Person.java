@@ -36,8 +36,8 @@ public class Person extends AbstractPersistable<Long> {
     @OneToOne(targetEntity = Department.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Department department;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @JsonFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.NONE)
     private LocalDate birthDate;
 
     @Column(columnDefinition = "SMALLINT")

@@ -12,12 +12,9 @@
                     <ul dnd-list="list.skills"
                         dnd-allowed-types="[list.type]"
                         dnd-disable-if="true">
-                        <li ng-repeat="skill in list.skills"
-                            dnd-type="list.type"
-                            dnd-draggable="skill"
-                            dnd-moved="list.skills.splice($index, 1)"
-                            dnd-effect-allowed="move">
-                            {{skill.skillName}}
+                        <li ng-repeat="skill in list.skills" dnd-type="list.type"
+                            dnd-draggable="skill" dnd-moved="list.skills.splice($index, 1)"
+                            dnd-effect-allowed="move">{{skill.skillName}}
                         </li>
                     </ul>
                 </div>
@@ -28,24 +25,43 @@
 
         <div ng-if="$ctrl.editFlag" class="col-md-12">
             <h4 class="person-detail-separator">SKILLS SUMMARY</h4>
-            <div ng-repeat="(listName, list) in $ctrl.models.lists" class="row draggableTag">
-                <div class="col-md-2">
-                    <span>{{listName}}</span>
+            <form name="personSkills" class="form-horizontal">
+                <div ng-repeat="(listName, list) in $ctrl.models.lists" class="row draggableTag">
+                    <div class="col-md-2">
+                        <span>{{listName}}</span>
+                    </div>
+                    <div class="col-md-10 tag-list">
+                        <ul dnd-list="list.skills"
+                            dnd-allowed-types="[list.type]"
+                            dnd-disable-if="false">
+                            <li ng-repeat="skill in list.skills" dnd-type="list.type"
+                                dnd-draggable="skill" dnd-moved="list.skills.splice($index, 1)"
+                                dnd-effect-allowed="move">{{skill.skillName}}
+                            </li>
+                        </ul>
+                        <div class="form-group" ng-if="list.addSkillFlag">
+                            <div class="col-md-8">
+                                <input type="text" ng-model="list.newSkill" placeholder="skill"
+                                       uib-typeahead="skill as skill.name for skill in $ctrl.getSkill($viewValue, listName)"
+                                       typeahead-loading="loadingSkill" class="form-control" typeahead-min-length="0"
+                                >
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success" ng-disabled="list.newSkill < 1"
+                                        ng-click="$ctrl.addNewSkill(list.newSkill, listName)">OK
+                                </button>
+                            </div>
+                            <div class="col-md-2" ng-show="loadingSkill"><i class="glyphicon glyphicon-refresh"></i>
+                            </div>
+                        </div>
+                        <div ng-if="!list.addSkillFlag">
+                            <a href="" ng-click="$ctrl.toggleNewSkill(listName)">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <ul dnd-list="list.skills"
-                        dnd-allowed-types="[list.type]"
-                        dnd-disable-if="true">
-                        <li ng-repeat="skill in list.skills"
-                            dnd-type="list.type"
-                            dnd-draggable="skill"
-                            dnd-moved="list.skills.splice($index, 1)"
-                            dnd-effect-allowed="move">
-                            {{skill.skillName}}
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
