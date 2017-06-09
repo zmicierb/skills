@@ -2,9 +2,9 @@ package com.barysevich.project.controller;
 
 import com.barysevich.project.controller.dto.PersonSkillsDto;
 import com.barysevich.project.controller.dto.Response;
-import com.barysevich.project.controller.dto.SkillDto;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.model.ProjectSum;
+import com.barysevich.project.model.SkillSum;
 import com.barysevich.project.service.PersonService;
 import com.barysevich.project.service.ProjectSumService;
 import com.barysevich.project.service.SkillSumService;
@@ -47,7 +47,7 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Response<Person>> update(@PathVariable Long id, @RequestBody Person person) {
+    public ResponseEntity<Response<Person>> updatePerson(@PathVariable Long id, @RequestBody Person person) {
         Person update = personService.update(id, person);
         return ResponseEntity.ok(Response.success(personService.save(update)));
     }
@@ -65,16 +65,14 @@ public class PersonController {
 
     @RequestMapping(value = "/{id}/skills")
     public ResponseEntity<Response<HashMap<Long, PersonSkillsDto>>> findSkillsById(@PathVariable Long id) {
-        HashMap<Long, PersonSkillsDto> personSkillsDto = new HashMap<>();
-        skillSumService.findByPersonId(id).forEach(a -> {
-            if (personSkillsDto.containsKey(a.getRowId())) {
-                personSkillsDto.get(a.getRowId()).getSkills()
-                        .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getWeight()));
-            } else {
-                personSkillsDto.put(a.getRowId(), new PersonSkillsDto(a));
-            }
-        });
-        return ResponseEntity.ok(Response.success(personSkillsDto));
+        HashMap<Long, PersonSkillsDto> personSkillsDtoMap = (HashMap) personService.findSkillsById(id);
+        return ResponseEntity.ok(Response.success(personSkillsDtoMap));
+    }
+
+    @RequestMapping(value = "/{id}/skills", method = RequestMethod.PUT)
+    public ResponseEntity<Response<Person>> updatePersonSkills(@PathVariable Long id, @RequestBody Iterable<SkillSum> skillSums) {
+        skillSumService.update(id, skillSums);
+        return ResponseEntity.ok(Response.success());
     }
 
     @RequestMapping(value = "/{id}/projects")

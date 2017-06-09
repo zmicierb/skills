@@ -7,6 +7,7 @@ angular.module('core.personSkillSrv').factory('PersonSkillSrv', ['$resource',
                 method: 'GET'
                 , isArray: false
             }
+            , update: {method: 'PUT'}
         });
     }
 ]);

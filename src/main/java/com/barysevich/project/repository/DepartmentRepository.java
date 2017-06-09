@@ -15,4 +15,6 @@ public interface DepartmentRepository extends PagingAndSortingRepository<Departm
 
     List<Department> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
+    Department findByName(String name);
+
 }

@@ -15,4 +15,6 @@ public interface SkillRepository extends PagingAndSortingRepository<Skill, Long>
 
     List<Skill> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
+    Skill findByName(String name);
+
 }

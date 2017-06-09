@@ -68,6 +68,7 @@ public class RowRepositoryTest {
 
         Row row = rowRepository.findOne(row2.getId());
 
+        assertThat(row).isNotEqualTo(row1);
         assertThat(row).isEqualTo(row2);
     }
 

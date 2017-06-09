@@ -93,6 +93,7 @@ public class SkillSumRepositoryTest {
 
         SkillSum skillSum = skillSumRepository.findOne(skillSum2.getId());
 
+        assertThat(skillSum).isNotEqualTo(skillSum1);
         assertThat(skillSum).isEqualTo(skillSum2);
     }
 
@@ -113,6 +114,27 @@ public class SkillSumRepositoryTest {
 
         assertThat(skillSums).contains(skillSum2);
         assertThat(skillSums).doesNotContain(skillSum1);
+    }
+
+    @Test
+    public void deleteByPersonId() {
+
+        Position position = entityManager.persist(new Position("test"));
+        Department department = entityManager.persist(new Department("test"));
+        Person person1 = entityManager.persist(new Person("test1", position, department, LocalDate.now()));
+        Person person2 = entityManager.persist(new Person("test2", position, department, LocalDate.now()));
+        Skill skill = entityManager.persist(new Skill("test"));
+        Row row = entityManager.persist(new Row("test"));
+
+        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person1, skill, row, 1));
+        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person2, skill, row, 2));
+
+        skillSumRepository.deleteByPersonId(person2.getId());
+        Iterable<SkillSum> skillSums1 = skillSumRepository.findByPersonId(person1.getId());
+        Iterable<SkillSum> skillSums2 = skillSumRepository.findByPersonId(person2.getId());
+
+        assertThat(skillSums1).contains(skillSum1);
+        assertThat(skillSums2).doesNotContain(skillSum2);
     }
 
 }

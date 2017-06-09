@@ -24,7 +24,7 @@ describe('Skills Application', function () {
             expect(personList.count()).toBe(1);
 
             query.clear();
-            query.sendKeys('Kate');
+            query.sendKeys('NoName');
             findButton.click();
             browser.waitForAngular();
             expect(personList.count()).toBe(0);
@@ -54,7 +54,7 @@ describe('Skills Application', function () {
             headerHref.click();
             expect(element(by.model('$ctrl.person.name')).isPresent()).toBe(true);
 
-            var btnBack = element(by.css('[ng-disabled="personDetail.$invalid || !personDetail.$pristine"]'));
+            var btnBack = element(by.css('[ng-disabled="!personDetail.$pristine"]'));
             btnBack.click();
             expect(element(by.model('$ctrl.person.name')).isPresent()).toBe(false);
 

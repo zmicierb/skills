@@ -106,6 +106,7 @@ public class ProjectSumRepositoryTest {
 
         ProjectSum projectSum = projectSumRepository.findOne(projectSum2.getId());
 
+        assertThat(projectSum).isNotEqualTo(projectSum1);
         assertThat(projectSum).isEqualTo(projectSum2);
     }
 

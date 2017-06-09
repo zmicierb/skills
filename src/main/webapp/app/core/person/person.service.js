@@ -6,8 +6,8 @@ angular.module('core.personSrv').factory('PersonSrv', ['$resource',
             query: {
                 method: 'GET'
                 , isArray: false
-            },
-            update: {method: 'PUT'}
+            }
+            , update: {method: 'PUT'}
         });
     }
 ]);

@@ -113,6 +113,7 @@ public class PersonRepositoryTest {
 
         Person foundCustomer = personRepository.findOne(person2.getId());
 
+        assertThat(foundCustomer).isNotEqualTo(person1);
         assertThat(foundCustomer).isEqualTo(person2);
     }
 

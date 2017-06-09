@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,8 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by dima on 3/26/17.
@@ -164,6 +164,25 @@ public class PersonControllerTest {
     }
 
     @Test
+    public void findAll() throws IOException {
+
+        int page = 0;
+        int size = 5;
+
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/person?page=" + page + "&size=" + size, String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode root = mapper.readTree(response.getBody());
+        JsonNode data = root.path("data");
+
+        Page<Person> persons = (Page) personService.findAll(new PageRequest(page, size));
+
+        assertEquals(persons.getNumberOfElements(), data.size());
+    }
+
+    @Test
     public void getById() throws IOException {
 
         String test1 = "Test1";
@@ -205,22 +224,7 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void findByName() throws IOException {
-
-        String test = "Test";
-
-        ResponseEntity<String> response =
-                restTemplate.getForEntity("/api/person/find/" + test, String.class);
-
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-
-        JsonNode root = mapper.readTree(response.getBody());
-        JsonNode data = root.path("data");
-        data.forEach(d -> assertTrue(d.path("name").asText().toUpperCase().contains(test.toUpperCase())));
-    }
-
-    @Test
-    public void update() throws IOException {
+    public void updatePerson() throws IOException {
 
         String test1 = "Test1";
         String test2 = "TestUpdated";
@@ -243,7 +247,7 @@ public class PersonControllerTest {
         root = mapper.readTree(response.getBody());
         assertTrue(root.path("data").path("name").asText().equalsIgnoreCase(test2));
         // shouldn't change position name
-        assertTrue(!root.path("data").path("position").path("name").asText().equalsIgnoreCase(test2));
+        assertFalse(root.path("data").path("position").path("name").asText().equalsIgnoreCase(test2));
     }
 
     @Test
@@ -270,7 +274,22 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void getSkillById() throws IOException {
+    public void findByName() throws IOException {
+
+        String test = "Test";
+
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/person/find/" + test, String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode root = mapper.readTree(response.getBody());
+        JsonNode data = root.path("data");
+        data.forEach(d -> assertTrue(d.path("name").asText().toUpperCase().contains(test.toUpperCase())));
+    }
+
+    @Test
+    public void findSkillsById() throws IOException {
 
         String test1 = "Test1";
 
@@ -293,7 +312,40 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void getProjectById() throws IOException {
+    public void updatePersonSkills() throws IOException {
+        String test1 = "Test1";
+        String test2 = "TestUpdated";
+
+        int page = 0;
+        int size = 5;
+
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/person/find/" + test1, String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        JsonNode root = mapper.readTree(response.getBody());
+        Long id = root.path("data").get(0).path("id").asLong();
+
+        Person person = personService.findOne(id);
+        Page<Row> rows = (Page) rowService.findAll(new PageRequest(page, size));
+        Row row = rows.getContent().get(0);
+
+        List<SkillSum> skillSums = (List) skillSumService.findByPersonId(id);
+        skillSums.add(new SkillSum(person, new Skill(test2), row, 999));
+
+        HttpEntity<List<SkillSum>> requestEntity = new HttpEntity<>(skillSums);
+
+        response = restTemplate.exchange("/api/person/" + id.toString() + "/skills", HttpMethod.PUT, requestEntity, String.class);
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        List<SkillSum> skillSumsUpdated = (List) skillSumService.findByPersonId(id);
+        assertEquals(skillSums.size(), skillSumsUpdated.size());
+    }
+
+    @Test
+    public void findProjectsById() throws IOException {
 
         String test1 = "Test1";
 

@@ -5,11 +5,15 @@ angular.module('skillsApp').component('personDetail', {
     controller: ['$http', '$filter', '$routeParams', 'PersonSrv', 'PositionSrv', 'PositionFindSrv', 'DepartmentSrv', 'DepartmentFindSrv',
         function PersonDetailController($http, $filter, $routeParams, PersonSrv, PositionSrv, PositionFindSrv, DepartmentSrv, DepartmentFindSrv) {
             var self = this;
+            var getPerson = function () {
+                var person = PersonSrv.get({personId: $routeParams.personId}, function () {
+                    self.person = person.data;
+                    self.person.dt = Date.parse(self.person.birthDate);
+                });
+            };
+
+            getPerson();
             self.editFlag = false;
-            var person = PersonSrv.get({personId: $routeParams.personId}, function () {
-                self.person = person.data;
-                self.person.dt = Date.parse(self.person.birthDate);
-            });
 
             self.toggleEditFlag = function () {
                 self.editFlag = true;
@@ -62,12 +66,11 @@ angular.module('skillsApp').component('personDetail', {
 
             self.submit = function (form) {
                 self.person.birthDate = $filter('date')(self.person.dt, "yyyy/MM/dd");
-                console.log(self.person);
                 PersonSrv.update({personId: $routeParams.personId}, self.person).$promise.then(function (response) {
                     self.person = response.data;
                     self.person.dt = Date.parse(self.person.birthDate);
+                    form.$setPristine();
                 });
-                form.$setPristine();
             };
 
             self.cancel = function () {
@@ -75,10 +78,7 @@ angular.module('skillsApp').component('personDetail', {
             };
 
             self.reset = function (form) {
-                person = PersonSrv.get({personId: $routeParams.personId}, function () {
-                    self.person = person.data;
-                    self.person.dt = Date.parse(self.person.birthDate);
-                });
+                getPerson();
                 form.$setPristine();
             };
 

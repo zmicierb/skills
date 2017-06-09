@@ -13,4 +13,5 @@ angular.module('core', [
     , 'core.departmentFindSrv'
     , 'core.skillSrv'
     , 'core.skillFindSrv'
+    , 'core.rowSrv'
 ]);

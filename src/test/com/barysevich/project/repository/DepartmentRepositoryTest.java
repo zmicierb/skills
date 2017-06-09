@@ -66,13 +66,14 @@ public class DepartmentRepositoryTest {
         Department department1 = entityManager.persist(new Department("Test1"));
         Department department2 = entityManager.persist(new Department("Test2"));
 
-        Department department = departmentRepository.findOne(department2.getId());
+        Department department = departmentRepository.findOne(department1.getId());
 
-        assertThat(department).isEqualTo(department2);
+        assertThat(department).isEqualTo(department1);
+        assertThat(department).isNotEqualTo(department2);
     }
 
     @Test
-    public void findByName() {
+    public void findByNameContainingIgnoreCase() {
 
         Department department1 = entityManager.persist(new Department("Test1"));
         Department department2 = entityManager.persist(new Department("Test2"));
@@ -81,6 +82,18 @@ public class DepartmentRepositoryTest {
 
         assertThat(departments).contains(department1);
         assertThat(departments).doesNotContain(department2);
+    }
+
+    @Test
+    public void findByName() {
+
+        Department department1 = entityManager.persist(new Department("Test1"));
+        Department department2 = entityManager.persist(new Department("Test11"));
+
+        Department department = departmentRepository.findByName("Test1");
+
+        assertThat(department).isEqualTo(department1);
+        assertThat(department).isNotEqualTo(department2);
     }
 
 }

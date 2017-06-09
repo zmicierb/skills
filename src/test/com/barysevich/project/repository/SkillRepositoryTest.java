@@ -68,11 +68,12 @@ public class SkillRepositoryTest {
 
         Skill skill = skillRepository.findOne(skill2.getId());
 
+        assertThat(skill).isNotEqualTo(skill1);
         assertThat(skill).isEqualTo(skill2);
     }
 
     @Test
-    public void findByName() {
+    public void findByNameContainingIgnoreCase() {
 
         Skill skill1 = entityManager.persist(new Skill("Test1"));
         Skill skill2 = entityManager.persist(new Skill("Test2"));
@@ -81,6 +82,18 @@ public class SkillRepositoryTest {
 
         assertThat(skills).contains(skill1);
         assertThat(skills).doesNotContain(skill2);
+    }
+
+    @Test
+    public void findByName() {
+
+        Skill skill1 = entityManager.persist(new Skill("Test1"));
+        Skill skill2 = entityManager.persist(new Skill("Test11"));
+
+        Skill skill = skillRepository.findByName("Test1");
+
+        assertThat(skill).isEqualTo(skill1);
+        assertThat(skill).isNotEqualTo(skill2);
     }
 
 }

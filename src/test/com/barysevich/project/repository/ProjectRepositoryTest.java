@@ -78,6 +78,7 @@ public class ProjectRepositoryTest {
 
         Project project = projectRepository.findOne(project2.getId());
 
+        assertThat(project).isNotEqualTo(project1);
         assertThat(project).isEqualTo(project2);
     }
 

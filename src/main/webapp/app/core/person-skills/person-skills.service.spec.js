@@ -28,6 +28,32 @@ describe('PersonSkillSrv', function () {
             "new": false
         }]
     };
+    var personSkillsResponseUpdate = {
+        "success": true,
+        "message": "Completed successfully",
+        "errors": null,
+        "data": null,
+        "first": false,
+        "last": false,
+        "totalPages": 0,
+        "totalElements": 0,
+        "size": 0,
+        "number": 0,
+        "numberOfElements": 0,
+        "sort": null
+    };
+    var personSkillsDataUpdate = {
+        personId: 1,
+        skill: {
+            id: 1,
+            name: "testSkill"
+        },
+        row: {
+            id: 1,
+            name: "testRow"
+        },
+        weight: 1
+    };
 
     // Add a custom equality tester before each test
     beforeEach(function () {
@@ -40,7 +66,6 @@ describe('PersonSkillSrv', function () {
     // Instantiate the service and "train" `$httpBackend` before each test
     beforeEach(inject(function (_$httpBackend_, _PersonSkillSrv_) {
         $httpBackend = _$httpBackend_;
-        $httpBackend.expectGET('/api/person/1/skills').respond(personSkillsData);
 
         PersonSkillSrv = _PersonSkillSrv_;
     }));
@@ -51,13 +76,24 @@ describe('PersonSkillSrv', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should fetch the person skills', function () {
+    it('should fetch person skills', function () {
+        $httpBackend.expectGET('/api/person/1/skills').respond(personSkillsData);
         var personSkills = PersonSkillSrv.query({personId: 1});
 
         expect(personSkills).toEqual({});
 
         $httpBackend.flush();
         expect(personSkills).toEqual(personSkillsData);
+    });
+
+    it('should update person skills', function () {
+        $httpBackend.expectPUT('/api/person/1/skills').respond(personSkillsResponseUpdate);
+        var personSkills = PersonSkillSrv.update({personId: 1}, personSkillsDataUpdate);
+
+        expect(personSkills).toEqual(personSkillsDataUpdate);
+
+        $httpBackend.flush();
+        expect(personSkills).toEqual(personSkillsResponseUpdate);
     });
 
 });

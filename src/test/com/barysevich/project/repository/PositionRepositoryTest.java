@@ -68,11 +68,12 @@ public class PositionRepositoryTest {
 
         Position position = positionRepository.findOne(position2.getId());
 
+        assertThat(position).isNotEqualTo(position1);
         assertThat(position).isEqualTo(position2);
     }
 
     @Test
-    public void findByName() {
+    public void findByNameContainingIgnoreCase() {
 
         Position position1 = entityManager.persist(new Position("Test1"));
         Position position2 = entityManager.persist(new Position("Test2"));
@@ -81,6 +82,18 @@ public class PositionRepositoryTest {
 
         assertThat(positions).contains(position1);
         assertThat(positions).doesNotContain(position2);
+    }
+
+    @Test
+    public void findByName() {
+
+        Position position1 = entityManager.persist(new Position("Test1"));
+        Position position2 = entityManager.persist(new Position("Test11"));
+
+        Position position = positionRepository.findByName("Test1");
+
+        assertThat(position).isEqualTo(position1);
+        assertThat(position).isNotEqualTo(position2);
     }
 
 }

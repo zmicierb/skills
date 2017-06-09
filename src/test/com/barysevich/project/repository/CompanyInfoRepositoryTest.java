@@ -102,6 +102,7 @@ public class CompanyInfoRepositoryTest {
 
         CompanyInfo companyInfo = companyInfoRepository.findOne(companyInfo2.getId());
 
+        assertThat(companyInfo).isNotEqualTo(companyInfo1);
         assertThat(companyInfo).isEqualTo(companyInfo2);
     }
 

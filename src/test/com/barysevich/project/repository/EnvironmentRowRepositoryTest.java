@@ -76,6 +76,7 @@ public class EnvironmentRowRepositoryTest {
 
         EnvironmentRow environmentRow = environmentRowRepository.findOne(environmentRow2.getId());
 
+        assertThat(environmentRow).isNotEqualTo(environmentRow1);
         assertThat(environmentRow).isEqualTo(environmentRow2);
     }
 

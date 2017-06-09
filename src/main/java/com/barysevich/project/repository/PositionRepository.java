@@ -15,4 +15,6 @@ public interface PositionRepository extends PagingAndSortingRepository<Position,
 
     List<Position> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
+    Position findByName(String name);
+
 }
