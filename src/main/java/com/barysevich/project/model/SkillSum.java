@@ -1,5 +1,6 @@
 package com.barysevich.project.model;
 
+import com.barysevich.project.controller.dto.SkillDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -46,6 +47,13 @@ public class SkillSum extends AbstractPersistable<Long> {
     }
 
     public SkillSum(Person person, Skill skill, Row row, Integer weight) {
+        this.person = person;
+        this.skill = skill;
+        this.row = row;
+        this.weight = weight;
+    }
+
+    public SkillSum(Person person, SkillDto skillDto) {
         this.person = person;
         this.skill = skill;
         this.row = row;

@@ -1,5 +1,6 @@
 package com.barysevich.project.service.impl;
 
+import com.barysevich.project.controller.dto.SkillDto;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.model.Skill;
 import com.barysevich.project.model.SkillSum;
@@ -11,6 +12,8 @@ import com.barysevich.project.service.SkillSumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
 
 /**
  * Created by BarysevichD on 2017-03-31.
@@ -41,10 +44,44 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
     }
 
     @Transactional
-    public void update(Long personId, Iterable<SkillSum> skillSums) {
-        skillSumRepository.deleteByPersonId(personId);
+    public void update(Long personId, Iterable<SkillSum> skillSumsNew) {
+
         Person person = personRepository.findOne(personId);
-        skillSums.forEach(skillSum -> {
+
+//        Iterable<SkillSum> skillSumsOld = skillSumRepository.findByPersonId(personId);
+//        Map<Row, TreeSet<SkillDto>> skillSumsOldMap = new HashMap<>();
+//        Map<Row, TreeSet<SkillDto>> skillSumsNewMap = new HashMap<>();
+//
+//        skillSumsOld.forEach(a -> {
+//            if (!skillSumsOldMap.containsKey(a.getRow())) {
+//                skillSumsOldMap.put(a.getRow(), new TreeSet<>(new SkillByWeightComp()));
+//            }
+//            skillSumsOldMap.get(a.getRow())
+//                    .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getWeight()));
+//        });
+//
+//        skillSumsNew.forEach(a -> {
+//            if (!skillSumsNewMap.containsKey(a.getRow())) {
+//                skillSumsNewMap.put(a.getRow(), new TreeSet<>(new SkillByWeightComp()));
+//            }
+//            skillSumsNewMap.get(a.getRow())
+//                    .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getWeight()));
+//        });
+//
+//        ArrayList<SkillSumContainer> skillSumContainers = new ArrayList<>();
+//
+//        skillSumsOldMap.keySet().forEach(row -> {
+//            if (skillSumsNewMap.containsKey(row)){
+//
+//            } else {
+//                skillSumsOldMap.get(row).forEach(skillDto -> {
+//                    skillSumContainers.add(new SkillSumContainer(person, row, skillDto, ContainerAction.DELETE));
+//                });
+//            }
+//        });
+
+        skillSumRepository.deleteByPersonId(personId);
+        skillSumsNew.forEach(skillSum -> {
             skillSum.setPerson(person);
             //additional checks for butch processing
             if (skillSum.getSkill().isNew()) {
@@ -61,4 +98,10 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
         });
     }
 
+    private class SkillByWeightComp implements Comparator<SkillDto> {
+        @Override
+        public int compare(SkillDto s1, SkillDto s2) {
+            return s1.getWeight().compareTo(s2.getWeight());
+        }
+    }
 }
