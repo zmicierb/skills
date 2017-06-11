@@ -1,10 +1,10 @@
 package com.barysevich.project.service.impl;
 
-import com.barysevich.project.controller.dto.SkillDto;
-import com.barysevich.project.model.Person;
+import com.barysevich.project.controller.dto.ContainerAction;
+import com.barysevich.project.controller.dto.SkillContainer;
+import com.barysevich.project.model.Row;
 import com.barysevich.project.model.Skill;
 import com.barysevich.project.model.SkillSum;
-import com.barysevich.project.repository.PersonRepository;
 import com.barysevich.project.repository.RowRepository;
 import com.barysevich.project.repository.SkillRepository;
 import com.barysevich.project.repository.SkillSumRepository;
@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by BarysevichD on 2017-03-31.
@@ -31,77 +33,99 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
     private RowRepository rowRepository;
 
     @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
     public SkillSumServiceImpl(SkillSumRepository repository) {
         super(repository);
         this.skillSumRepository = repository;
     }
 
+    @Override
     public Iterable<SkillSum> findByPersonId(Long id) {
         return skillSumRepository.findByPersonId(id);
     }
 
     @Transactional
+    @Override
     public void update(Long personId, Iterable<SkillSum> skillSumsNew) {
 
-        Person person = personRepository.findOne(personId);
+        Iterable<SkillSum> skillSumsOld = skillSumRepository.findByPersonId(personId);
+        Map<Row, HashMap<Long, SkillSum>> skillSumsOldMap = new HashMap<>();
+        Map<Row, HashMap<Long, SkillSum>> skillSumsNewMap = new HashMap<>();
 
-//        Iterable<SkillSum> skillSumsOld = skillSumRepository.findByPersonId(personId);
-//        Map<Row, TreeSet<SkillDto>> skillSumsOldMap = new HashMap<>();
-//        Map<Row, TreeSet<SkillDto>> skillSumsNewMap = new HashMap<>();
-//
-//        skillSumsOld.forEach(a -> {
-//            if (!skillSumsOldMap.containsKey(a.getRow())) {
-//                skillSumsOldMap.put(a.getRow(), new TreeSet<>(new SkillByWeightComp()));
-//            }
-//            skillSumsOldMap.get(a.getRow())
-//                    .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getWeight()));
-//        });
-//
-//        skillSumsNew.forEach(a -> {
-//            if (!skillSumsNewMap.containsKey(a.getRow())) {
-//                skillSumsNewMap.put(a.getRow(), new TreeSet<>(new SkillByWeightComp()));
-//            }
-//            skillSumsNewMap.get(a.getRow())
-//                    .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getWeight()));
-//        });
-//
-//        ArrayList<SkillSumContainer> skillSumContainers = new ArrayList<>();
-//
-//        skillSumsOldMap.keySet().forEach(row -> {
-//            if (skillSumsNewMap.containsKey(row)){
-//
-//            } else {
-//                skillSumsOldMap.get(row).forEach(skillDto -> {
-//                    skillSumContainers.add(new SkillSumContainer(person, row, skillDto, ContainerAction.DELETE));
-//                });
-//            }
-//        });
-
-        skillSumRepository.deleteByPersonId(personId);
-        skillSumsNew.forEach(skillSum -> {
-            skillSum.setPerson(person);
-            //additional checks for butch processing
-            if (skillSum.getSkill().isNew()) {
-                Skill skill = skillRepository.findByName(skillSum.getSkill().getName());
-                if (skill == null)
-                    skillSum.setSkill(skillRepository.save(new Skill(skillSum.getSkill().getName())));
-                else
-                    skillSum.setSkill(skill);
-            } else {
-                skillSum.setSkill(skillRepository.findOne(skillSum.getSkill().getId()));
+        skillSumsOld.forEach(a -> {
+            if (!skillSumsOldMap.containsKey(a.getRow())) {
+                skillSumsOldMap.put(a.getRow(), new HashMap<>());
             }
-            skillSum.setRow(rowRepository.findOne(skillSum.getRow().getId()));
-            save(skillSum);
+            skillSumsOldMap.get(a.getRow()).put(a.getSkill().getId(), a);
+        });
+
+        skillSumsNew.forEach(a -> {
+            if (!skillSumsNewMap.containsKey(a.getRow())) {
+                skillSumsNewMap.put(a.getRow(), new HashMap<>());
+            }
+            skillSumsNewMap.get(a.getRow()).put(a.getSkill().getId(), a);
+        });
+
+        ArrayList<SkillContainer> skillContainers = new ArrayList<>();
+
+        //compare old and new maps and fill in skillContainers
+        skillSumsOldMap.keySet().forEach(row -> {
+            if (skillSumsNewMap.containsKey(row)) {
+                skillSumsOldMap.get(row).forEach((kOld, vOld) -> {
+                    if (skillSumsNewMap.get(row).containsKey(kOld)) {
+                        if (!skillSumsNewMap.get(row).get(kOld).getWeight().equals(vOld.getWeight()))
+                            skillContainers.add(new SkillContainer(skillSumsNewMap.get(row).get(kOld), ContainerAction.UPDATE));
+                    } else {
+                        skillContainers.add(new SkillContainer(vOld, ContainerAction.DELETE));
+                    }
+                });
+            } else {
+                skillSumsOldMap.get(row).values().forEach(vOld ->
+                        skillContainers.add(new SkillContainer(vOld, ContainerAction.DELETE))
+                );
+            }
+        });
+
+        skillSumsNewMap.keySet().forEach(row -> {
+            if (skillSumsOldMap.containsKey(row)) {
+                skillSumsNewMap.get(row).forEach((kNew, vNew) -> {
+                    if (!skillSumsOldMap.get(row).containsKey(kNew)) {
+                        skillContainers.add(new SkillContainer(vNew, ContainerAction.INSERT));
+                    }
+                });
+            } else {
+                skillSumsNewMap.get(row).values().forEach(vNew ->
+                        skillContainers.add(new SkillContainer(vNew, ContainerAction.INSERT)));
+            }
+        });
+
+        //process skillContainers
+        skillContainers.forEach(skillContainer -> {
+            switch (skillContainer.getAction()) {
+                case DELETE:
+                    skillSumRepository.delete(skillContainer.getSkillSum().getId());
+                    break;
+                case INSERT:
+                    insertSkillSum(skillContainer.getSkillSum());
+                    break;
+                case UPDATE:
+                    skillSumRepository.save(skillContainer.getSkillSum());
+                    break;
+                default:
+            }
         });
     }
 
-    private class SkillByWeightComp implements Comparator<SkillDto> {
-        @Override
-        public int compare(SkillDto s1, SkillDto s2) {
-            return s1.getWeight().compareTo(s2.getWeight());
+    private void insertSkillSum(SkillSum skillSum) {
+        //additional checks due to editable typeahead
+        if (skillSum.getSkill().isNew()) {
+            Skill skill = skillRepository.findByName(skillSum.getSkill().getName());
+            if (skill == null)
+                skillSum.setSkill(skillRepository.save(new Skill(skillSum.getSkill().getName())));
+            else
+                skillSum.setSkill(skill);
+        } else {
+            skillSum.setSkill(skillRepository.findOne(skillSum.getSkill().getId()));
         }
+        skillSumRepository.save(skillSum);
     }
 }

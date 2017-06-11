@@ -1,11 +1,9 @@
 package com.barysevich.project.model;
 
-import com.barysevich.project.controller.dto.SkillDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
-import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.REFRESH;
 
 /**
  * Created by BarysevichD on 2017-03-14.
@@ -21,12 +19,7 @@ public class SkillSum extends AbstractPersistable<Long> {
             generator = "skill_sum_id_seq")
     private Long id;
 
-    @Column(name = "person_id", insertable = false, updatable = false)
     private Long personId;
-
-    @JsonIgnore
-    @OneToOne(targetEntity = Person.class, fetch = FetchType.LAZY, cascade = {MERGE, REFRESH, DETACH})
-    private Person person;
 
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
@@ -46,15 +39,8 @@ public class SkillSum extends AbstractPersistable<Long> {
         //default constructor
     }
 
-    public SkillSum(Person person, Skill skill, Row row, Integer weight) {
-        this.person = person;
-        this.skill = skill;
-        this.row = row;
-        this.weight = weight;
-    }
-
-    public SkillSum(Person person, SkillDto skillDto) {
-        this.person = person;
+    public SkillSum(Long personId, Skill skill, Row row, Integer weight) {
+        this.personId = personId;
         this.skill = skill;
         this.row = row;
         this.weight = weight;
@@ -76,14 +62,6 @@ public class SkillSum extends AbstractPersistable<Long> {
 
     public void setPersonId(Long personId) {
         this.personId = personId;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public Long getSkillId() {

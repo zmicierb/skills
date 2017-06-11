@@ -19,7 +19,7 @@ public class PersonSkillsDto {
     private List<SkillDto> skills = new ArrayList<>();
 
     public PersonSkillsDto() {
-
+        //default constructor
     }
 
     public PersonSkillsDto(SkillSum skillSum) {

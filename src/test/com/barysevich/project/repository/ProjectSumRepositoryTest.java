@@ -40,7 +40,7 @@ public class ProjectSumRepositoryTest {
                 LocalDate.of(1970, Month.JANUARY, 1),
                 position));
 
-        ProjectSum projectSum = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
+        ProjectSum projectSum = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
 
         assertThat(projectSum).hasFieldOrPropertyWithValue("companyInfo", companyInfo);
     }
@@ -57,8 +57,8 @@ public class ProjectSumRepositoryTest {
                 LocalDate.of(1970, Month.JANUARY, 1),
                 position));
 
-        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
-        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
+        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
+        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
 
         projectSumRepository.delete(projectSum1.getId());
         projectSumRepository.delete(projectSum2.getId());
@@ -80,9 +80,9 @@ public class ProjectSumRepositoryTest {
                 LocalDate.of(1970, Month.JANUARY, 1),
                 position));
 
-        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
-        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
-        ProjectSum projectSum3 = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
+        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
+        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
+        ProjectSum projectSum3 = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
 
         Iterable<ProjectSum> projectSums = projectSumRepository.findAll();
 
@@ -101,8 +101,8 @@ public class ProjectSumRepositoryTest {
                 LocalDate.of(1970, Month.JANUARY, 1),
                 position));
 
-        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
-        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person, project, companyInfo));
+        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
+        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person.getId(), project, companyInfo));
 
         ProjectSum projectSum = projectSumRepository.findOne(projectSum2.getId());
 
@@ -123,8 +123,8 @@ public class ProjectSumRepositoryTest {
                 LocalDate.of(1970, Month.JANUARY, 1),
                 position));
 
-        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person1, project, companyInfo));
-        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person2, project, companyInfo));
+        ProjectSum projectSum1 = projectSumRepository.save(new ProjectSum(person1.getId(), project, companyInfo));
+        ProjectSum projectSum2 = projectSumRepository.save(new ProjectSum(person2.getId(), project, companyInfo));
 
         Iterable<ProjectSum> projectSums = projectSumRepository.findByPersonId(person2.getId());
 

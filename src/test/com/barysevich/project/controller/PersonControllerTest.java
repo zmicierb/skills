@@ -97,8 +97,8 @@ public class PersonControllerTest {
                                     position,
                                     department,
                                     LocalDate.of(1970, Month.JANUARY, 1)));
-                            skillSumService.save(new SkillSum(person, skill, row, 1));
-                            projectSumService.save(new ProjectSum(person, project, companyInfo));
+                            skillSumService.save(new SkillSum(person.getId(), skill, row, 1));
+                            projectSumService.save(new ProjectSum(person.getId(), project, companyInfo));
                         }
                 );
     }
@@ -332,7 +332,7 @@ public class PersonControllerTest {
         Row row = rows.getContent().get(0);
 
         List<SkillSum> skillSums = (List) skillSumService.findByPersonId(id);
-        skillSums.add(new SkillSum(person, new Skill(test2), row, 999));
+        skillSums.add(new SkillSum(person.getId(), new Skill(test2), row, 999));
 
         HttpEntity<List<SkillSum>> requestEntity = new HttpEntity<>(skillSums);
 

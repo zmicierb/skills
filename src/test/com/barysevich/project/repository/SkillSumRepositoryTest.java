@@ -36,9 +36,9 @@ public class SkillSumRepositoryTest {
         Skill skill = entityManager.persist(new Skill("test"));
         Row row = entityManager.persist(new Row("test"));
 
-        SkillSum skillSum = skillSumRepository.save(new SkillSum(person, skill, row, 1));
+        SkillSum skillSum = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
 
-        assertThat(skillSum).hasFieldOrPropertyWithValue("person", person);
+        assertThat(skillSum).hasFieldOrPropertyWithValue("personId", person.getId());
     }
 
     @Test
@@ -50,8 +50,8 @@ public class SkillSumRepositoryTest {
         Skill skill = entityManager.persist(new Skill("test"));
         Row row = entityManager.persist(new Row("test"));
 
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person, skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person, skill, row, 2));
+        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
+        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 2));
 
         skillSumRepository.delete(skillSum1.getId());
         skillSumRepository.delete(skillSum2.getId());
@@ -70,9 +70,9 @@ public class SkillSumRepositoryTest {
         Skill skill = entityManager.persist(new Skill("test"));
         Row row = entityManager.persist(new Row("test"));
 
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person, skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person, skill, row, 2));
-        SkillSum skillSum3 = skillSumRepository.save(new SkillSum(person, skill, row, 3));
+        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
+        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 2));
+        SkillSum skillSum3 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 3));
 
         Iterable<SkillSum> skillSums = skillSumRepository.findAll();
 
@@ -88,8 +88,8 @@ public class SkillSumRepositoryTest {
         Skill skill = entityManager.persist(new Skill("test"));
         Row row = entityManager.persist(new Row("test"));
 
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person, skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person, skill, row, 2));
+        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
+        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 2));
 
         SkillSum skillSum = skillSumRepository.findOne(skillSum2.getId());
 
@@ -107,8 +107,8 @@ public class SkillSumRepositoryTest {
         Skill skill = entityManager.persist(new Skill("test"));
         Row row = entityManager.persist(new Row("test"));
 
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person1, skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person2, skill, row, 2));
+        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person1.getId(), skill, row, 1));
+        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person2.getId(), skill, row, 2));
 
         Iterable<SkillSum> skillSums = skillSumRepository.findByPersonId(person2.getId());
 
@@ -126,8 +126,8 @@ public class SkillSumRepositoryTest {
         Skill skill = entityManager.persist(new Skill("test"));
         Row row = entityManager.persist(new Row("test"));
 
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person1, skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person2, skill, row, 2));
+        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person1.getId(), skill, row, 1));
+        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person2.getId(), skill, row, 2));
 
         skillSumRepository.deleteByPersonId(person2.getId());
         Iterable<SkillSum> skillSums1 = skillSumRepository.findByPersonId(person1.getId());
