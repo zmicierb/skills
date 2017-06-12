@@ -5,7 +5,6 @@ import com.barysevich.project.controller.dto.SkillContainer;
 import com.barysevich.project.model.Row;
 import com.barysevich.project.model.Skill;
 import com.barysevich.project.model.SkillSum;
-import com.barysevich.project.repository.RowRepository;
 import com.barysevich.project.repository.SkillRepository;
 import com.barysevich.project.repository.SkillSumRepository;
 import com.barysevich.project.service.SkillSumService;
@@ -30,9 +29,6 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
     private SkillRepository skillRepository;
 
     @Autowired
-    private RowRepository rowRepository;
-
-    @Autowired
     public SkillSumServiceImpl(SkillSumRepository repository) {
         super(repository);
         this.skillSumRepository = repository;
@@ -48,54 +44,67 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
     public void update(Long personId, Iterable<SkillSum> skillSumsNew) {
 
         Iterable<SkillSum> skillSumsOld = skillSumRepository.findByPersonId(personId);
-        Map<Row, HashMap<Long, SkillSum>> skillSumsOldMap = new HashMap<>();
-        Map<Row, HashMap<Long, SkillSum>> skillSumsNewMap = new HashMap<>();
+        Map<Row, HashMap<String, SkillSum>> skillSumsOldMap = new HashMap<>();
+        Map<Row, HashMap<String, SkillSum>> skillSumsNewMap = new HashMap<>();
 
         skillSumsOld.forEach(a -> {
-            if (!skillSumsOldMap.containsKey(a.getRow())) {
-                skillSumsOldMap.put(a.getRow(), new HashMap<>());
-            }
-            skillSumsOldMap.get(a.getRow()).put(a.getSkill().getId(), a);
+            skillSumsOldMap.computeIfAbsent(a.getRow(), k -> skillSumsOldMap.put(k, new HashMap<>()));
+            skillSumsOldMap.get(a.getRow()).put(a.getSkill().getName(), a);
         });
 
         skillSumsNew.forEach(a -> {
-            if (!skillSumsNewMap.containsKey(a.getRow())) {
-                skillSumsNewMap.put(a.getRow(), new HashMap<>());
-            }
-            skillSumsNewMap.get(a.getRow()).put(a.getSkill().getId(), a);
+            skillSumsNewMap.computeIfAbsent(a.getRow(), k -> skillSumsNewMap.put(k, new HashMap<>()));
+            skillSumsNewMap.get(a.getRow()).put(a.getSkill().getName(), a);
         });
 
         ArrayList<SkillContainer> skillContainers = new ArrayList<>();
 
         //compare old and new maps and fill in skillContainers
         skillSumsOldMap.keySet().forEach(row -> {
-            if (skillSumsNewMap.containsKey(row)) {
-                skillSumsOldMap.get(row).forEach((kOld, vOld) -> {
-                    if (skillSumsNewMap.get(row).containsKey(kOld)) {
-                        if (!skillSumsNewMap.get(row).get(kOld).getWeight().equals(vOld.getWeight()))
-                            skillContainers.add(new SkillContainer(skillSumsNewMap.get(row).get(kOld), ContainerAction.UPDATE));
-                    } else {
-                        skillContainers.add(new SkillContainer(vOld, ContainerAction.DELETE));
-                    }
-                });
-            } else {
-                skillSumsOldMap.get(row).values().forEach(vOld ->
-                        skillContainers.add(new SkillContainer(vOld, ContainerAction.DELETE))
-                );
-            }
+            skillSumsNewMap
+                    .computeIfPresent(row, (kRowFromNew, vRowFromNew) -> {
+                        skillSumsOldMap.get(kRowFromNew).forEach((kSkillFromOld, vSkillFromOld) -> {
+                            vRowFromNew.computeIfPresent(kSkillFromOld, (k, v) -> {
+                                if (!v.getWeight().equals(vSkillFromOld.getWeight())) {
+                                    vSkillFromOld.setWeight(v.getWeight());
+                                    skillContainers.add(new SkillContainer(vSkillFromOld, ContainerAction.UPDATE));
+                                }
+                                return vRowFromNew.get(kSkillFromOld);
+                            });
+                            vRowFromNew.computeIfAbsent(kSkillFromOld, k -> {
+                                skillContainers.add(new SkillContainer(vSkillFromOld, ContainerAction.DELETE));
+                                return null;
+                            });
+                        });
+                        return skillSumsNewMap.get(row);
+                    });
+            skillSumsNewMap
+                    .computeIfAbsent(row, k -> {
+                        skillSumsOldMap.get(k).values().forEach(vSkillFromOld ->
+                                skillContainers.add(new SkillContainer(vSkillFromOld, ContainerAction.DELETE))
+                        );
+                        return null;
+                    });
         });
 
         skillSumsNewMap.keySet().forEach(row -> {
-            if (skillSumsOldMap.containsKey(row)) {
-                skillSumsNewMap.get(row).forEach((kNew, vNew) -> {
-                    if (!skillSumsOldMap.get(row).containsKey(kNew)) {
-                        skillContainers.add(new SkillContainer(vNew, ContainerAction.INSERT));
-                    }
-                });
-            } else {
-                skillSumsNewMap.get(row).values().forEach(vNew ->
-                        skillContainers.add(new SkillContainer(vNew, ContainerAction.INSERT)));
-            }
+            skillSumsOldMap
+                    .computeIfPresent(row, (kRowFromOld, vRowFromOld) -> {
+                        skillSumsNewMap.get(kRowFromOld).forEach((kSkillFromNew, vSkillFromNew) ->
+                                vRowFromOld.computeIfAbsent(kSkillFromNew, k -> {
+                                    skillContainers.add(new SkillContainer(vSkillFromNew, ContainerAction.INSERT));
+                                    return null;
+                                })
+                        );
+                        return skillSumsOldMap.get(row);
+                    });
+            skillSumsOldMap
+                    .computeIfAbsent(row, k -> {
+                        skillSumsNewMap.get(k).values().forEach(vSkillFromNew ->
+                                skillContainers.add(new SkillContainer(vSkillFromNew, ContainerAction.INSERT))
+                        );
+                        return null;
+                    });
         });
 
         //process skillContainers
