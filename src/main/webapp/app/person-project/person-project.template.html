@@ -1,135 +1,265 @@
-<div class="container-fluid">
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <div class="row">
-        <div ng-if="!$ctrl.editFlag" class="col-md-12">
-            <h4 class="person-detail-separator">PROFESSIONAL EXPERIENCE<a href="" ng-click="$ctrl.toggleEditFlag()">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a></h4>
+        <div class="col-md-12">
+            <h4 class="person-detail-separator">PROFESSIONAL EXPERIENCE
+                <a href="" ng-click="$ctrl.addCompany()" ng-if="!$ctrl.addCompanyFlag">
+                                    <span class="glyphicon glyphicon-plus">
+                                    </span>
+                </a>
+            </h4>
             <div ng-repeat="(key, value) in $ctrl.personProjects | orderBy: -'companyInfo.startDate'
-            | groupBy: '[companyInfo.name, project.position.name, companyInfo.startDate, companyInfo.endDate]'">
+            | groupBy: '[companyInfo.nameTemp, companyInfo.startDate, companyInfo.endDate]'">
                 <div class="row">
-                    <div class="col-md-3">
-                        <span><b>{{key.split(",")[1]}}</b></span><br/>
-                        <span>
-                            <b>{{key.split(",")[2] | date:'MMM yyyy'}} -
-                                {{key.split(",")[3] === "" ? "now" : key.split(",")[3] | date:'MMM yyyy'}}</b>
+                    <!-- view company-->
+                    <div class="col-md-4 person-company-project" ng-if="!value[0].companyInfo.editCompanyFlag">
+                        <!--<span><b>{{key.split(",")[0]}}</b></span>-->
+                        <!--<br/>-->
+                        <!--<span>-->
+                        <!--<b>{{key.split(",")[1] | date:'MMM yyyy'}} - -->
+                        <!--{{key.split(",")[2] === "" ? "now" : key.split(",")[2] | date:'MMM yyyy'}}</b>-->
+                        <!--</span>-->
+                        <span><b>{{value[0].companyInfo.name}}</b>
+                            <a href="" ng-click="$ctrl.toggleEditCompany(value[0].companyInfo.id)">
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                </a></span>
+                        <br/>
+                        <span>{{value[0].companyInfo.startDate | date:'MMM yyyy'}} -
+                                {{value[0].companyInfo.endDate == null ? "now" : value[0].companyInfo.endDate | date:'MMM yyyy'}}
                         </span>
                     </div>
-                    <div class="col-md-9">
-                        <span><b>{{key.split(",")[0]}}</b></span>
-                    </div>
-                </div>
-                <div class="person-detail-project" ng-repeat="project in value">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span><b>{{project.project.position.name}}</b></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span>{{project.project.description}}</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <span>Responsibilities:</span>
-                        </div>
-                        <div class="col-md-10">
-                            <span>{{project.project.responsibility}}</span>
-                        </div>
-                    </div>
-                    <div class="row draggableTag">
-                        <div class="col-md-2">
-                            <span>Environment:</span>
-                        </div>
-                        <div class="col-md-10">
-                            <ul dnd-list="project.project.environmentRow"
-                                dnd-allowed-types="[project.projectId]"
-                                dnd-disable-if="true">
-                                <li ng-repeat="skill in project.project.environmentRow"
-                                    dnd-type="project.projectId.toString(10)"
-                                    dnd-draggable="skill"
-                                    dnd-moved="project.project.environmentRow.splice($index, 1)"
-                                    dnd-effect-allowed="move">
-                                    {{skill.skill.name}}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <span>Project results:</span>
-                        </div>
-                        <div class="col-md-10">
-                            <span>{{project.project.result}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <!-- view company-->
 
-        <!--for edit-->
-
-        <div ng-if="$ctrl.editFlag" class="col-md-12">
-            <h4 class="person-detail-separator">PROFESSIONAL EXPERIENCE</h4>
-            <div ng-repeat="(key, value) in $ctrl.personProjects | orderBy: -'companyInfo.startDate'
-            | groupBy: '[companyInfo.name, project.position.name, companyInfo.startDate, companyInfo.endDate]'">
-                <div class="row">
-                    <div class="col-md-3">
-                        <span><b>{{key.split(",")[1]}}</b></span><br/>
-                        <span>
-                            <b>{{key.split(",")[2] | date:'MMM yyyy'}} -
-                                {{key.split(",")[3] === "" ? "now" : key.split(",")[3] | date:'MMM yyyy'}}</b>
-                        </span>
-                    </div>
-                    <div class="col-md-9">
-                        <span><b>{{key.split(",")[0]}}</b></span>
-                    </div>
+                    <!-- edit company-->
+                    <form name="personCompany" class="col-md-4 form-horizontal"
+                          ng-if="value[0].companyInfo.editCompanyFlag"
+                          ng-submit="$ctrl.submitCompany(value[0].companyInfo.id, personCompany)">
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" ng-model="value[0].companyInfo.name"
+                                       required placeholder="Company name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <p class="input-group">
+                                    <input type="text" ng-model="value[0].companyInfo.startDt"
+                                           class="form-control" placeholder="First day"
+                                           uib-datepicker-popup is-open="value[0].companyInfo.startOpened"
+                                           datepicker-popup-template-url="templates/datepopup-template.html"
+                                           datepicker-options="$ctrl.dateOptions" close-text="Close"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.open(value[0].companyInfo.id, 'start')"><i
+                                            class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                                <p class="input-group">
+                                    <input type="text" ng-model="value[0].companyInfo.endDt"
+                                           class="form-control" placeholder="Last day"
+                                           uib-datepicker-popup is-open="value[0].companyInfo.endOpened"
+                                           datepicker-popup-template-url="templates/datepopup-template.html"
+                                           datepicker-options="$ctrl.dateOptions" close-text="Close"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.open(value[0].companyInfo.id, 'end')"><i
+                                            class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <button type="submit" ng-disabled="personCompany.$invalid || personCompany.$pristine"
+                                        class="btn btn-primary" ng-if="!$ctrl.addCompanyFlag">Save
+                                </button>
+                                <button type="button" class="btn" ng-disabled="personCompany.$pristine"
+                                        ng-if="!$ctrl.addCompanyFlag"
+                                        ng-click="$ctrl.resetCompany(value[0].companyInfo.id, personCompany)">Reset
+                                </button>
+                                <button type="button" class="btn" ng-disabled="!personCompany.$pristine"
+                                        ng-if="!$ctrl.addCompanyFlag"
+                                        ng-click="$ctrl.toggleEditCompany(value[0].companyInfo.id)">Back
+                                </button>
+                                <button type="button" class="btn btn-success" ng-if="!$ctrl.addCompanyFlag"
+                                        ng-click="$ctrl.addProject(value[0].companyInfo.id)">Add project
+                                </button>
+                                <button type="button" class="btn btn-danger" ng-if="!$ctrl.addCompanyFlag"
+                                        ng-click="$ctrl.deleteCompany(value[0].companyInfo.id)">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+                <!-- edit company-->
+
+                <!-- view project-->
                 <div class="person-detail-project" ng-repeat="project in value">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span><b>{{project.project.position.name}}</b></span>
+                    <div class="col-md-12" ng-if="!project.editProjectFlag">
+                        <div class="row">
+                            <div class="col-md-12">
+                            <span><b>{{project.position.name}}</b>
+                                <a href="" ng-click="$ctrl.toggleEditProject(project.id)">
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                </a>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span>{{project.description}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <span>Responsibilities:</span>
+                            </div>
+                            <div class="col-md-10">
+                                <span>{{project.responsibility}}</span>
+                            </div>
+                        </div>
+                        <div class="row draggableTag">
+                            <div class="col-md-2">
+                                <span>Environment:</span>
+                            </div>
+                            <div class="col-md-10">
+                                <ul dnd-list="project.environmentSkills"
+                                    dnd-allowed-types="[project.id]"
+                                    dnd-disable-if="true">
+                                    <li ng-repeat="skill in project.environmentSkills"
+                                        dnd-type="project.id.toString(10)"
+                                        dnd-draggable="skill"
+                                        dnd-moved="project.environmentSkills.splice($index, 1)"
+                                        dnd-effect-allowed="move">
+                                        {{skill.skill.name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <span>Project results:</span>
+                            </div>
+                            <div class="col-md-10">
+                                <span>{{project.result}}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span>{{project.project.description}}</span>
+                    <!-- view project-->
+
+                    <!-- edit project-->
+                    <form name="personProject" class="form-horizontal col-md-12"
+                          ng-submit="$ctrl.submitProject(project.id, personProject)"
+                          ng-if="project.editProjectFlag">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <input type="text" ng-model="project.position"
+                                       placeholder="position"
+                                       uib-typeahead="position as position.name for position in $ctrl.getPosition($viewValue)"
+                                       typeahead-loading="loadingPositions"
+                                       class="form-control"
+                                       typeahead-min-length="0" required
+                                >
+                            </div>
+                            <div class="col-md-2" ng-show="loadingPositions"><i class="glyphicon glyphicon-refresh"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <span>Responsibilities:</span>
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <textarea placeholder="Description" ng-model="project.description"
+                                          class="form-control">
+                                </textarea>
+                            </div>
                         </div>
-                        <div class="col-md-10">
-                            <span>{{project.project.responsibility}}</span>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <span>Responsibilities:</span>
+                            </div>
+                            <div class="col-md-4">
+                                <textarea ng-model="project.responsibility" class="form-control">
+                                </textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row draggableTag">
-                        <div class="col-md-2">
-                            <span>Environment:</span>
+                        <div class="row draggableTag">
+                            <div class="col-md-2">
+                                <span>Environment:</span>
+                            </div>
+                            <div class="col-md-10 tag-list">
+                                <ul dnd-list="project.environmentSkills"
+                                    dnd-allowed-types="[project.id]"
+                                    dnd-disable-if="false">
+                                    <li ng-repeat="skill in project.environmentSkills"
+                                        dnd-type="project.id.toString(10)"
+                                        dnd-draggable="skill"
+                                        dnd-moved="project.environmentSkills.splice($index, 1);personProject.$setDirty()"
+                                        dnd-effect-allowed="move">{{skill.skill.name}}
+                                        <a href=""
+                                           ng-click="$ctrl.removeSkill(skill.skill.name, project.id, personProject)">
+                                            <span class="glyphicon glyphicon-remove tag-list-remove"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="form-group" ng-if="project.addSkillFlag">
+                                    <div class="col-md-6">
+                                        <input type="text" ng-model="project.newSkill" placeholder="skill"
+                                               uib-typeahead="skill as skill.name for skill in $ctrl.getSkill($viewValue, project.id)"
+                                               typeahead-loading="loadingSkill" class="form-control"
+                                               typeahead-min-length="0"
+                                        >
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-success" ng-disabled="project.newSkill < 1"
+                                                ng-click="$ctrl.addNewSkill(project.newSkill, project.id, personProject)">
+                                            OK
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn"
+                                                ng-click="$ctrl.toggleNewSkill(project.id)">Cancel
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2" ng-show="loadingSkill"><i
+                                            class="glyphicon glyphicon-refresh"></i>
+                                    </div>
+                                </div>
+                                <div ng-if="!project.addSkillFlag">
+                                    <a href="" ng-click="$ctrl.toggleNewSkill(project.id)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-10">
-                            <ul dnd-list="project.project.environmentRow"
-                                dnd-allowed-types="[project.projectId]"
-                                dnd-disable-if="true">
-                                <li ng-repeat="skill in project.project.environmentRow"
-                                    dnd-type="project.projectId.toString(10)"
-                                    dnd-draggable="skill"
-                                    dnd-moved="project.project.environmentRow.splice($index, 1)"
-                                    dnd-effect-allowed="move">
-                                    {{skill.skill.name}}
-                                </li>
-                            </ul>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <span>Project results:</span>
+                            </div>
+                            <div class="col-md-4">
+                                <textarea ng-model="project.result" class="form-control">
+                                </textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <span>Project results:</span>
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <button id="btnSaveNewCompanyId" type="submit"
+                                        ng-disabled="personProject.$invalid || personProject.$pristine"
+                                        class="btn btn-primary">Save
+                                </button>
+                                <button type="button" class="btn"
+                                        ng-disabled="personProject.$pristine || project.id.startsWith('temp')"
+                                        ng-click="$ctrl.resetProject(project.id, personProject)">Reset
+                                </button>
+                                <button type="button" class="btn"
+                                        ng-disabled="!personProject.$pristine || project.id.startsWith('temp')"
+                                        ng-click="$ctrl.toggleEditProject(project.id)">Back
+                                </button>
+                                <button type="button" class="btn btn-danger"
+                                        ng-click="$ctrl.deleteProject(project.id)">Delete
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-md-10">
-                            <span>{{project.project.result}}</span>
-                        </div>
-                    </div>
+                    </form>
+                    <!-- edit project-->
                 </div>
             </div>
         </div>

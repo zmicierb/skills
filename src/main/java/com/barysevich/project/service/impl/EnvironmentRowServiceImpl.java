@@ -1,7 +1,7 @@
 package com.barysevich.project.service.impl;
 
-import com.barysevich.project.model.EnvironmentRow;
-import com.barysevich.project.repository.EnvironmentRowRepository;
+import com.barysevich.project.model.EnvironmentSkill;
+import com.barysevich.project.repository.EnvironmentSkillRepository;
 import com.barysevich.project.service.EnvironmentRowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
  * Created by BarysevichD on 2017-03-31.
  */
 @Service
-public class EnvironmentRowServiceImpl extends GenericServiceImpl<EnvironmentRow, Long> implements EnvironmentRowService {
+public class EnvironmentRowServiceImpl extends GenericServiceImpl<EnvironmentSkill, Long> implements EnvironmentRowService {
 
     @Autowired
-    private EnvironmentRowRepository environmentRowRepository;
+    private EnvironmentSkillRepository environmentSkillRepository;
 
     @Autowired
-    public EnvironmentRowServiceImpl(EnvironmentRowRepository repository) {
+    public EnvironmentRowServiceImpl(EnvironmentSkillRepository repository) {
         super(repository);
-        this.environmentRowRepository = repository;
+        this.environmentSkillRepository = repository;
     }
 
 }

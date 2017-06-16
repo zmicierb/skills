@@ -1,6 +1,7 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.Row;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,18 @@ public class RowRepositoryTest {
     @Autowired
     private RowRepository rowRepository;
 
+    private Row row1;
+    private Row row2;
+    private Row row3;
+
+    @Before
+    public void populateDB() {
+
+        row1 = entityManager.persist(new Row("Test1"));
+        row2 = entityManager.persist(new Row("Test2"));
+        row3 = entityManager.persist(new Row("Test3"));
+    }
+
     @Test
     public void save() {
         Row row = rowRepository.save(new Row("Test"));
@@ -35,9 +48,6 @@ public class RowRepositoryTest {
 
     @Test
     public void delete() {
-
-        Row row1 = entityManager.persist(new Row("Test1"));
-        Row row2 = entityManager.persist(new Row("Test2"));
 
         rowRepository.delete(row1.getId());
         rowRepository.delete(row2.getId());
@@ -50,11 +60,6 @@ public class RowRepositoryTest {
     @Test
     public void findAll() {
 
-        Row row1 = entityManager.persist(new Row("Test1"));
-        Row row2 = entityManager.persist(new Row("Test2"));
-        Row row3 = entityManager.persist(new Row("Test3"));
-
-
         Iterable<Row> rows = rowRepository.findAll();
 
         assertThat(rows).contains(row1, row2, row3);
@@ -63,9 +68,6 @@ public class RowRepositoryTest {
     @Test
     public void findOne() {
 
-        Row row1 = entityManager.persist(new Row("Test1"));
-        Row row2 = entityManager.persist(new Row("Test2"));
-
         Row row = rowRepository.findOne(row2.getId());
 
         assertThat(row).isNotEqualTo(row1);
@@ -73,10 +75,7 @@ public class RowRepositoryTest {
     }
 
     @Test
-    public void findByName() {
-
-        Row row1 = entityManager.persist(new Row("Test1"));
-        Row row2 = entityManager.persist(new Row("Test2"));
+    public void findByNameContainingIgnoreCase() {
 
         Iterable<Row> rows = rowRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 20));
 

@@ -13,4 +13,12 @@ public interface ProjectService extends GenericService<Project, Long> {
 
     Page<Project> findByResponsibilityContainingIgnoreCase(String responsibility, Pageable pageable);
 
+    Project update(Long id, Project project);
+
+    Iterable<Project> findByPersonId(Long personId);
+
+    Iterable<Project> findByDescriptionContainingIgnoreCaseForTest(String description);
+
+    Iterable<Project> findByCompanyId(Long id);
+
 }

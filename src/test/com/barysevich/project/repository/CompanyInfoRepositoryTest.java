@@ -1,7 +1,7 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.CompanyInfo;
-import com.barysevich.project.model.Position;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +30,28 @@ public class CompanyInfoRepositoryTest {
     @Autowired
     private CompanyInfoRepository companyInfoRepository;
 
+    private CompanyInfo companyInfo1;
+    private CompanyInfo companyInfo2;
+    private CompanyInfo companyInfo3;
+
+    @Before
+    public void populateDB() {
+        companyInfo1 = entityManager.persist(new CompanyInfo("Test1",
+                LocalDate.of(1970, Month.JANUARY, 1),
+                LocalDate.of(1970, Month.JANUARY, 1)));
+        companyInfo2 = entityManager.persist(new CompanyInfo("Test2",
+                LocalDate.of(1970, Month.JANUARY, 1),
+                LocalDate.of(1970, Month.JANUARY, 1)));
+        companyInfo3 = entityManager.persist(new CompanyInfo("Test3",
+                LocalDate.of(1970, Month.JANUARY, 1),
+                LocalDate.of(1970, Month.JANUARY, 1)));
+    }
+
     @Test
     public void save() {
         CompanyInfo customer = companyInfoRepository.save(new CompanyInfo("Test",
                 LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                new Position("test")));
+                LocalDate.of(1970, Month.JANUARY, 1)));
 
         assertThat(customer).hasFieldOrPropertyWithValue("name", "Test");
     }
@@ -43,19 +59,8 @@ public class CompanyInfoRepositoryTest {
     @Test
     public void delete() {
 
-        Position position = entityManager.persist(new Position("test"));
-
-        CompanyInfo companyInfo1 = entityManager.persist(new CompanyInfo("Test1",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-        CompanyInfo companyInfo2 = entityManager.persist(new CompanyInfo("Test2",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-
-        companyInfoRepository.remove(companyInfo1.getId());
-        companyInfoRepository.remove(companyInfo2.getId());
+        companyInfoRepository.delete(companyInfo1.getId());
+        companyInfoRepository.delete(companyInfo2.getId());
 
         assertThat(companyInfoRepository.findByNameContainingIgnoreCase("test", new PageRequest(0, 20)))
                 .doesNotContain(companyInfo1)
@@ -65,22 +70,6 @@ public class CompanyInfoRepositoryTest {
     @Test
     public void findAll() {
 
-        Position position = entityManager.persist(new Position("test"));
-
-        CompanyInfo companyInfo1 = entityManager.persist(new CompanyInfo("Test1",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-        CompanyInfo companyInfo2 = entityManager.persist(new CompanyInfo("Test2",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-        CompanyInfo companyInfo3 = entityManager.persist(new CompanyInfo("Test3",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-
-
         Iterable<CompanyInfo> companyInfos = companyInfoRepository.findAll();
 
         assertThat(companyInfos).contains(companyInfo1, companyInfo2, companyInfo3);
@@ -89,17 +78,6 @@ public class CompanyInfoRepositoryTest {
     @Test
     public void findOne() {
 
-        Position position = entityManager.persist(new Position("test"));
-
-        CompanyInfo companyInfo1 = entityManager.persist(new CompanyInfo("Test1",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-        CompanyInfo companyInfo2 = entityManager.persist(new CompanyInfo("Test2",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-
         CompanyInfo companyInfo = companyInfoRepository.findOne(companyInfo2.getId());
 
         assertThat(companyInfo).isNotEqualTo(companyInfo1);
@@ -107,18 +85,7 @@ public class CompanyInfoRepositoryTest {
     }
 
     @Test
-    public void findByName() {
-
-        Position position = entityManager.persist(new Position("test"));
-
-        CompanyInfo companyInfo1 = entityManager.persist(new CompanyInfo("Test1",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
-        CompanyInfo companyInfo2 = entityManager.persist(new CompanyInfo("Test2",
-                LocalDate.of(1970, Month.JANUARY, 1),
-                LocalDate.of(1970, Month.JANUARY, 1),
-                position));
+    public void findByNameContainingIgnoreCase() {
 
         Iterable<CompanyInfo> companyInfos = companyInfoRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 20));
 

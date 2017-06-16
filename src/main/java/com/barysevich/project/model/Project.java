@@ -3,6 +3,7 @@ package com.barysevich.project.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.*;
@@ -21,17 +22,24 @@ public class Project extends AbstractPersistable<Long> {
             generator = "project_id_seq")
     private Long id;
 
+    private Long personId;
+
     @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Position position;
 
     private String description;
 
-    @OneToMany(targetEntity = EnvironmentRow.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH, REMOVE}, mappedBy = "projectId")
-    private List<EnvironmentRow> environmentRow;
+    @OneToMany(targetEntity = EnvironmentSkill.class, fetch = FetchType.EAGER, cascade = {PERSIST, MERGE, REFRESH, DETACH, REMOVE})
+    @JoinColumn(name = "project_id", nullable = false)
+    private List<EnvironmentSkill> environmentSkills = new ArrayList<>();
 
     private String result;
 
     private String responsibility;
+
+    @OneToOne(targetEntity = CompanyInfo.class, fetch = FetchType.EAGER, cascade = {MERGE, REFRESH, DETACH})
+    @JoinColumn(name = "company_id")
+    private CompanyInfo companyInfo;
 
     @Column(columnDefinition = "SMALLINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -41,11 +49,14 @@ public class Project extends AbstractPersistable<Long> {
         //default constructor
     }
 
-    public Project(Position position, String description, String result, String responsibility) {
+    public Project(Long personId, Position position, String description, String result, String responsibility, List<EnvironmentSkill> environmentSkills, CompanyInfo companyInfo) {
+        this.personId = personId;
         this.position = position;
         this.description = description;
         this.result = result;
         this.responsibility = responsibility;
+        this.environmentSkills = environmentSkills;
+        this.companyInfo = companyInfo;
     }
 
     @Override
@@ -56,6 +67,14 @@ public class Project extends AbstractPersistable<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     public Position getPosition() {
@@ -74,12 +93,12 @@ public class Project extends AbstractPersistable<Long> {
         this.description = description;
     }
 
-    public List<EnvironmentRow> getEnvironmentRow() {
-        return environmentRow;
+    public List<EnvironmentSkill> getEnvironmentSkills() {
+        return environmentSkills;
     }
 
-    public void setEnvironmentRow(List<EnvironmentRow> environmentRow) {
-        this.environmentRow = environmentRow;
+    public void setEnvironmentSkills(List<EnvironmentSkill> environmentSkills) {
+        this.environmentSkills = environmentSkills;
     }
 
     public String getResult() {
@@ -96,6 +115,14 @@ public class Project extends AbstractPersistable<Long> {
 
     public void setResponsibility(String responsibility) {
         this.responsibility = responsibility;
+    }
+
+    public CompanyInfo getCompanyInfo() {
+        return companyInfo;
+    }
+
+    public void setCompanyInfo(CompanyInfo companyInfo) {
+        this.companyInfo = companyInfo;
     }
 
     public boolean isDeleted() {

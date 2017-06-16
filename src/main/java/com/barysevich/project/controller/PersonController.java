@@ -3,10 +3,10 @@ package com.barysevich.project.controller;
 import com.barysevich.project.controller.dto.PersonSkillsDto;
 import com.barysevich.project.controller.dto.Response;
 import com.barysevich.project.model.Person;
-import com.barysevich.project.model.ProjectSum;
+import com.barysevich.project.model.Project;
 import com.barysevich.project.model.SkillSum;
 import com.barysevich.project.service.PersonService;
-import com.barysevich.project.service.ProjectSumService;
+import com.barysevich.project.service.ProjectService;
 import com.barysevich.project.service.SkillSumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,7 @@ public class PersonController {
     private PersonService personService;
 
     @Autowired
-    private ProjectSumService projectSumService;
+    private ProjectService projectService;
 
     @Autowired
     private SkillSumService skillSumService;
@@ -76,8 +76,8 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/{id}/projects")
-    public ResponseEntity<Response<Iterable<ProjectSum>>> findProjectsById(@PathVariable Long id) {
-        return ResponseEntity.ok(Response.success(projectSumService.findByPersonId(id)));
+    public ResponseEntity<Response<Iterable<Project>>> findProjectsById(@PathVariable Long id) {
+        return ResponseEntity.ok(Response.success(projectService.findByPersonId(id)));
     }
 
 }

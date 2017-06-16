@@ -1,6 +1,7 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.Department;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,18 @@ public class DepartmentRepositoryTest {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    private Department department1;
+    private Department department2;
+    private Department department3;
+
+    @Before
+    public void populateDB() {
+
+        department1 = entityManager.persist(new Department("Test1"));
+        department2 = entityManager.persist(new Department("Test2"));
+        department3 = entityManager.persist(new Department("Test3"));
+    }
+
     @Test
     public void save() {
         Department department = departmentRepository.save(new Department("Test"));
@@ -35,9 +48,6 @@ public class DepartmentRepositoryTest {
 
     @Test
     public void delete() {
-
-        Department department1 = entityManager.persist(new Department("Test1"));
-        Department department2 = entityManager.persist(new Department("Test2"));
 
         departmentRepository.delete(department1.getId());
         departmentRepository.delete(department2.getId());
@@ -50,11 +60,6 @@ public class DepartmentRepositoryTest {
     @Test
     public void findAll() {
 
-        Department department1 = entityManager.persist(new Department("Test1"));
-        Department department2 = entityManager.persist(new Department("Test2"));
-        Department department3 = entityManager.persist(new Department("Test3"));
-
-
         Iterable<Department> departments = departmentRepository.findAll();
 
         assertThat(departments).contains(department1, department2, department3);
@@ -62,9 +67,6 @@ public class DepartmentRepositoryTest {
 
     @Test
     public void findOne() {
-
-        Department department1 = entityManager.persist(new Department("Test1"));
-        Department department2 = entityManager.persist(new Department("Test2"));
 
         Department department = departmentRepository.findOne(department1.getId());
 
@@ -75,9 +77,6 @@ public class DepartmentRepositoryTest {
     @Test
     public void findByNameContainingIgnoreCase() {
 
-        Department department1 = entityManager.persist(new Department("Test1"));
-        Department department2 = entityManager.persist(new Department("Test2"));
-
         Iterable<Department> departments = departmentRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 20));
 
         assertThat(departments).contains(department1);
@@ -86,9 +85,6 @@ public class DepartmentRepositoryTest {
 
     @Test
     public void findByName() {
-
-        Department department1 = entityManager.persist(new Department("Test1"));
-        Department department2 = entityManager.persist(new Department("Test11"));
 
         Department department = departmentRepository.findByName("Test1");
 

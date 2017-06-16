@@ -19,6 +19,9 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
     @Query("SELECT p FROM Person p WHERE lower(p.name) like lower(concat('%',concat(:name, '%'))) and p.deleted<>1")
     Page<Person> findByNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
 
+    @Query("SELECT p FROM Person p WHERE lower(p.name) like lower(concat('%',concat(:name, '%')))")
+    Iterable<Person> findByNameContainingIgnoreCaseForTest(@Param("name") String name);
+
     @Transactional
     @Modifying
     @Query("UPDATE Person p SET p.deleted=1 WHERE p.id = :id ")

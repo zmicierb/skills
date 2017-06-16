@@ -1,6 +1,7 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.Skill;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,17 @@ public class SkillRepositoryTest {
     @Autowired
     private SkillRepository skillRepository;
 
+    private Skill skill1;
+    private Skill skill2;
+    private Skill skill3;
+
+    @Before
+    public void populateDB() {
+        skill1 = entityManager.persist(new Skill("Test1"));
+        skill2 = entityManager.persist(new Skill("Test2"));
+        skill3 = entityManager.persist(new Skill("Test3"));
+    }
+
     @Test
     public void save() {
         Skill skill = skillRepository.save(new Skill("Test"));
@@ -35,9 +47,6 @@ public class SkillRepositoryTest {
 
     @Test
     public void delete() {
-
-        Skill skill1 = entityManager.persist(new Skill("Test1"));
-        Skill skill2 = entityManager.persist(new Skill("Test2"));
 
         skillRepository.delete(skill1.getId());
         skillRepository.delete(skill2.getId());
@@ -50,11 +59,6 @@ public class SkillRepositoryTest {
     @Test
     public void findAll() {
 
-        Skill skill1 = entityManager.persist(new Skill("Test1"));
-        Skill skill2 = entityManager.persist(new Skill("Test2"));
-        Skill skill3 = entityManager.persist(new Skill("Test3"));
-
-
         Iterable<Skill> skills = skillRepository.findAll();
 
         assertThat(skills).contains(skill1, skill2, skill3);
@@ -62,9 +66,6 @@ public class SkillRepositoryTest {
 
     @Test
     public void findOne() {
-
-        Skill skill1 = entityManager.persist(new Skill("Test1"));
-        Skill skill2 = entityManager.persist(new Skill("Test2"));
 
         Skill skill = skillRepository.findOne(skill2.getId());
 
@@ -75,9 +76,6 @@ public class SkillRepositoryTest {
     @Test
     public void findByNameContainingIgnoreCase() {
 
-        Skill skill1 = entityManager.persist(new Skill("Test1"));
-        Skill skill2 = entityManager.persist(new Skill("Test2"));
-
         Iterable<Skill> skills = skillRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 20));
 
         assertThat(skills).contains(skill1);
@@ -86,9 +84,6 @@ public class SkillRepositoryTest {
 
     @Test
     public void findByName() {
-
-        Skill skill1 = entityManager.persist(new Skill("Test1"));
-        Skill skill2 = entityManager.persist(new Skill("Test11"));
 
         Skill skill = skillRepository.findByName("Test1");
 

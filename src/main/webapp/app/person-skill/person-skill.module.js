@@ -6,4 +6,6 @@ angular.module('personSkill', [
     , 'core.skillSrv'
     , 'core.skillFindSrv'
     , 'core.rowSrv'
+    , 'core.positionSrv'
+    , 'core.positionFindSrv'
 ]);

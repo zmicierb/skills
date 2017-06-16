@@ -27,4 +27,13 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, L
     @Query("SELECT p FROM Project p WHERE p.deleted<>1")
     Page<Project> findAll(Pageable pageable);
 
+    @Query("SELECT p FROM Project p WHERE p.personId = :id and p.deleted<>1")
+    Iterable<Project> findByPersonId(@Param("id") Long id);
+
+    @Query("SELECT p FROM Project p WHERE p.companyInfo.id = :id and p.deleted<>1")
+    Iterable<Project> findByCompanyId(@Param("id") Long id);
+
+    @Query("SELECT p FROM Project p WHERE lower(p.description) like lower(concat('%',concat(:description, '%')))")
+    Iterable<Project> findByDescriptionContainingIgnoreCaseForTest(@Param("description") String description);
+
 }

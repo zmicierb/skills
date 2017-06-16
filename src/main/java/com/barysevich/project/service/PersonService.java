@@ -16,6 +16,8 @@ public interface PersonService extends GenericService<Person, Long> {
 
     Page<Person> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
+    Iterable<Person> findByNameContainingIgnoreCaseForTest(String name);
+
     Person update(Long id, Person person);
 
     Map<Long, PersonSkillsDto> findSkillsById(Long id);

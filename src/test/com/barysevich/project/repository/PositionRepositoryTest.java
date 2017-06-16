@@ -1,6 +1,7 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.Position;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,18 @@ public class PositionRepositoryTest {
     @Autowired
     private PositionRepository positionRepository;
 
+    private Position position1;
+    private Position position2;
+    private Position position3;
+
+    @Before
+    public void populateDB() {
+
+        position1 = entityManager.persist(new Position("Test1"));
+        position2 = entityManager.persist(new Position("Test2"));
+        position3 = entityManager.persist(new Position("Test3"));
+    }
+
     @Test
     public void save() {
         Position position = positionRepository.save(new Position("Test"));
@@ -35,9 +48,6 @@ public class PositionRepositoryTest {
 
     @Test
     public void delete() {
-
-        Position position1 = entityManager.persist(new Position("Test1"));
-        Position position2 = entityManager.persist(new Position("Test2"));
 
         positionRepository.delete(position1.getId());
         positionRepository.delete(position2.getId());
@@ -50,11 +60,6 @@ public class PositionRepositoryTest {
     @Test
     public void findAll() {
 
-        Position position1 = entityManager.persist(new Position("Test1"));
-        Position position2 = entityManager.persist(new Position("Test2"));
-        Position position3 = entityManager.persist(new Position("Test3"));
-
-
         Iterable<Position> positions = positionRepository.findAll();
 
         assertThat(positions).contains(position1, position2, position3);
@@ -62,9 +67,6 @@ public class PositionRepositoryTest {
 
     @Test
     public void findOne() {
-
-        Position position1 = entityManager.persist(new Position("Test1"));
-        Position position2 = entityManager.persist(new Position("Test2"));
 
         Position position = positionRepository.findOne(position2.getId());
 
@@ -75,9 +77,6 @@ public class PositionRepositoryTest {
     @Test
     public void findByNameContainingIgnoreCase() {
 
-        Position position1 = entityManager.persist(new Position("Test1"));
-        Position position2 = entityManager.persist(new Position("Test2"));
-
         Iterable<Position> positions = positionRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 20));
 
         assertThat(positions).contains(position1);
@@ -86,9 +85,6 @@ public class PositionRepositoryTest {
 
     @Test
     public void findByName() {
-
-        Position position1 = entityManager.persist(new Position("Test1"));
-        Position position2 = entityManager.persist(new Position("Test11"));
 
         Position position = positionRepository.findByName("Test1");
 

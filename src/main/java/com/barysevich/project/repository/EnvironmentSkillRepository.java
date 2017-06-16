@@ -1,15 +1,12 @@
 package com.barysevich.project.repository;
 
-import com.barysevich.project.model.ProjectSum;
+import com.barysevich.project.model.EnvironmentSkill;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  * Created by BarysevichD on 2017-03-15.
  */
 @RepositoryRestResource(exported = false)
-public interface ProjectSumRepository extends PagingAndSortingRepository<ProjectSum, Long> {
-
-    Iterable<ProjectSum> findByPersonId(@Param("id") Long id);
+public interface EnvironmentSkillRepository extends PagingAndSortingRepository<EnvironmentSkill, Long> {
 }

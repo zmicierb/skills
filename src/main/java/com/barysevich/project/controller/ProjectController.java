@@ -29,12 +29,7 @@ public class ProjectController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Response<Project>> update(@PathVariable Long id, @RequestBody Project project) {
-        Project update = projectService.findOne(id);
-        update.setPosition(project.getPosition());
-        update.setResponsibility(project.getResponsibility());
-        update.setResult(project.getResult());
-        update.setDescription(project.getDescription());
-        return ResponseEntity.ok(Response.success(projectService.save(update)));
+        return ResponseEntity.ok(Response.success(projectService.update(id, project)));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

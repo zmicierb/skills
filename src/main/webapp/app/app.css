@@ -19,6 +19,10 @@ body {
     padding: 5px;
 }
 
+.person-company-project {
+    padding: 10px;
+}
+
 .person-detail-project {
     padding: 10px;
 }

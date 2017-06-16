@@ -1,6 +1,7 @@
 package com.barysevich.project.service;
 
 import com.barysevich.project.model.Position;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.data.domain.Pageable;
  */
 public interface PositionService extends GenericService<Position, Long> {
 
-    Iterable<Position> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Position> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

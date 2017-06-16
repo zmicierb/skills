@@ -32,7 +32,7 @@ describe('PersonSkillSrv', function () {
         "success": true,
         "message": "Completed successfully",
         "errors": null,
-        "data": null,
+        "data": personSkillsDataUpdate,
         "first": false,
         "last": false,
         "totalPages": 0,

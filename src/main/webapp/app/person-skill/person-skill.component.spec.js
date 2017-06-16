@@ -47,7 +47,6 @@ describe('personSkill', function () {
                 }
             }
         };
-
         var rowsResponse = {
             "success": true,
             "message": "Completed successfully",
@@ -70,7 +69,6 @@ describe('personSkill', function () {
             "numberOfElements": 6,
             "sort": null
         };
-
         var modelsLists = {
             "Programming Languages": {
                 newSkill: '', rowId: 1, addSkillFlag: false,
@@ -101,7 +99,6 @@ describe('personSkill', function () {
                 type: 'Web Technologies'
             }
         };
-
         var updateResponse = {
             "success": true,
             "message": "Completed successfully",

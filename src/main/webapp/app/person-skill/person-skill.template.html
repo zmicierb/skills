@@ -36,7 +36,6 @@
                             dnd-disable-if="false">
                             <li ng-repeat="skill in list.skills" dnd-type="list.type"
                                 dnd-draggable="skill" dnd-moved="list.skills.splice($index, 1);personSkills.$setDirty()"
-
                                 dnd-effect-allowed="move">{{skill.skillName}}
                                 <a href="" ng-click="$ctrl.removeSkill(skill.skillName, listName, personSkills)">
                                     <span class="glyphicon glyphicon-remove tag-list-remove"></span>

@@ -29,12 +29,7 @@ public class CompanyInfoController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Response<CompanyInfo>> update(@PathVariable Long id, @RequestBody CompanyInfo company) {
-        CompanyInfo update = companyInfoService.findOne(id);
-        update.setPosition(company.getPosition());
-        update.setName(company.getName());
-        update.setStartDate(company.getStartDate());
-        update.setEndDate(company.getEndDate());
-        return ResponseEntity.ok(Response.success(companyInfoService.save(update)));
+        return ResponseEntity.ok(Response.success(companyInfoService.update(id, company)));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

@@ -1,6 +1,7 @@
 package com.barysevich.project.repository;
 
 import com.barysevich.project.model.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,52 +28,54 @@ public class SkillSumRepositoryTest {
     @Autowired
     private SkillSumRepository skillSumRepository;
 
+    private Position position;
+    private Department department;
+    private Person person1;
+    private Person person2;
+    private Person person3;
+    private Skill skill;
+    private Row row;
+    private SkillSum skillSum1;
+    private SkillSum skillSum2;
+    private SkillSum skillSum3;
+
+    @Before
+    public void populateDB() {
+
+        position = entityManager.persist(new Position("test"));
+        department = entityManager.persist(new Department("test"));
+        person1 = entityManager.persist(new Person("test1", position, department, LocalDate.now()));
+        person2 = entityManager.persist(new Person("test2", position, department, LocalDate.now()));
+        person3 = entityManager.persist(new Person("test3", position, department, LocalDate.now()));
+        skill = entityManager.persist(new Skill("test"));
+        row = entityManager.persist(new Row("test"));
+
+        skillSum1 = skillSumRepository.save(new SkillSum(person1.getId(), skill, row, 1));
+        skillSum2 = skillSumRepository.save(new SkillSum(person2.getId(), skill, row, 2));
+        skillSum3 = skillSumRepository.save(new SkillSum(person3.getId(), skill, row, 3));
+    }
+
     @Test
     public void save() {
 
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-        Person person = entityManager.persist(new Person("test", position, department, LocalDate.now()));
-        Skill skill = entityManager.persist(new Skill("test"));
-        Row row = entityManager.persist(new Row("test"));
+        SkillSum skillSum = skillSumRepository.save(new SkillSum(person1.getId(), skill, row, 1));
 
-        SkillSum skillSum = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
-
-        assertThat(skillSum).hasFieldOrPropertyWithValue("personId", person.getId());
+        assertThat(skillSum).hasFieldOrPropertyWithValue("personId", person1.getId());
     }
 
     @Test
     public void delete() {
 
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-        Person person = entityManager.persist(new Person("test", position, department, LocalDate.now()));
-        Skill skill = entityManager.persist(new Skill("test"));
-        Row row = entityManager.persist(new Row("test"));
-
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 2));
-
         skillSumRepository.delete(skillSum1.getId());
         skillSumRepository.delete(skillSum2.getId());
 
-        assertThat(skillSumRepository.findByPersonId(person.getId()))
+        assertThat(skillSumRepository.findByPersonId(person1.getId()))
                 .doesNotContain(skillSum1)
                 .doesNotContain(skillSum2);
     }
 
     @Test
     public void findAll() {
-
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-        Person person = entityManager.persist(new Person("test", position, department, LocalDate.now()));
-        Skill skill = entityManager.persist(new Skill("test"));
-        Row row = entityManager.persist(new Row("test"));
-
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 2));
-        SkillSum skillSum3 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 3));
 
         Iterable<SkillSum> skillSums = skillSumRepository.findAll();
 
@@ -81,15 +84,6 @@ public class SkillSumRepositoryTest {
 
     @Test
     public void findOne() {
-
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-        Person person = entityManager.persist(new Person("test", position, department, LocalDate.now()));
-        Skill skill = entityManager.persist(new Skill("test"));
-        Row row = entityManager.persist(new Row("test"));
-
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person.getId(), skill, row, 2));
 
         SkillSum skillSum = skillSumRepository.findOne(skillSum2.getId());
 
@@ -100,16 +94,6 @@ public class SkillSumRepositoryTest {
     @Test
     public void findByPersonId() {
 
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-        Person person1 = entityManager.persist(new Person("test1", position, department, LocalDate.now()));
-        Person person2 = entityManager.persist(new Person("test2", position, department, LocalDate.now()));
-        Skill skill = entityManager.persist(new Skill("test"));
-        Row row = entityManager.persist(new Row("test"));
-
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person1.getId(), skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person2.getId(), skill, row, 2));
-
         Iterable<SkillSum> skillSums = skillSumRepository.findByPersonId(person2.getId());
 
         assertThat(skillSums).contains(skillSum2);
@@ -118,16 +102,6 @@ public class SkillSumRepositoryTest {
 
     @Test
     public void deleteByPersonId() {
-
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-        Person person1 = entityManager.persist(new Person("test1", position, department, LocalDate.now()));
-        Person person2 = entityManager.persist(new Person("test2", position, department, LocalDate.now()));
-        Skill skill = entityManager.persist(new Skill("test"));
-        Row row = entityManager.persist(new Row("test"));
-
-        SkillSum skillSum1 = skillSumRepository.save(new SkillSum(person1.getId(), skill, row, 1));
-        SkillSum skillSum2 = skillSumRepository.save(new SkillSum(person2.getId(), skill, row, 2));
 
         skillSumRepository.deleteByPersonId(person2.getId());
         Iterable<SkillSum> skillSums1 = skillSumRepository.findByPersonId(person1.getId());

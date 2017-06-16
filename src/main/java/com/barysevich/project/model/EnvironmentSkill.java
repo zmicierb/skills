@@ -9,17 +9,17 @@ import static javax.persistence.CascadeType.REFRESH;
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-public class EnvironmentRow extends AbstractPersistable<Long> {
+public class EnvironmentSkill extends AbstractPersistable<Long> {
 
     @Id
-    @SequenceGenerator(name = "environment_row_id_seq",
-            sequenceName = "environment_row_id_seq",
+    @SequenceGenerator(name = "environment_skill_id_seq",
+            sequenceName = "environment_skill_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "environment_row_id_seq")
+            generator = "environment_skill_id_seq")
     private Long id;
 
-    @Column
+    @Column(name = "project_id", insertable = false, updatable = false)
     private Long projectId;
 
     @Column(name = "skill_id", insertable = false, updatable = false)
@@ -30,12 +30,11 @@ public class EnvironmentRow extends AbstractPersistable<Long> {
 
     private Integer weight;
 
-    public EnvironmentRow() {
+    public EnvironmentSkill() {
         //default constructor
     }
 
-    public EnvironmentRow(Long projectId, Skill skill, Integer weight) {
-        this.projectId = projectId;
+    public EnvironmentSkill(Skill skill, Integer weight) {
         this.skill = skill;
         this.weight = weight;
     }

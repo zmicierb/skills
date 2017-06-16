@@ -12,4 +12,6 @@ public interface CompanyInfoService extends GenericService<CompanyInfo, Long> {
     void remove(Long id);
 
     Page<CompanyInfo> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    CompanyInfo update(Long id, CompanyInfo companyInfo);
 }

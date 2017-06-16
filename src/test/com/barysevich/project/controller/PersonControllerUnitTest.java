@@ -1,7 +1,8 @@
 package com.barysevich.project.controller;
 
 import com.barysevich.project.service.PersonService;
-import com.barysevich.project.service.ProjectSumService;
+import com.barysevich.project.service.ProjectService;
+import com.barysevich.project.service.SkillService;
 import com.barysevich.project.service.SkillSumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -33,7 +34,10 @@ public class PersonControllerUnitTest {
     private PersonService personServiceMock;
 
     @MockBean
-    private ProjectSumService projectSumServiceMock;
+    private ProjectService projectServiceMock;
+
+    @MockBean
+    private SkillService skillServiceMock;
 
     @MockBean
     private SkillSumService skillSumServiceMock;

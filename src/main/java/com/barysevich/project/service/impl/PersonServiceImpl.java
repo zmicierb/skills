@@ -5,7 +5,10 @@ import com.barysevich.project.controller.dto.SkillDto;
 import com.barysevich.project.model.Department;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.model.Position;
-import com.barysevich.project.repository.*;
+import com.barysevich.project.repository.DepartmentRepository;
+import com.barysevich.project.repository.PersonRepository;
+import com.barysevich.project.repository.PositionRepository;
+import com.barysevich.project.repository.SkillSumRepository;
 import com.barysevich.project.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,9 +38,6 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
     private SkillSumRepository skillSumRepository;
 
     @Autowired
-    private RowRepository rowRepository;
-
-    @Autowired
     public PersonServiceImpl(PersonRepository repository) {
         super(repository);
         this.personRepository = repository;
@@ -51,6 +51,11 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
     @Override
     public Page<Person> findByNameContainingIgnoreCase(String name, Pageable pageable) {
         return personRepository.findByNameContainingIgnoreCase(name, pageable);
+    }
+
+    @Override
+    public Iterable<Person> findByNameContainingIgnoreCaseForTest(String name) {
+        return personRepository.findByNameContainingIgnoreCaseForTest(name);
     }
 
     @Transactional

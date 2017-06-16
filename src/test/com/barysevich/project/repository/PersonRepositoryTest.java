@@ -3,6 +3,7 @@ package com.barysevich.project.repository;
 import com.barysevich.project.model.Department;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.model.Position;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,37 @@ public class PersonRepositoryTest {
     @Autowired
     private PersonRepository personRepository;
 
+    private Position position;
+    private Department department;
+    private Person person1;
+    private Person person2;
+    private Person person3;
+
+    @Before
+    public void populateDB() {
+
+        position = entityManager.persist(new Position("test"));
+        department = entityManager.persist(new Department("test"));
+
+        person1 = new Person("Test1",
+                position,
+                department,
+                LocalDate.of(1970, Month.JANUARY, 1));
+        entityManager.persist(person1);
+
+        person2 = new Person("Test2",
+                position,
+                department,
+                LocalDate.of(1970, Month.JANUARY, 1));
+        entityManager.persist(person2);
+
+        person3 = new Person("Test3",
+                position,
+                department,
+                LocalDate.of(1970, Month.JANUARY, 1));
+        entityManager.persist(person3);
+    }
+
     @Test
     public void save() {
         Person customer = personRepository.save(new Person("Jack",
@@ -42,19 +74,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void delete() {
-
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-
-        Person person1 = entityManager.persist(new Person("Test1",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1)));
-        Person person2 = entityManager.persist(new Person("Test2",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1)));
+    public void remove() {
 
         personRepository.remove(person1.getId());
         personRepository.remove(person2.getId());
@@ -66,28 +86,6 @@ public class PersonRepositoryTest {
     @Test
     public void findAll() {
 
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-
-        Person person1 = new Person("Test1",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1));
-        entityManager.persist(person1);
-
-        Person person2 = new Person("Test2",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1));
-        entityManager.persist(person2);
-
-        Person person3 = new Person("Test3",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1));
-        entityManager.persist(person3);
-
-
         Iterable<Person> customers = personRepository.findAll();
 
         assertThat(customers).contains(person1, person2, person3);
@@ -96,21 +94,6 @@ public class PersonRepositoryTest {
     @Test
     public void findOne() {
 
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-
-        Person person1 = new Person("Test1",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1));
-        entityManager.persist(person1);
-
-        Person person2 = new Person("Test2",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1));
-        entityManager.persist(person2);
-
         Person foundCustomer = personRepository.findOne(person2.getId());
 
         assertThat(foundCustomer).isNotEqualTo(person1);
@@ -118,22 +101,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void findByName() {
-
-        Position position = entityManager.persist(new Position("test"));
-        Department department = entityManager.persist(new Department("test"));
-
-        Person person1 = new Person("Test1",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1));
-        entityManager.persist(person1);
-
-        Person person2 = new Person("Test2",
-                position,
-                department,
-                LocalDate.of(1970, Month.JANUARY, 1));
-        entityManager.persist(person2);
+    public void findByNameContainingIgnoreCase() {
 
         Iterable<Person> persons = personRepository.findByNameContainingIgnoreCase("ST1", new PageRequest(0, 20));
 
