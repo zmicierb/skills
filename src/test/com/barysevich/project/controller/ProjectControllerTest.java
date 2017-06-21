@@ -39,7 +39,6 @@ public class ProjectControllerTest extends PopulateDBTest {
         List<Person> person = (List) personService.findByNameContainingIgnoreCaseForTest("test");
         Page<Position> positions = positionService.findByNameContainingIgnoreCase("test", new PageRequest(0, 10));
 
-
         ResponseEntity<String> response =
                 restTemplate.postForEntity("/api/project",
                         new Project(person.get(0).getId(), positions.getContent().get(0), test, test, test, null, null),

@@ -12,8 +12,6 @@ import com.barysevich.project.repository.ProjectRepository;
 import com.barysevich.project.repository.SkillRepository;
 import com.barysevich.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,14 +42,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
         this.projectRepository = repository;
     }
 
+    @Transactional
     @Override
     public void remove(Long id) {
         projectRepository.remove(id);
-    }
-
-    @Override
-    public Page<Project> findByResponsibilityContainingIgnoreCase(String name, Pageable pageable) {
-        return projectRepository.findByResponsibilityContainingIgnoreCase(name, pageable);
     }
 
     @Override
@@ -136,21 +130,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
     @Transactional
     public Project save(Project project) {
 
-        Project newProject = new Project();
-        newProject.setPersonId(project.getPersonId());
-        newProject.setDescription(project.getDescription());
-        newProject.setResult(project.getResult());
-        newProject.setResponsibility(project.getResponsibility());
-        newProject.setCompanyInfo(project.getCompanyInfo());
         //additional checks due to editable typehead
         if (project.getPosition().isNew()) {
             Position position = positionRepository.findByName(project.getPosition().getName());
             if (position == null)
-                newProject.setPosition(positionRepository.save(new Position(project.getPosition().getName())));
+                project.setPosition(positionRepository.save(new Position(project.getPosition().getName())));
             else
-                newProject.setPosition(position);
-        } else
-            newProject.setPosition(project.getPosition());
+                project.setPosition(position);
+        }
 
         project.getEnvironmentSkills().forEach(i -> {
             //additional checks due to editable typeahead
@@ -163,9 +150,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
             }
         });
 
-        newProject.setEnvironmentSkills(project.getEnvironmentSkills());
-
-        return projectRepository.save(newProject);
+        return projectRepository.save(project);
     }
 
     @Override

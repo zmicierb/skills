@@ -43,6 +43,7 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
         this.personRepository = repository;
     }
 
+    @Transactional
     @Override
     public void remove(Long id) {
         personRepository.remove(id);
@@ -82,7 +83,7 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
         } else
             update.setDepartment(person.getDepartment());
 
-        return update;
+        return personRepository.save(update);
     }
 
     public Map<Long, PersonSkillsDto> findSkillsById(Long id) {

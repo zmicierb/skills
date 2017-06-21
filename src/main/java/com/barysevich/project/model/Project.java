@@ -55,7 +55,8 @@ public class Project extends AbstractPersistable<Long> {
         this.description = description;
         this.result = result;
         this.responsibility = responsibility;
-        this.environmentSkills = environmentSkills;
+        if (environmentSkills != null)
+            this.environmentSkills = environmentSkills;
         this.companyInfo = companyInfo;
     }
 
