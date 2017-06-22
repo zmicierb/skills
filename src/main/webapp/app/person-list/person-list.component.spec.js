@@ -76,7 +76,13 @@ describe('personList', function () {
             ctrl.pageChanged();
             $httpBackend.flush();
             expect(ctrl.persons.length).toBeGreaterThan(1);
-        })
+        });
+
+        it('should toggle adding person flag', function () {
+            expect(ctrl.addNewPersonFlag).toEqual(false);
+            ctrl.addNewPerson();
+            expect(ctrl.addNewPersonFlag).toEqual(true);
+        });
 
     });
 });

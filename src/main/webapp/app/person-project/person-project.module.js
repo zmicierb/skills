@@ -2,6 +2,7 @@
 
 angular.module('personProject', [
     'ngRoute'
+    , 'ngAnimate'
     , 'core.personProjectSrv'
     , 'core.projectSrv'
     , 'core.companySrv'

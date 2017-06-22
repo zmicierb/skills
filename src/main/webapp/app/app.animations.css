@@ -1,28 +1,28 @@
-.person-list-item.ng-enter,
-.person-list-item.ng-leave,
-.person-list-item.ng-move {
+.animate.ng-enter,
+.animate.ng-leave,
+.animate.ng-move {
     transition: 0.5s linear all;
 }
 
-.person-list-item.ng-enter,
-.person-list-item.ng-move {
+.animate.ng-enter,
+.animate.ng-move {
     height: 0;
     opacity: 0;
     overflow: hidden;
 }
 
-.person-list-item.ng-enter.ng-enter-active,
-.person-list-item.ng-move.ng-move-active {
+.animate.ng-enter.ng-enter-active,
+.animate.ng-move.ng-move-active {
     height: 120px;
     opacity: 1;
 }
 
-.person-list-item.ng-leave {
+.animate.ng-leave {
     opacity: 1;
     overflow: hidden;
 }
 
-.person-list-item.ng-leave.ng-leave-active {
+.animate.ng-leave.ng-leave-active {
     height: 0;
     opacity: 0;
     padding-bottom: 0;

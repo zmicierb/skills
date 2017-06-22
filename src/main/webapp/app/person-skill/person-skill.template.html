@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div ng-if="!$ctrl.editFlag" class="col-md-12">
+        <div ng-if="!$ctrl.editFlag" class="col-md-12 animate">
             <h4 class="person-detail-separator">SKILLS SUMMARY<a href="" ng-click="$ctrl.toggleEditFlag()">
                 <span class="glyphicon glyphicon-pencil"></span>
             </a></h4>
@@ -23,7 +23,7 @@
 
         <!--for edit-->
 
-        <div ng-if="$ctrl.editFlag" class="col-md-12">
+        <div ng-if="$ctrl.editFlag" class="col-md-12 animate">
             <h4 class="person-detail-separator">SKILLS SUMMARY</h4>
             <form name="personSkills" class="form-horizontal" ng-submit="$ctrl.submit(personSkills)">
                 <div ng-repeat="(listName, list) in $ctrl.models.lists" class="row draggableTag">
@@ -42,7 +42,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="form-group" ng-if="list.addSkillFlag">
+                        <div class="form-group animate" ng-if="list.addSkillFlag">
                             <div class="col-md-6">
                                 <input type="text" ng-model="list.newSkill" placeholder="skill"
                                        uib-typeahead="skill as skill.name for skill in $ctrl.getSkill($viewValue, listName)"
@@ -62,7 +62,7 @@
                             <div class="col-md-2" ng-show="loadingSkill"><i class="glyphicon glyphicon-refresh"></i>
                             </div>
                         </div>
-                        <div ng-if="!list.addSkillFlag">
+                        <div class="animate" ng-if="!list.addSkillFlag">
                             <a href="" ng-click="$ctrl.toggleNewSkill(listName)">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </a>

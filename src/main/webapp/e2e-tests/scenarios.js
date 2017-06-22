@@ -12,13 +12,26 @@ describe('Skills Application', function () {
         });
 
         it('should render person specific links', function () {
+            var findBtn = element(by.id('findId'));
             var query = element(by.model('$ctrl.query'));
-            query.value = 'Dzmitry';
+            query.sendKeys('Dzmitry');
 
+            findBtn.click();
+            browser.waitForAngular();
             element.all(by.css('.persons li a')).first().click().then(function () {
                 expect(browser.getCurrentUrl()).toBe('http://localhost:8080/app/index.html#!/person/1')
             });
-        })
+
+        });
+
+        it('should open form for adding new person', function () {
+            var addBtn = element(by.css('[ng-click="$ctrl.addNewPerson()"]'));
+
+            addBtn.click().then(function () {
+                    expect(element(by.css('person-detail')).isPresent()).toBe(true);
+                }
+            );
+        });
     });
 
     describe('View: Person detail', function () {

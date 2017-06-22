@@ -2,9 +2,13 @@
 
 angular.module('skillsApp').component('personDetail', {
     templateUrl: 'person-detail/person-detail.template.html',
-    controller: ['$http', '$filter', '$routeParams', 'PersonSrv', 'PositionSrv', 'PositionFindSrv', 'DepartmentSrv', 'DepartmentFindSrv',
-        function PersonDetailController($http, $filter, $routeParams, PersonSrv, PositionSrv, PositionFindSrv, DepartmentSrv, DepartmentFindSrv) {
+    bindings: {
+        new: '<'
+    },
+    controller: ['$http', '$filter', '$location', '$routeParams', 'PersonSrv', 'PositionSrv', 'PositionFindSrv', 'DepartmentSrv', 'DepartmentFindSrv',
+        function PersonDetailController($http, $filter, $location, $routeParams, PersonSrv, PositionSrv, PositionFindSrv, DepartmentSrv, DepartmentFindSrv) {
             var self = this;
+            self.isNew = !(self.new == undefined || self.new === false);
             var getPerson = function () {
                 var person = PersonSrv.get({personId: $routeParams.personId}, function () {
                     self.person = person.data;
@@ -12,8 +16,13 @@ angular.module('skillsApp').component('personDetail', {
                 });
             };
 
-            getPerson();
-            self.editFlag = false;
+            if (!self.isNew)
+                getPerson();
+
+            if (self.isNew)
+                self.editFlag = true;
+            else
+                self.editFlag = false;
 
             self.toggleEditFlag = function () {
                 self.editFlag = true;
@@ -66,11 +75,16 @@ angular.module('skillsApp').component('personDetail', {
 
             self.submit = function (form) {
                 self.person.birthDate = $filter('date')(self.person.dt, "yyyy/MM/dd");
-                PersonSrv.update({personId: $routeParams.personId}, self.person).$promise.then(function (response) {
-                    self.person = response.data;
-                    self.person.dt = Date.parse(self.person.birthDate);
-                    form.$setPristine();
-                });
+                if (!self.isNew)
+                    PersonSrv.update({personId: $routeParams.personId}, self.person).$promise.then(function (response) {
+                        self.person = response.data;
+                        self.person.dt = Date.parse(self.person.birthDate);
+                        form.$setPristine();
+                    });
+                else
+                    PersonSrv.save(self.person).$promise.then(function (response) {
+                        $location.path("/person/" + response.data.id);
+                    });
             };
 
             self.cancel = function () {

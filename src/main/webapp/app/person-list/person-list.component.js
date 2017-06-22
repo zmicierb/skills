@@ -33,6 +33,12 @@ angular.module('skillsApp').component('personList', {
                 serviceFlag = true;
             }
 
+            self.addNewPersonFlag = false;
+
+            self.addNewPerson = function () {
+                self.addNewPersonFlag = !self.addNewPersonFlag;
+            };
+
             personsQuery(self.query, self.currentPage, self.itemsPerPage);
 
             self.pageChanged = function () {
