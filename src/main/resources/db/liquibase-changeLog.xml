@@ -10,4 +10,11 @@
     <changeSet author="BarysevichD" id="tag_version_0_1_0">
         <tagDatabase tag="version_0.1.0"/>
     </changeSet>
+
+    <include file="01/person-add-email.xml" relativeToChangelogFile="true"/>
+
+    <changeSet author="BarysevichD" id="tag_version_0_2_0">
+        <tagDatabase tag="version_0.2.0"/>
+    </changeSet>
+
 </databaseChangeLog>

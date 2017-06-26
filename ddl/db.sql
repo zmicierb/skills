@@ -79,7 +79,7 @@ CREATE TABLE PERSON (
   department_id INTEGER,
   position_id   INTEGER,
   deleted       SMALLINT                                 NOT NULL DEFAULT 0,
-  birth_date    DATE
+  birth_date    TIMESTAMP WITHOUT TIME ZONE
 );
 
 ALTER SEQUENCE PERSON_ID_SEQ OWNED BY PERSON.id;
