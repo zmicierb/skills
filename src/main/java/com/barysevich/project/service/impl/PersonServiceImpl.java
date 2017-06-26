@@ -64,6 +64,7 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
     public Person update(Long id, Person person) {
         Person update = personRepository.findOne(id);
         update.setName(person.getName());
+        update.setEmail(person.getEmail());
         update.setBirthDate(person.getBirthDate());
         //additional checks due to editable typeahead
         if (person.getPosition().isNew()) {

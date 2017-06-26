@@ -73,6 +73,7 @@ public abstract class PopulateDBTest {
         Arrays.asList(testUserArray).forEach(
                 a -> {
                     Person person = personService.save(new Person(a,
+                            a + "@test.com",
                             position,
                             department,
                             LocalDate.of(1970, Month.JANUARY, 1)));

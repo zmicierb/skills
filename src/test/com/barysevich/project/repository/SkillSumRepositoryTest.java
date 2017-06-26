@@ -42,9 +42,9 @@ public class SkillSumRepositoryTest {
 
         position = entityManager.persist(new Position("test"));
         department = entityManager.persist(new Department("test"));
-        person1 = entityManager.persist(new Person("test1", position, department, LocalDate.now()));
-        person2 = entityManager.persist(new Person("test2", position, department, LocalDate.now()));
-        person3 = entityManager.persist(new Person("test3", position, department, LocalDate.now()));
+        person1 = entityManager.persist(new Person("test1", "test1@test.com", position, department, LocalDate.now()));
+        person2 = entityManager.persist(new Person("test2", "test2@test.com", position, department, LocalDate.now()));
+        person3 = entityManager.persist(new Person("test3", "test3@test.com", position, department, LocalDate.now()));
         skill = entityManager.persist(new Skill("test"));
         row = entityManager.persist(new Row("test"));
 
