@@ -43,18 +43,21 @@ public class PersonRepositoryTest {
         department = entityManager.persist(new Department("test"));
 
         person1 = new Person("Test1",
+                "test1@test.com",
                 position,
                 department,
                 LocalDate.of(1970, Month.JANUARY, 1));
         entityManager.persist(person1);
 
         person2 = new Person("Test2",
+                "test2@test.com",
                 position,
                 department,
                 LocalDate.of(1970, Month.JANUARY, 1));
         entityManager.persist(person2);
 
         person3 = new Person("Test3",
+                "test3@test.com",
                 position,
                 department,
                 LocalDate.of(1970, Month.JANUARY, 1));
@@ -64,6 +67,7 @@ public class PersonRepositoryTest {
     @Test
     public void save() {
         Person customer = personRepository.save(new Person("Jack",
+                "test@test.com",
                 new Position("test"),
                 new Department("test"),
                 LocalDate.of(1970, Month.JANUARY, 1)));

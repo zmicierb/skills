@@ -5,6 +5,7 @@
                 <h3>{{$ctrl.person.name}}<a href="" ng-click="$ctrl.toggleEditFlag()">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a></h3>
+                <p>{{$ctrl.person.email}}</p>
                 <p>{{$ctrl.person.birthDate}}</p>
                 <p>{{$ctrl.person.position.name}}</p>
                 <p>{{$ctrl.person.department.name}}</p>
@@ -17,6 +18,11 @@
                     <div class="form-group">
                         <div class="col-md-8">
                             <input required type="text" ng-model="$ctrl.person.name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input required type="email" ng-model="$ctrl.person.email" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">

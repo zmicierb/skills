@@ -53,6 +53,7 @@ public class ProjectRepositoryTest {
         skill = entityManager.persist(new Skill("test"));
 
         person = entityManager.persist(new Person("Test",
+                "test@test.com",
                 position,
                 department,
                 LocalDate.of(1970, Month.JANUARY, 1)));

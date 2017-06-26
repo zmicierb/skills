@@ -66,12 +66,14 @@ public class PersonControllerTest extends PopulateDBTest {
     public void save() throws IOException {
 
         String test = "Test4";
+        String email = "test4@test.com";
 
         Department department = departmentService.save(new Department(test));
         Position position = positionService.save(new Position(test));
 
         ResponseEntity<String> response =
                 restTemplate.postForEntity("/api/person", new Person(test,
+                        email,
                         position,
                         department,
                         LocalDate.of(1970, Month.JANUARY, 1)), String.class);

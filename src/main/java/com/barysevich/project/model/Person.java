@@ -29,6 +29,10 @@ public class Person extends AbstractPersistable<Long> {
     @NotEmpty
     private String name;
 
+    @Column(name = "email", length = 256, unique = true)
+    @NotEmpty
+    private String email;
+
     @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Position position;
 
@@ -48,8 +52,9 @@ public class Person extends AbstractPersistable<Long> {
         //default constructor
     }
 
-    public Person(String name, Position position, Department department, LocalDate birthDate) {
+    public Person(String name, String email, Position position, Department department, LocalDate birthDate) {
         this.name = name;
+        this.email = email;
         this.position = position;
         this.department = department;
         this.birthDate = birthDate;
@@ -71,6 +76,14 @@ public class Person extends AbstractPersistable<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Position getPosition() {

@@ -69,10 +69,11 @@ public class PersonServiceTest {
     @Test
     public void update() throws Exception {
         String name = "test";
+        String email = "test@test.com";
         Long personId = 1L;
         Position position = new Position(name);
         Department department = new Department(name);
-        Person person = new Person(name, position, department, LocalDate.now());
+        Person person = new Person(name, email, position, department, LocalDate.now());
         person.setId(personId);
 
         when(personRepository.findOne(personId)).thenReturn(person);
