@@ -6,7 +6,8 @@
 
     <groupId>by.barysevich.project</groupId>
     <artifactId>skills</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -16,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <hibernate.version>5.2.10.Final</hibernate.version>
+        <docker.image.prefix>dbarysevich</docker.image.prefix>
     </properties>
     <dependencies>
         <dependency>
@@ -54,6 +56,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>skills</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -76,6 +79,24 @@
                         <version>3.5</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <dockerHost>https://192.168.99.100:2376</dockerHost>
+                    <dockerCertPath>C:\Users\BarysevichD\.docker\machine\machines\default</dockerCertPath>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
