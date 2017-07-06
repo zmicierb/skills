@@ -56,6 +56,22 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.properties</include>
+                    <include>db/**</include>
+                    <include>static/app/**</include>
+                    <include>static/bower_components/**/*.min.js</include>
+                    <include>static/bower_components/**/*.min.css</include>
+                    <include>static/bower_components/bootstrap/dist/fonts/**</include>
+                </includes>
+                <excludes>
+                    <exclude>*/node_modules/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <finalName>skills</finalName>
         <plugins>
             <plugin>
