@@ -3,10 +3,9 @@ package com.barysevich.project.service.impl;
 import com.barysevich.project.controller.dto.ContainerAction;
 import com.barysevich.project.controller.dto.SkillContainer;
 import com.barysevich.project.model.Row;
-import com.barysevich.project.model.Skill;
 import com.barysevich.project.model.SkillSum;
-import com.barysevich.project.repository.SkillRepository;
 import com.barysevich.project.repository.SkillSumRepository;
+import com.barysevich.project.service.SkillService;
 import com.barysevich.project.service.SkillSumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
     private SkillSumRepository skillSumRepository;
 
     @Autowired
-    private SkillRepository skillRepository;
+    private SkillService skillService;
 
     @Autowired
     public SkillSumServiceImpl(SkillSumRepository repository) {
@@ -114,7 +113,8 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
                     skillSumRepository.delete(skillContainer.getSkillSum().getId());
                     break;
                 case INSERT:
-                    insertSkillSum(skillContainer.getSkillSum());
+                    skillContainer.getSkillSum().setSkill(skillService.save(skillContainer.getSkillSum().getSkill()));
+                    skillSumRepository.save(skillContainer.getSkillSum());
                     break;
                 case UPDATE:
                     skillSumRepository.save(skillContainer.getSkillSum());
@@ -122,19 +122,5 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
                 default:
             }
         });
-    }
-
-    private void insertSkillSum(SkillSum skillSum) {
-        //additional checks due to editable typeahead
-        if (skillSum.getSkill().isNew()) {
-            Skill skill = skillRepository.findByName(skillSum.getSkill().getName());
-            if (skill == null)
-                skillSum.setSkill(skillRepository.save(new Skill(skillSum.getSkill().getName())));
-            else
-                skillSum.setSkill(skill);
-        } else {
-            skillSum.setSkill(skillRepository.findOne(skillSum.getSkill().getId()));
-        }
-        skillSumRepository.save(skillSum);
     }
 }

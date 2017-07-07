@@ -3,14 +3,12 @@ package com.barysevich.project.service.impl;
 import com.barysevich.project.controller.dto.ContainerAction;
 import com.barysevich.project.controller.dto.EnvironmentRowContainer;
 import com.barysevich.project.model.EnvironmentSkill;
-import com.barysevich.project.model.Position;
 import com.barysevich.project.model.Project;
-import com.barysevich.project.model.Skill;
 import com.barysevich.project.repository.EnvironmentSkillRepository;
-import com.barysevich.project.repository.PositionRepository;
 import com.barysevich.project.repository.ProjectRepository;
-import com.barysevich.project.repository.SkillRepository;
+import com.barysevich.project.service.PositionService;
 import com.barysevich.project.service.ProjectService;
+import com.barysevich.project.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +26,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
     private ProjectRepository projectRepository;
 
     @Autowired
-    private PositionRepository positionRepository;
+    private PositionService positionService;
 
     @Autowired
     private EnvironmentSkillRepository environmentSkillRepository;
 
     @Autowired
-    private SkillRepository skillRepository;
+    private SkillService skillService;
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository) {
@@ -56,15 +54,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
         update.setDescription(project.getDescription());
         update.setResult(project.getResult());
         update.setResponsibility(project.getResponsibility());
-        //additional checks due to editable typehead
-        if (project.getPosition().isNew()) {
-            Position position = positionRepository.findByName(project.getPosition().getName());
-            if (position == null)
-                update.setPosition(positionRepository.save(new Position(project.getPosition().getName())));
-            else
-                update.setPosition(position);
-        } else
-            update.setPosition(project.getPosition());
+        update.setPosition(positionService.save(project.getPosition()));
 
         HashMap<String, EnvironmentSkill> envSkillMapOld = new HashMap<>();
         HashMap<String, EnvironmentSkill> envSkillMapNew = new HashMap<>();
@@ -129,26 +119,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
     @Override
     @Transactional
     public Project save(Project project) {
+        project.setPosition(positionService.save(project.getPosition()));
 
-        //additional checks due to editable typehead
-        if (project.getPosition().isNew()) {
-            Position position = positionRepository.findByName(project.getPosition().getName());
-            if (position == null)
-                project.setPosition(positionRepository.save(new Position(project.getPosition().getName())));
-            else
-                project.setPosition(position);
-        }
-
-        project.getEnvironmentSkills().forEach(i -> {
-            //additional checks due to editable typeahead
-            if (i.getSkill().isNew()) {
-                Skill skill = skillRepository.findByName(i.getSkill().getName());
-                if (skill == null)
-                    i.setSkill(skillRepository.save(new Skill(i.getSkill().getName())));
-                else
-                    i.setSkill(skill);
-            }
-        });
+        project.getEnvironmentSkills().forEach(i ->
+                i.setSkill(skillService.save(i.getSkill()))
+        );
 
         return projectRepository.save(project);
     }
@@ -159,16 +134,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
     }
 
     private EnvironmentSkill insertEnvSkill(EnvironmentSkill envSkill) {
-        //additional checks due to editable typeahead
-        if (envSkill.getSkill().isNew()) {
-            Skill skill = skillRepository.findByName(envSkill.getSkill().getName());
-            if (skill == null)
-                envSkill.setSkill(skillRepository.save(new Skill(envSkill.getSkill().getName())));
-            else
-                envSkill.setSkill(skill);
-        } else {
-            envSkill.setSkill(skillRepository.findOne(envSkill.getSkill().getId()));
-        }
+        envSkill.setSkill(skillService.save(envSkill.getSkill()));
         return envSkill;
     }
 

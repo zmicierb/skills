@@ -35,7 +35,13 @@ public class PersonServiceTest {
     private PositionRepository positionRepository;
 
     @Mock
+    private PositionService positionService;
+
+    @Mock
     private DepartmentRepository departmentRepository;
+
+    @Mock
+    private DepartmentService departmentService;
 
     @Mock
     private SkillSumRepository skillSumRepository;
@@ -79,6 +85,8 @@ public class PersonServiceTest {
         when(personRepository.findOne(personId)).thenReturn(person);
         when(positionRepository.findByName(name)).thenReturn(position);
         when(departmentRepository.findByName(name)).thenReturn(department);
+        when(departmentService.save(department)).thenReturn(department);
+        when(positionService.save(position)).thenReturn(position);
 
         personService.update(personId, person);
 

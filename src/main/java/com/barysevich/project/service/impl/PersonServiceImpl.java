@@ -2,14 +2,12 @@ package com.barysevich.project.service.impl;
 
 import com.barysevich.project.controller.dto.PersonSkillsDto;
 import com.barysevich.project.controller.dto.SkillDto;
-import com.barysevich.project.model.Department;
 import com.barysevich.project.model.Person;
-import com.barysevich.project.model.Position;
-import com.barysevich.project.repository.DepartmentRepository;
 import com.barysevich.project.repository.PersonRepository;
-import com.barysevich.project.repository.PositionRepository;
 import com.barysevich.project.repository.SkillSumRepository;
+import com.barysevich.project.service.DepartmentService;
 import com.barysevich.project.service.PersonService;
+import com.barysevich.project.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +27,10 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
     private PersonRepository personRepository;
 
     @Autowired
-    private PositionRepository positionRepository;
+    private PositionService positionService;
 
     @Autowired
-    private DepartmentRepository departmentRepository;
+    private DepartmentService departmentService;
 
     @Autowired
     private SkillSumRepository skillSumRepository;
@@ -66,23 +64,8 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
         update.setName(person.getName());
         update.setEmail(person.getEmail());
         update.setBirthDate(person.getBirthDate());
-        //additional checks due to editable typeahead
-        if (person.getPosition().isNew()) {
-            Position position = positionRepository.findByName(person.getPosition().getName());
-            if (position == null)
-                update.setPosition(positionRepository.save(new Position(person.getPosition().getName())));
-            else
-                update.setPosition(position);
-        } else
-            update.setPosition(person.getPosition());
-        if (person.getDepartment().isNew()) {
-            Department department = departmentRepository.findByName(person.getDepartment().getName());
-            if (department == null)
-                update.setDepartment(departmentRepository.save(new Department(person.getDepartment().getName())));
-            else
-                update.setDepartment(department);
-        } else
-            update.setDepartment(person.getDepartment());
+        update.setPosition(positionService.save(person.getPosition()));
+        update.setDepartment(departmentService.save(person.getDepartment()));
 
         return personRepository.save(update);
     }

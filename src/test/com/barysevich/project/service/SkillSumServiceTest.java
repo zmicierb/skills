@@ -33,6 +33,9 @@ public class SkillSumServiceTest {
     @Mock
     private SkillRepository skillRepository;
 
+    @Mock
+    private SkillService skillService;
+
     @InjectMocks
     private SkillSumServiceImpl skillSumService;
 
@@ -78,7 +81,9 @@ public class SkillSumServiceTest {
     public void updateAddNew() throws Exception {
 
         Skill skill3 = new Skill("test3");
+        skill3.setId(3L);
         Skill skill4 = new Skill("test4");
+        skill3.setId(4L);
 
         when(skillSumRepository.findByPersonId(personId)).thenReturn(skillSums);
         when(skillRepository.findByName(skill3.getName())).thenReturn(skill3);
@@ -87,14 +92,18 @@ public class SkillSumServiceTest {
         SkillSum skillSumNew2 = new SkillSum(personId, skill2, row, 2);
         //saved skill
         SkillSum skillSumNew3 = new SkillSum(personId, skill3, row, 3);
+        skillSumNew3.setId(3L);
         //non-saved skill
         SkillSum skillSumNew4 = new SkillSum(personId, skill4, row, 4);
+        skillSumNew3.setId(4L);
         List<SkillSum> skillSumsNew = new ArrayList<>(Arrays.asList(skillSumNew1, skillSumNew2, skillSumNew3, skillSumNew4));
 
         skillSumService.update(personId, skillSumsNew);
 
-        verify(skillSumRepository, times(2)).save(skillSumNew3);
-        verify(skillRepository, times(1)).save(skill4);
+        verify(skillSumRepository, times(1)).save(skillSumNew3);
+        verify(skillSumRepository, times(1)).save(skillSumNew4);
+        verify(skillService, times(1)).save(skill3);
+        verify(skillService, times(1)).save(skill4);
     }
 
     @Test

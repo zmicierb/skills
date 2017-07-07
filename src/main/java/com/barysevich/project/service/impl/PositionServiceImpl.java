@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by BarysevichD on 2017-03-31.
@@ -26,5 +27,20 @@ public class PositionServiceImpl extends GenericServiceImpl<Position, Long> impl
     @Override
     public Page<Position> findByNameContainingIgnoreCase(String name, Pageable pageable) {
         return positionRepository.findByNameContainingIgnoreCase(name, pageable);
+    }
+
+    @Override
+    @Transactional
+    public Position save(Position positionNew) {
+        //additional checks due to editable typeahead
+        if (positionNew.isNew()) {
+            Position positionOld = positionRepository.findByName(positionNew.getName());
+            if (positionOld == null)
+                return positionRepository.save(new Position(positionNew.getName()));
+            else
+                return positionOld;
+        } else {
+            return positionRepository.findOne(positionNew.getId());
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.barysevich.project.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by BarysevichD on 2017-03-31.
@@ -25,5 +26,20 @@ public class SkillServiceImpl extends GenericServiceImpl<Skill, Long> implements
     @Override
     public Iterable<Skill> findByNameContainingIgnoreCase(String name, Pageable pageable) {
         return skillRepository.findByNameContainingIgnoreCase(name, pageable);
+    }
+
+    @Override
+    @Transactional
+    public Skill save(Skill skillNew) {
+        //additional checks due to editable typeahead
+        if (skillNew.isNew()) {
+            Skill skillOld = skillRepository.findByName(skillNew.getName());
+            if (skillOld == null)
+                return skillRepository.save(new Skill(skillNew.getName()));
+            else
+                return skillOld;
+        } else {
+            return skillRepository.findOne(skillNew.getId());
+        }
     }
 }

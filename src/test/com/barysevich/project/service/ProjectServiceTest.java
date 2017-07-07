@@ -36,7 +36,13 @@ public class ProjectServiceTest {
     private PositionRepository positionRepository;
 
     @Mock
+    private PositionService positionService;
+
+    @Mock
     private SkillRepository skillRepository;
+
+    @Mock
+    private SkillService skillService;
 
     @Mock
     private EnvironmentSkillRepository environmentSkillRepository;
@@ -95,6 +101,8 @@ public class ProjectServiceTest {
         when(skillRepository.findByName("skill1")).thenReturn(skill1);
         when(skillRepository.findByName("skill2")).thenReturn(skill2);
         when(skillRepository.findByName("skill3")).thenReturn(skill3);
+        when(skillService.save(skill3)).thenReturn(skill1);
+        when(positionService.save(position)).thenReturn(position);
 
         EnvironmentSkill environmentSkillNew1 = new EnvironmentSkill(skill1, 1);
         EnvironmentSkill environmentSkillNew2 = new EnvironmentSkill(skill2, 2);
@@ -117,6 +125,7 @@ public class ProjectServiceTest {
         when(skillRepository.findByName("skill1")).thenReturn(skill1);
         when(skillRepository.findByName("skill2")).thenReturn(skill2);
         when(skillRepository.findByName("skill3")).thenReturn(skill3);
+        when(positionService.save(position)).thenReturn(position);
 
         List<EnvironmentSkill> environmentSkillsNew = environmentSkills.subList(0, 1);
         Project projectNew = new Project(personId, position, "test", "test", "test", environmentSkillsNew, null);
@@ -135,6 +144,7 @@ public class ProjectServiceTest {
         when(skillRepository.findByName("skill1")).thenReturn(skill1);
         when(skillRepository.findByName("skill2")).thenReturn(skill2);
         when(skillRepository.findByName("skill3")).thenReturn(skill3);
+        when(positionService.save(position)).thenReturn(position);
 
         EnvironmentSkill environmentSkillNew = new EnvironmentSkill(skill1, 10);
         List<EnvironmentSkill> environmentSkillsNew = new ArrayList<>(Arrays.asList(environmentSkillNew, environmentSkill2));
@@ -158,6 +168,7 @@ public class ProjectServiceTest {
     @Test
     public void save() throws Exception {
         when(positionRepository.findByName(name)).thenReturn(position);
+        when(positionService.save(position)).thenReturn(position);
 
         projectService.save(project);
 
