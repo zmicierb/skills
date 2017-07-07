@@ -18,4 +18,6 @@ public interface SkillSumRepository extends PagingAndSortingRepository<SkillSum,
     @Transactional
     @Modifying
     void deleteByPersonId(@Param("id") Long personId);
+
+    Iterable<SkillSum> findBySkillNameContainingIgnoreCase(@Param("name") String name);
 }

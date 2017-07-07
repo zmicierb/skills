@@ -55,6 +55,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
         update.setResult(project.getResult());
         update.setResponsibility(project.getResponsibility());
         update.setPosition(positionService.save(project.getPosition()));
+        update.setCompanyInfo(project.getCompanyInfo());
 
         HashMap<String, EnvironmentSkill> envSkillMapOld = new HashMap<>();
         HashMap<String, EnvironmentSkill> envSkillMapNew = new HashMap<>();
