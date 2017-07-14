@@ -9,16 +9,16 @@ public class SkillDto {
 
     private String skillName;
 
-    private Integer weight;
+    private Integer position;
 
     public SkillDto() {
 
     }
 
-    public SkillDto(Long skillId, String skillName, Integer weight) {
+    public SkillDto(Long skillId, String skillName, Integer position) {
         this.skillId = skillId;
         this.skillName = skillName;
-        this.weight = weight;
+        this.position = position;
     }
 
     public Long getSkillId() {
@@ -37,11 +37,11 @@ public class SkillDto {
         this.skillName = skillName;
     }
 
-    public Integer getWeight() {
-        return weight;
+    public Integer getPosition() {
+        return position;
     }
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 }

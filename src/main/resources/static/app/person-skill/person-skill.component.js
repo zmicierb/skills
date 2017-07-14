@@ -20,10 +20,10 @@ angular.module('skillsApp').component('personSkill', {
                             self.models.lists[row.rowName].skills.push(skill);
                         })
                     });
-                    //sort skills in lists by weight
+                    //sort skills in lists by position
                     angular.forEach(personSkills.data, function (row) {
                         self.models.lists[row.rowName].skills.sort(function (a, b) {
-                            return a.weight - b.weight;
+                            return a.position - b.position;
                         });
                     });
 
@@ -129,7 +129,7 @@ angular.module('skillsApp').component('personSkill', {
                                 id: row.rowId,
                                 name: row.type
                             },
-                            weight: i + 1
+                            position: i + 1
                         })
                     })
                 });

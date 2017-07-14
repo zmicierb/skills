@@ -15,7 +15,7 @@ describe('PersonSkillSrv', function () {
             "skill": {"id": 1, "name": "Java 6", "new": false},
             "rowId": 1,
             "row": {"id": 1, "name": "Programming Languages", "new": false},
-            "weight": 1,
+            "position": 1,
             "new": false
         }, {
             "id": 2,
@@ -24,7 +24,7 @@ describe('PersonSkillSrv', function () {
             "skill": {"id": 2, "name": "Oracle 11", "new": false},
             "rowId": 1,
             "row": {"id": 2, "name": "Databases", "new": false},
-            "weight": 2,
+            "position": 2,
             "new": false
         }]
     };
@@ -52,7 +52,7 @@ describe('PersonSkillSrv', function () {
             id: 1,
             name: "testRow"
         },
-        weight: 1
+        position: 1
     };
 
     // Add a custom equality tester before each test

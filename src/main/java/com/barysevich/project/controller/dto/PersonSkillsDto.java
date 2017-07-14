@@ -26,7 +26,7 @@ public class PersonSkillsDto {
         this.personId = skillSum.getPersonId();
         this.rowId = skillSum.getRowId();
         this.rowName = skillSum.getRow().getName();
-        this.skills.add(new SkillDto(skillSum.getSkillId(), skillSum.getSkill().getName(), skillSum.getWeight()));
+        this.skills.add(new SkillDto(skillSum.getSkillId(), skillSum.getSkill().getName(), skillSum.getPosition()));
     }
 
     public Long getPersonId() {

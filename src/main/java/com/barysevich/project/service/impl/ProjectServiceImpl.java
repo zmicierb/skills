@@ -73,8 +73,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, Long> implem
         //compare old and new maps and fill in skillContainers
         envSkillMapNew.forEach((kNew, vNew) -> {
             envSkillMapOld.computeIfPresent(kNew, (kOld, vOld) -> {
-                if (!vNew.getWeight().equals(vOld.getWeight())) {
-                    vOld.setWeight(vNew.getWeight());
+                if (!vNew.getPosition().equals(vOld.getPosition())) {
+                    vOld.setPosition(vNew.getPosition());
                     envSkillContainers.add(new EnvironmentRowContainer(vOld, ContainerAction.UPDATE));
                 }
                 return envSkillMapOld.get(kOld);

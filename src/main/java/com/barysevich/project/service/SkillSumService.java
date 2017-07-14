@@ -10,4 +10,6 @@ public interface SkillSumService extends GenericService<SkillSum, Long> {
     Iterable<SkillSum> findByPersonId(Long id);
 
     void update(Long personId, Iterable<SkillSum> skillSums);
+
+    void updateTotalAmount(Long personId);
 }

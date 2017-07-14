@@ -19,19 +19,19 @@ describe('personProject', function () {
                     "projectId": 1,
                     "skillId": 7,
                     "skill": {"id": 7, "name": "Java EE 6"},
-                    "weight": 1
+                    "position": 1
                 }, {
                     "id": 2,
                     "projectId": 1,
                     "skillId": 20,
                     "skill": {"id": 20, "name": "Liferay Enterprise"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 3,
                     "projectId": 1,
                     "skillId": 25,
                     "skill": {"id": 25, "name": "PostgreSQL"},
-                    "weight": 3
+                    "position": 3
                 }],
                 "result": "Project in progress.",
                 "responsibility": "Developing portlet.",
@@ -47,19 +47,19 @@ describe('personProject', function () {
                     "projectId": 2,
                     "skillId": 7,
                     "skill": {"id": 7, "name": "Java EE 6"},
-                    "weight": 1
+                    "position": 1
                 }, {
                     "id": 5,
                     "projectId": 2,
                     "skillId": 17,
                     "skill": {"id": 17, "name": "IBM WebSphere Application Server 8.5"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 6,
                     "projectId": 2,
                     "skillId": 18,
                     "skill": {"id": 18, "name": "IBM WebSphere Portal Server 8.5"},
-                    "weight": 3
+                    "position": 3
                 }],
                 "result": "First phase is complete.",
                 "responsibility": "Developing catalog of items.",
@@ -75,19 +75,19 @@ describe('personProject', function () {
                     "projectId": 3,
                     "skillId": 3,
                     "skill": {"id": 3, "name": "Java 8"},
-                    "weight": 1
+                    "position": 1
                 }, {
                     "id": 8,
                     "projectId": 3,
                     "skillId": 12,
                     "skill": {"id": 12, "name": "Spring 4.x"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 9,
                     "projectId": 3,
                     "skillId": 21,
                     "skill": {"id": 21, "name": "Oracle 11"},
-                    "weight": 3
+                    "position": 3
                 }],
                 "result": "Working project from scratch in tight terms.",
                 "responsibility": "Developing functionality for editing and printing documents from web-browser.",
@@ -108,19 +108,19 @@ describe('personProject', function () {
                     "projectId": 4,
                     "skillId": 2,
                     "skill": {"id": 2, "name": "Java 7"},
-                    "weight": 1
+                    "position": 1
                 }, {
                     "id": 11,
                     "projectId": 4,
                     "skillId": 5,
                     "skill": {"id": 5, "name": "PL/SQL"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 12,
                     "projectId": 4,
                     "skillId": 46,
                     "skill": {"id": 46, "name": "Jasper Report"},
-                    "weight": 3
+                    "position": 3
                 }],
                 "result": "Long term cooperation in full-stack developer team.",
                 "responsibility": "Developing functionality for printing indetifier card of applicants from web-browser.",
@@ -140,13 +140,13 @@ describe('personProject', function () {
                     "projectId": 5,
                     "skillId": 29,
                     "skill": {"id": 29, "name": "RHEL"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 14,
                     "projectId": 5,
                     "skillId": 23,
                     "skill": {"id": 23, "name": "MySQL"},
-                    "weight": 1
+                    "position": 1
                 }],
                 "result": "All projects are in production.",
                 "responsibility": "Configuring OS, installing Oracle.",
@@ -181,19 +181,19 @@ describe('personProject', function () {
                     "projectId": 3,
                     "skillId": 3,
                     "skill": {"id": 3, "name": "Java 8"},
-                    "weight": 1
+                    "position": 1
                 }, {
                     "id": 8,
                     "projectId": 3,
                     "skillId": 12,
                     "skill": {"id": 12, "name": "Spring 4.x"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 9,
                     "projectId": 3,
                     "skillId": 21,
                     "skill": {"id": 21, "name": "Oracle 11"},
-                    "weight": 3
+                    "position": 3
                 }],
                 "result": "Working project from scratch in tight terms.",
                 "responsibility": "Developing functionality for editing and printing documents from web-browser.",
@@ -228,25 +228,25 @@ describe('personProject', function () {
                     "projectId": 3,
                     "skillId": 3,
                     "skill": {"id": 3, "name": "Java 8"},
-                    "weight": 1
+                    "position": 1
                 }, {
                     "id": 8,
                     "projectId": 3,
                     "skillId": 12,
                     "skill": {"id": 12, "name": "Spring 4.x"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 9,
                     "projectId": 3,
                     "skillId": 21,
                     "skill": {"id": 21, "name": "Oracle 11"},
-                    "weight": 3
+                    "position": 3
                 }, {
                     "id": 1479,
                     "projectId": null,
                     "skillId": null,
                     "skill": {"id": 4, "name": "SQL"},
-                    "weight": 4
+                    "position": 4
                 }],
                 "result": "Working project from scratch in tight terms.",
                 "responsibility": "Developing functionality for editing and printing documents from web-browser.",
@@ -278,25 +278,25 @@ describe('personProject', function () {
                 "projectId": 3,
                 "skillId": 3,
                 "skill": {"id": 3, "name": "Java 8"},
-                "weight": 1
+                "position": 1
             }, {
                 "id": 8,
                 "projectId": 3,
                 "skillId": 12,
                 "skill": {"id": 12, "name": "Spring 4.x"},
-                "weight": 2
+                "position": 2
             }, {
                 "id": 9,
                 "projectId": 3,
                 "skillId": 21,
                 "skill": {"id": 21, "name": "Oracle 11"},
-                "weight": 3
+                "position": 3
             }, {
                 "id": 1479,
                 "projectId": null,
                 "skillId": null,
                 "skill": {"id": 4, "name": "SQL"},
-                "weight": 4
+                "position": 4
             }],
             "result": "Working project from scratch in tight terms.",
             "responsibility": "Developing functionality for editing and printing documents from web-browser.",
@@ -321,25 +321,25 @@ describe('personProject', function () {
                     "projectId": 3,
                     "skillId": 3,
                     "skill": {"id": 3, "name": "Java 8"},
-                    "weight": 1
+                    "position": 1
                 }, {
                     "id": 8,
                     "projectId": 3,
                     "skillId": 12,
                     "skill": {"id": 12, "name": "Spring 4.x"},
-                    "weight": 2
+                    "position": 2
                 }, {
                     "id": 9,
                     "projectId": 3,
                     "skillId": 21,
                     "skill": {"id": 21, "name": "Oracle 11"},
-                    "weight": 3
+                    "position": 3
                 }, {
                     "id": 1479,
                     "projectId": null,
                     "skillId": null,
                     "skill": {"id": 4, "name": "SQL"},
-                    "weight": 4
+                    "position": 4
                 }],
                 "result": "Working project from scratch in tight terms.",
                 "responsibility": "Developing functionality for editing and printing documents from web-browser.",
@@ -432,7 +432,7 @@ describe('personProject', function () {
             angular.forEach(ctrl.personProjects, function (project) {
                 project.environmentSkills.forEach(function (skill, i) {
                     if (i > 0) {
-                        expect(skill.weight).toBeGreaterThan(project.environmentSkills[i - 1].weight);
+                        expect(skill.position).toBeGreaterThan(project.environmentSkills[i - 1].position);
                     }
                 })
             });

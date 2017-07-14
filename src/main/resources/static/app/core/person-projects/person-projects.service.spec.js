@@ -21,21 +21,21 @@ describe('PersonProjectSrv', function () {
                     "projectId": 1,
                     "skillId": 7,
                     "skill": {"id": 7, "name": "Java EE 6", "new": false},
-                    "weight": 3,
+                    "position": 3,
                     "new": false
                 }, {
                     "id": 2,
                     "projectId": 1,
                     "skillId": 20,
                     "skill": {"id": 20, "name": "Liferay Enterprise", "new": false},
-                    "weight": 2,
+                    "position": 2,
                     "new": false
                 }, {
                     "id": 3,
                     "projectId": 1,
                     "skillId": 25,
                     "skill": {"id": 25, "name": "PostgreSQL", "new": false},
-                    "weight": 1,
+                    "position": 1,
                     "new": false
                 }],
                 "result": "Project in progress.",

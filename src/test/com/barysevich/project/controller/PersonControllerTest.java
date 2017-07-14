@@ -194,7 +194,11 @@ public class PersonControllerTest extends PopulateDBTest {
         Row row = rows.getContent().get(0);
 
         List<SkillSum> skillSums = (List) skillSumService.findByPersonId(id);
-        skillSums.add(new SkillSum(person.getId(), new Skill(test2), row, 999));
+        skillSums.forEach(skillSum -> {
+            skillSum.setSkill(skillService.findOne(skillSum.getSkillId()));
+            skillSum.setRow(rowService.findOne(skillSum.getRowId()));
+        });
+        skillSums.add(new SkillSum(person.getId(), new Skill(test2), row, 999, 2));
 
         HttpEntity<List<SkillSum>> requestEntity = new HttpEntity<>(skillSums);
 

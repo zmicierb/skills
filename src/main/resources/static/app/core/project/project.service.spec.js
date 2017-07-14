@@ -25,7 +25,7 @@ describe('ProjectSrv', function () {
                         "id": 3,
                         "name": "Test"
                     },
-                    "weight": 1
+                    "position": 1
                 },
                 {
                     "id": 8,
@@ -35,7 +35,7 @@ describe('ProjectSrv', function () {
                         "id": 12,
                         "name": "Test"
                     },
-                    "weight": 2
+                    "position": 2
                 }
             ],
             "result": "Test",
@@ -63,13 +63,13 @@ describe('ProjectSrv', function () {
                 "projectId": 3,
                 "skillId": 3,
                 "skill": {"id": 3, "name": "Test"},
-                "weight": 1
+                "position": 1
             }, {
                 "id": 8,
                 "projectId": 3,
                 "skillId": 12,
                 "skill": {"id": 12, "name": "Test"},
-                "weight": 2
+                "position": 2
             }],
             "result": "Test",
             "responsibility": "Test",

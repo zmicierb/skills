@@ -75,7 +75,7 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
         skillSumRepository.findByPersonId(id).forEach(a -> {
             if (personSkillsDto.containsKey(a.getRowId())) {
                 personSkillsDto.get(a.getRowId()).getSkills()
-                        .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getWeight()));
+                        .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getPosition()));
             } else {
                 personSkillsDto.put(a.getRowId(), new PersonSkillsDto(a));
             }

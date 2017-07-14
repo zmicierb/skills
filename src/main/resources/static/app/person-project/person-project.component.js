@@ -8,9 +8,9 @@ angular.module('skillsApp').component('personProject', {
             var queryPersonProjects = function () {
                 var personProjects = PersonProjectSrv.query({personId: $routeParams.personId}, function () {
                     personProjects.data.forEach(function (project) {
-                        //sort skills in environment rows by weight
+                        //sort skills in environment rows by position
                         project.environmentSkills.sort(function (a, b) {
-                            return a.weight - b.weight;
+                            return a.position - b.position;
                         });
                         //convert for datepicker
                         project.companyInfo.startDt = Date.parse(project.companyInfo.startDate);
@@ -27,9 +27,9 @@ angular.module('skillsApp').component('personProject', {
 
             var queryPersonProject = function (projectId) {
                 var personProject = ProjectSrv.get({projectId: projectId}, function () {
-                    //sort skills in environment rows by weight
+                    //sort skills in environment rows by position
                     personProject.data.environmentSkills.sort(function (a, b) {
-                        return a.weight - b.weight;
+                        return a.position - b.position;
                     });
                     self.personProjects.some(function (item) {
                         if (item.id == projectId || item.id == null) {
@@ -184,7 +184,7 @@ angular.module('skillsApp').component('personProject', {
             self.submitProject = function (projectId, form) {
                 var project = getProject(projectId);
                 project.environmentSkills.forEach(function (item, i) {
-                    item.weight = i + 1;
+                    item.position = i + 1;
                 });
                 if (angular.isNumber(projectId)) {
                     ProjectSrv.update({projectId: projectId}, project).$promise.then(function () {

@@ -17,4 +17,10 @@
         <tagDatabase tag="version_0.2.0"/>
     </changeSet>
 
+    <include file="02/alter_tables.xml" relativeToChangelogFile="true"/>
+
+    <changeSet author="BarysevichD" id="tag_version_0_3_0">
+        <tagDatabase tag="version_0.3.0"/>
+    </changeSet>
+
 </databaseChangeLog>

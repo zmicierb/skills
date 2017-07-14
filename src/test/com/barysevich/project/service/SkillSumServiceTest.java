@@ -85,23 +85,28 @@ public class SkillSumServiceTest {
         Skill skill4 = new Skill("test4");
         skill3.setId(4L);
 
-        when(skillSumRepository.findByPersonId(personId)).thenReturn(skillSums);
+        when(skillSumRepository.findByPersonIdEager(personId)).thenReturn(skillSums);
         when(skillRepository.findByName(skill3.getName())).thenReturn(skill3);
 
         SkillSum skillSumNew1 = new SkillSum(personId, skill1, row, 1);
+        skillSumNew1.setId(1L);
         SkillSum skillSumNew2 = new SkillSum(personId, skill2, row, 2);
+        skillSumNew1.setId(2L);
         //saved skill
         SkillSum skillSumNew3 = new SkillSum(personId, skill3, row, 3);
         skillSumNew3.setId(3L);
         //non-saved skill
         SkillSum skillSumNew4 = new SkillSum(personId, skill4, row, 4);
-        skillSumNew3.setId(4L);
+        skillSumNew4.setId(4L);
         List<SkillSum> skillSumsNew = new ArrayList<>(Arrays.asList(skillSumNew1, skillSumNew2, skillSumNew3, skillSumNew4));
+
+        when(skillSumRepository.countByPersonId(personId)).thenReturn(4);
+        when(skillSumRepository.checkTotalAmountByPersonId(personId, 4)).thenReturn(skillSumsNew);
 
         skillSumService.update(personId, skillSumsNew);
 
-        verify(skillSumRepository, times(1)).save(skillSumNew3);
-        verify(skillSumRepository, times(1)).save(skillSumNew4);
+        verify(skillSumRepository, times(2)).save(skillSumNew3);
+        verify(skillSumRepository, times(2)).save(skillSumNew4);
         verify(skillService, times(1)).save(skill3);
         verify(skillService, times(1)).save(skill4);
     }
@@ -109,27 +114,43 @@ public class SkillSumServiceTest {
     @Test
     public void updateRemoveOne() throws Exception {
 
-        when(skillSumRepository.findByPersonId(personId)).thenReturn(skillSums);
+        when(skillSumRepository.findByPersonIdEager(personId)).thenReturn(skillSums);
+        when(skillSumRepository.countByPersonId(personId)).thenReturn(1);
+        when(skillSumRepository.checkTotalAmountByPersonId(personId, 1)).thenReturn(skillSums.subList(0, 1));
 
         List<SkillSum> skillSumsNew = skillSums.subList(0, 1);
 
         skillSumService.update(personId, skillSumsNew);
 
         verify(skillSumRepository, times(1)).delete(skillSums.get(1).getId());
-
     }
 
     @Test
     public void updateChangeOne() throws Exception {
 
-        when(skillSumRepository.findByPersonId(personId)).thenReturn(skillSums);
+        when(skillSumRepository.findByPersonIdEager(personId)).thenReturn(skillSums);
 
         SkillSum skillSumNew = new SkillSum(personId, skill1, row, 10);
         List<SkillSum> skillSumsNew = new ArrayList<>(Arrays.asList(skillSumNew, skillSum2));
 
+        when(skillSumRepository.countByPersonId(personId)).thenReturn(2);
+        when(skillSumRepository.checkTotalAmountByPersonId(personId, 2)).thenReturn(skillSumsNew);
+
         skillSumService.update(personId, skillSumsNew);
 
         verify(skillSumRepository, times(1)).save(skillSums.get(0));
+        verify(skillSumRepository, times(1)).save(skillSums.get(1));
+    }
+
+    @Test
+    public void updateTotalAmount() throws Exception {
+        when(skillSumRepository.countByPersonId(personId)).thenReturn(1);
+        when(skillSumRepository.checkTotalAmountByPersonId(personId, 1)).thenReturn(skillSums);
+
+        skillSumService.updateTotalAmount(personId);
+
+        verify(skillSumRepository, times(1)).save(skillSums.get(0));
+        verify(skillSumRepository, times(1)).save(skillSums.get(1));
     }
 
 }

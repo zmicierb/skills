@@ -22,21 +22,37 @@ public class EnvironmentSkill extends AbstractPersistable<Long> {
     @Column(name = "project_id", insertable = false, updatable = false)
     private Long projectId;
 
+    @Transient
+    private Long personId;
+
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
 
-    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.LAZY, cascade = {REFRESH, DETACH})
     private Skill skill;
 
-    private Integer weight;
+    private Integer position;
 
     public EnvironmentSkill() {
         //default constructor
     }
 
-    public EnvironmentSkill(Skill skill, Integer weight) {
+    public EnvironmentSkill(EnvironmentSkill environmentSkill, Long personId) {
+        this(environmentSkill);
+        this.personId = personId;
+    }
+
+    public EnvironmentSkill(EnvironmentSkill environmentSkill) {
+        this.id = environmentSkill.getId();
+        this.projectId = environmentSkill.getProjectId();
+        this.skillId = environmentSkill.getSkillId();
+        this.skill = environmentSkill.getSkill();
+        this.position = environmentSkill.getPosition();
+    }
+
+    public EnvironmentSkill(Skill skill, Integer position) {
         this.skill = skill;
-        this.weight = weight;
+        this.position = position;
     }
 
     @Override
@@ -57,6 +73,14 @@ public class EnvironmentSkill extends AbstractPersistable<Long> {
         this.projectId = projectId;
     }
 
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
+    }
+
     public Long getSkillId() {
         return skillId;
     }
@@ -73,11 +97,11 @@ public class EnvironmentSkill extends AbstractPersistable<Long> {
         this.skill = skill;
     }
 
-    public Integer getWeight() {
-        return weight;
+    public Integer getPosition() {
+        return position;
     }
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 }

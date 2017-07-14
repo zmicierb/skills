@@ -24,26 +24,36 @@ public class SkillSum extends AbstractPersistable<Long> {
     @Column(name = "skill_id", insertable = false, updatable = false)
     private Long skillId;
 
-    @OneToOne(targetEntity = Skill.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
+    @OneToOne(targetEntity = Skill.class, fetch = FetchType.LAZY, cascade = {REFRESH, DETACH})
     private Skill skill;
 
     @Column(name = "row_id", insertable = false, updatable = false)
     private Long rowId;
 
-    @OneToOne(targetEntity = Row.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
+    @OneToOne(targetEntity = Row.class, fetch = FetchType.LAZY, cascade = {REFRESH, DETACH})
     private Row row;
 
-    private Integer weight;
+    private Integer position;
+
+    private Integer totalAmount;
 
     public SkillSum() {
         //default constructor
     }
 
-    public SkillSum(Long personId, Skill skill, Row row, Integer weight) {
+    public SkillSum(Long personId, Skill skill, Row row, Integer position) {
         this.personId = personId;
         this.skill = skill;
         this.row = row;
-        this.weight = weight;
+        this.position = position;
+    }
+
+    public SkillSum(Long personId, Skill skill, Row row, Integer position, Integer totalAmount) {
+        this.personId = personId;
+        this.skill = skill;
+        this.row = row;
+        this.position = position;
+        this.totalAmount = totalAmount;
     }
 
     @Override
@@ -96,11 +106,44 @@ public class SkillSum extends AbstractPersistable<Long> {
         this.row = row;
     }
 
-    public Integer getWeight() {
-        return weight;
+    public Integer getPosition() {
+        return position;
     }
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
+
+    public Integer getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public double getWeight() {
+        // range (15, 40) of optimal number of skills
+        int k = (this.getTotalAmount() > 15 && this.getTotalAmount() < 40)
+                ? this.getTotalAmount()
+                : this.getTotalAmount() <= 15 ? 15 : 40;
+        return ((double) (Math.abs(k - this.getPosition()) + 1)) / (Math.abs(k - this.getTotalAmount()) + k);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        AbstractPersistable that = (AbstractPersistable) o;
+        return !(getId() != null ? !getId().equals(that.getId()) : that.getId() != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
+
 }

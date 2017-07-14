@@ -63,7 +63,7 @@ public class PersonController {
         return ResponseEntity.ok(Response.success(personService.findByNameContainingIgnoreCase(name, pageable)));
     }
 
-    @RequestMapping(value = "/{id}/skills")
+    @RequestMapping(value = "/{id}/skills", method = RequestMethod.GET)
     public ResponseEntity<Response<HashMap<Long, PersonSkillsDto>>> findSkillsById(@PathVariable Long id) {
         HashMap<Long, PersonSkillsDto> personSkillsDtoMap = (HashMap) personService.findSkillsById(id);
         return ResponseEntity.ok(Response.success(personSkillsDtoMap));
@@ -75,7 +75,7 @@ public class PersonController {
         return ResponseEntity.ok(Response.success());
     }
 
-    @RequestMapping(value = "/{id}/projects")
+    @RequestMapping(value = "/{id}/projects", method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Project>>> findProjectsById(@PathVariable Long id) {
         return ResponseEntity.ok(Response.success(projectService.findByPersonId(id)));
     }

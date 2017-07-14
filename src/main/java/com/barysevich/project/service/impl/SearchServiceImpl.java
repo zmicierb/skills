@@ -1,5 +1,6 @@
 package com.barysevich.project.service.impl;
 
+import com.barysevich.project.controller.dto.SkillSearchContainer;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.model.SkillSum;
 import com.barysevich.project.repository.PersonRepository;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -31,15 +34,27 @@ public class SearchServiceImpl implements SearchService {
 
         List<SkillSum> skillSums = (List) skillSumRepository.findBySkillNameContainingIgnoreCase(query);
 
-        List<Person> persons = skillSums
+        TreeSet<SkillSearchContainer> searchContainers = skillSums
                 .stream()
-                .map(SkillSum::getPersonId)
-                .distinct()
-                .map(i -> personRepository.findOne(i))
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(
+                        SkillSum::getPersonId,
+                        Collectors.summingDouble(SkillSum::getWeight)
+                ))
+                .entrySet()
+                .stream()
+                .map(entry -> new SkillSearchContainer(entry.getValue(), entry.getKey()))
+                .collect(Collectors.toCollection(TreeSet::new));
 
-        Page<Person> personPage = new PageImpl<>(persons, pageable, persons.size());
+        int start = pageable.getOffset() > searchContainers.size() ? 0 : pageable.getOffset();
 
-        return personPage;
+        List<Person> persons = new ArrayList<>();
+        persons.addAll(searchContainers
+                .stream()
+                .skip(start)
+                .limit(pageable.getPageSize())
+                .map(skillSum -> personRepository.findOne(skillSum.getPersonId()))
+                .collect(Collectors.toList()));
+
+        return new PageImpl<>(persons, pageable, searchContainers.size());
     }
 }

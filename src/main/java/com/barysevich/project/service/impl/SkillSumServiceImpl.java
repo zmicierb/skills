@@ -38,11 +38,19 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
         return skillSumRepository.findByPersonId(id);
     }
 
+    @Override
+    @Transactional
+    public SkillSum save(SkillSum skillSum) {
+        SkillSum skillSumNew = getRepository().save(skillSum);
+        updateTotalAmount(skillSumNew.getPersonId());
+        return skillSum;
+    }
+
     @Transactional
     @Override
     public void update(Long personId, Iterable<SkillSum> skillSumsNew) {
 
-        Iterable<SkillSum> skillSumsOld = skillSumRepository.findByPersonId(personId);
+        Iterable<SkillSum> skillSumsOld = skillSumRepository.findByPersonIdEager(personId);
         Map<Row, HashMap<String, SkillSum>> skillSumsOldMap = new HashMap<>();
         Map<Row, HashMap<String, SkillSum>> skillSumsNewMap = new HashMap<>();
 
@@ -64,8 +72,8 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
                     .computeIfPresent(row, (kRowFromNew, vRowFromNew) -> {
                         skillSumsOldMap.get(kRowFromNew).forEach((kSkillFromOld, vSkillFromOld) -> {
                             vRowFromNew.computeIfPresent(kSkillFromOld, (k, v) -> {
-                                if (!v.getWeight().equals(vSkillFromOld.getWeight())) {
-                                    vSkillFromOld.setWeight(v.getWeight());
+                                if (!v.getPosition().equals(vSkillFromOld.getPosition())) {
+                                    vSkillFromOld.setPosition(v.getPosition());
                                     skillContainers.add(new SkillContainer(vSkillFromOld, ContainerAction.UPDATE));
                                 }
                                 return vRowFromNew.get(kSkillFromOld);
@@ -121,6 +129,19 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
                     break;
                 default:
             }
+        });
+
+        updateTotalAmount(personId);
+    }
+
+    @Transactional
+    public void updateTotalAmount(Long personId) {
+        Integer totalAmount = skillSumRepository.countByPersonId(personId);
+        Iterable<SkillSum> skillSums = skillSumRepository.checkTotalAmountByPersonId(personId, totalAmount);
+
+        skillSums.forEach(skillSum -> {
+            skillSum.setTotalAmount(totalAmount);
+            skillSumRepository.save(skillSum);
         });
     }
 }

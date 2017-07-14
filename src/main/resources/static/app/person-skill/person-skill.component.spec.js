@@ -19,12 +19,12 @@ describe('personSkill', function () {
                         {
                             "skillId": 1,
                             "skillName": "Java 6",
-                            "weight": 2
+                            "position": 2
                         },
                         {
                             "skillId": 2,
                             "skillName": "Java 7",
-                            "weight": 1
+                            "position": 1
                         }
                     ]
                 },
@@ -36,12 +36,12 @@ describe('personSkill', function () {
                         {
                             "skillId": 7,
                             "skillName": "Java EE 6",
-                            "weight": 1
+                            "position": 1
                         },
                         {
                             "skillId": 8,
                             "skillName": "EJB 3.0",
-                            "weight": 2
+                            "position": 2
                         }
                     ]
                 }
@@ -75,12 +75,12 @@ describe('personSkill', function () {
                 skills: [{
                     skillId: 2,
                     skillName: 'Java 7',
-                    weight: 1
+                    position: 1
                 },
                     {
                         skillId: 1,
                         skillName: 'Java 6',
-                        weight: 2
+                        position: 2
                     }],
                 type: 'Programming Languages'
             },
@@ -89,12 +89,12 @@ describe('personSkill', function () {
                 skills: [{
                     skillId: 7,
                     skillName: 'Java EE 6',
-                    weight: 1
+                    position: 1
                 },
                     {
                         skillId: 8,
                         skillName: 'EJB 3.0',
-                        weight: 2
+                        position: 2
                     }],
                 type: 'Web Technologies'
             }

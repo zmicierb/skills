@@ -3,6 +3,7 @@ package com.barysevich.project;
 import com.barysevich.project.model.*;
 import com.barysevich.project.service.*;
 import com.github.javafaker.Faker;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -19,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Ignore
 public class PopulateFakeData {
 
     @Autowired
@@ -48,8 +51,6 @@ public class PopulateFakeData {
     @Test
     public void populateDB() {
 
-        Random generator = new Random();
-
         Position position = positionService.findOne(1L);
         Department department = departmentService.findOne(1L);
 
@@ -61,25 +62,29 @@ public class PopulateFakeData {
             Date date = faker.date().between(new Date(0L), new Date());
 
             Person person = personService.save(new Person(name,
-                    name + "@test.com",
+                    name.replace(" ", "") + "@test.com",
                     position,
                     department,
                     convertDate(date)));
 
             Set<Skill> skillSet = new HashSet<>();
 
-            for (int j = 1; j <= (generator.nextInt(30) + 1); j++) {
-                skillSet.add(skillService.findOne(Long.valueOf(generator.nextInt(10) + 1)));
+            for (int j = 1; j <= (ThreadLocalRandom.current().nextInt(10, 100 + 1)); j++) {
+                skillSet.add(skillService.findOne(Long.valueOf(ThreadLocalRandom.current().nextInt(1, 50 + 1))));
             }
 
+            AtomicInteger weightIterator = new AtomicInteger(1);
             skillSet.forEach(skill -> {
-                int k = 1;
-                skillSumService.save(new SkillSum(person.getId(), skill, rowService.findOne(Long.valueOf(generator.nextInt(6) + 1)), k++));
+                skillSumService.save(new SkillSum(person.getId(),
+                        skill,
+                        rowService.findOne(Long.valueOf(ThreadLocalRandom.current().nextInt(1, 6 + 1))),
+                        weightIterator.getAndIncrement(),
+                        skillSet.size()));
             });
 
             Set<Project> projectSet = new HashSet<>();
 
-            for (int j = 1; j <= (generator.nextInt(7) + 1); j++) {
+            for (int j = 1; j <= (ThreadLocalRandom.current().nextInt(1, 7 + 1)); j++) {
                 Project project = new Project();
                 project.setPersonId(person.getId());
                 project.setDescription("desc");
@@ -91,39 +96,44 @@ public class PopulateFakeData {
 
             Set<CompanyInfo> companyInfoSet = new HashSet<>();
 
-            for (int j = 1; j <= (generator.nextInt(projectSet.size()) + 1); j++) {
+            Date startDate = new Date();
 
-                Date startDate = faker.date().between((new Date(date.getTime())), new Date());
-                Date endDate = (j == 1 ? null : faker.date().between((new Date(startDate.getTime())), new Date()));
+            for (int j = 1; j <= (ThreadLocalRandom.current().nextInt(1, projectSet.size() + 1)); j++) {
+                Date endDate = j == 1 ? null : startDate;
+                startDate = faker.date().between((new Date(date.getTime())), startDate);
+
                 String companyName = faker.company().name();
 
                 companyInfoSet.add(companyInfoService.save(new CompanyInfo(companyName, convertDate(startDate), convertDate(endDate))));
             }
 
             Object[] companyArray = companyInfoSet.toArray();
-            int projectPerCompany = projectSet.size() / companyInfoSet.size() + 1;
+            int projectPerCompany = projectSet.size() / companyInfoSet.size() == 0 ? 1 : projectSet.size() / companyInfoSet.size();
             AtomicInteger iterator1 = new AtomicInteger(0);
             projectSet.forEach(project -> {
-                project.setCompanyInfo((CompanyInfo) companyArray[iterator1.getAndIncrement() / projectPerCompany]);
+                project.setCompanyInfo((CompanyInfo) companyArray[
+                        iterator1.get() / projectPerCompany >= companyArray.length ?
+                                companyArray.length - 1 :
+                                iterator1.get() / projectPerCompany]);
+                iterator1.incrementAndGet();
                 projectService.update(project.getId(), project);
             });
 
             Object[] projectArray = projectSet.toArray();
-            int skillPerProject = skillSet.size() / projectSet.size() + 1;
+            int skillPerProject = skillSet.size() / projectSet.size() == 0 ? 1 : skillSet.size() / projectSet.size();
             AtomicInteger iterator2 = new AtomicInteger(0);
             Map<Long, List<EnvironmentSkill>> envSkillMap = new HashMap<>();
             skillSet.forEach(skill -> {
-                Project project = (Project) projectArray[iterator2.getAndIncrement() / skillPerProject];
-                envSkillMap.computeIfAbsent(project.getId(), (k) -> {
-                    List<EnvironmentSkill> environmentSkills = new ArrayList<>();
-                    environmentSkills.add(new EnvironmentSkill(skill, 1));
-                    return envSkillMap.put(k, environmentSkills);
-                });
+                Project project = (Project) projectArray[
+                        iterator2.get() / skillPerProject >= projectArray.length ?
+                                projectArray.length - 1 :
+                                iterator2.get() / skillPerProject];
+                envSkillMap.computeIfAbsent(project.getId(), (k) ->
+                        envSkillMap.put(k, new ArrayList<>())
+                );
 
-                envSkillMap.computeIfPresent(project.getId(), (k, v) -> {
-                    v.add(new EnvironmentSkill(skill, 1));
-                    return v;
-                });
+                envSkillMap.get(project.getId()).add(new EnvironmentSkill(skill, iterator2.get() + 1));
+                iterator2.incrementAndGet();
             });
 
             envSkillMap.forEach((k, v) -> {

@@ -36,4 +36,7 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, L
     @Query("SELECT p FROM Project p WHERE lower(p.description) like lower(concat('%',concat(:description, '%')))")
     Iterable<Project> findByDescriptionContainingIgnoreCaseForTest(@Param("description") String description);
 
+    @Query("SELECT p.personId FROM Project p WHERE p.id = :projectId")
+    Long findPersonIdById(@Param("projectId") Long projectId);
+
 }

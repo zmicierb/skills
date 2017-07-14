@@ -55,6 +55,11 @@ public class ProjectControllerTest extends PopulateDBTest {
         String testUpdated = "TestUpdated";
 
         List<Project> projects = (List) projectService.findByDescriptionContainingIgnoreCaseForTest(test);
+        projects.forEach(
+                project -> project.getEnvironmentSkills().forEach(
+                        envSkill -> envSkill.setSkill(skillService.findOne(envSkill.getSkillId())
+                        )
+                ));
         Project project = projects.get(0);
         project.setDescription(testUpdated);
 
