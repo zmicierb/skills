@@ -9,6 +9,7 @@ import com.barysevich.project.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,6 @@ public class SearchServiceImpl implements SearchService {
                 .map(skillSum -> personRepository.findOne(skillSum.getPersonId()))
                 .collect(Collectors.toList()));
 
-        return new PageImpl<>(persons, pageable, searchContainers.size());
+        return new PageImpl<>(persons, new PageRequest((start / pageable.getPageSize()), pageable.getPageSize()), searchContainers.size());
     }
 }

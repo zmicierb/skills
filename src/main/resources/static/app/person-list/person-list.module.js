@@ -6,4 +6,5 @@ angular.module('personList', [
     , 'core.personSrv'
     , 'core.personFindSrv'
     , 'core.personSearchFormSrv'
+    , 'core.skillSearchSrv'
 ]);

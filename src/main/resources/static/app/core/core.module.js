@@ -16,4 +16,5 @@ angular.module('core', [
     , 'core.rowSrv'
     , 'core.projectSrv'
     , 'core.companySrv'
+    , 'core.skillSearchSrv'
 ]);
