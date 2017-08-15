@@ -5,6 +5,7 @@ import com.barysevich.project.controller.dto.SkillContainer;
 import com.barysevich.project.model.Row;
 import com.barysevich.project.model.SkillSum;
 import com.barysevich.project.repository.SkillSumRepository;
+import com.barysevich.project.search.SkillSumElasticRepository;
 import com.barysevich.project.service.SkillService;
 import com.barysevich.project.service.SkillSumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
 
     @Autowired
     private SkillSumRepository skillSumRepository;
+
+    @Autowired
+    private SkillSumElasticRepository skillSumElasticRepository;
 
     @Autowired
     private SkillService skillService;
