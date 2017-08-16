@@ -126,6 +126,8 @@ public class SkillSum extends AbstractPersistable<Long> {
     }
 
     public double getWeight() {
+        if (this.totalAmount == null)
+            return 0;
         // range (15, 40) of optimal number of skills
         int k = (this.getTotalAmount() > 15 && this.getTotalAmount() < 40)
                 ? this.getTotalAmount()
