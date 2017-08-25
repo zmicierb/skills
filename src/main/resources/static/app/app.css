@@ -2,6 +2,21 @@ body {
     padding: 20px;
 }
 
+.flex-container {
+    display: flex;
+}
+
+.flex-outer {
+    flex-direction: column;
+    display: flex;
+}
+
+.flex-inner {
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 0;
+}
+
 .top-buffer {
     margin-top: 20px;
 }

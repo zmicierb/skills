@@ -2,11 +2,10 @@ package com.barysevich.project.service.impl;
 
 import com.barysevich.project.controller.dto.ContainerAction;
 import com.barysevich.project.controller.dto.SkillContainer;
-import com.barysevich.project.model.PersonSkill;
 import com.barysevich.project.model.Row;
 import com.barysevich.project.model.SkillSum;
 import com.barysevich.project.repository.SkillSumRepository;
-import com.barysevich.project.search.PersonSkillElasticRepository;
+import com.barysevich.project.search.SkillSumElasticRepository;
 import com.barysevich.project.service.SkillService;
 import com.barysevich.project.service.SkillSumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
     private SkillSumRepository skillSumRepository;
 
     @Autowired
-    private PersonSkillElasticRepository personSkillElasticRepository;
+    private SkillSumElasticRepository skillSumElasticRepository;
 
     @Autowired
     private SkillService skillService;
@@ -47,7 +46,7 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
     @Transactional
     public SkillSum save(SkillSum skillSum) {
         SkillSum skillSumNew = skillSumRepository.save(skillSum);
-        personSkillElasticRepository.save(new PersonSkill(skillSumNew));
+        skillSumElasticRepository.save(skillSumNew);
         updateTotalAmount(skillSumNew.getPersonId());
         return skillSum;
     }
@@ -125,17 +124,17 @@ public class SkillSumServiceImpl extends GenericServiceImpl<SkillSum, Long> impl
             switch (skillContainer.getAction()) {
                 case DELETE:
                     skillSumRepository.delete(skillContainer.getSkillSum().getId());
-//                    skillSumElasticRepository.delete(skillContainer.getSkillSum().getId());
-//                    personSkillElasticRepository.delete(new PersonSkill(skillSumNew));
+                    skillSumElasticRepository.delete(skillContainer.getSkillSum().getId());
+                    skillSumElasticRepository.delete(skillContainer.getSkillSum().getId());
                     break;
                 case INSERT:
                     skillContainer.getSkillSum().setSkill(skillService.save(skillContainer.getSkillSum().getSkill()));
-//                    skillSumElasticRepository.save(skillSumRepository.save(skillContainer.getSkillSum()));
-                    personSkillElasticRepository.save(new PersonSkill(skillContainer.getSkillSum()));
+                    skillSumElasticRepository.save(skillSumRepository.save(skillContainer.getSkillSum()));
+//                    personSkillElasticRepository.save(new PersonSkill(skillContainer.getSkillSum()));
                     break;
                 case UPDATE:
-//                    skillSumElasticRepository.save(skillSumRepository.save(skillContainer.getSkillSum()));
-                    personSkillElasticRepository.save(new PersonSkill(skillContainer.getSkillSum()));
+                    skillSumElasticRepository.save(skillSumRepository.save(skillContainer.getSkillSum()));
+//                    personSkillElasticRepository.save(new PersonSkill(skillContainer.getSkillSum()));
                     break;
                 default:
             }
