@@ -11,7 +11,7 @@
             | groupBy: '[companyInfo.nameTemp, companyInfo.startDt, companyInfo.endDt]'">
                 <div class="row">
                     <!-- view company-->
-                    <div class="col-md-4 person-company-project animate" ng-if="!value[0].companyInfo.editCompanyFlag">
+                    <div class="col-md-4 person-company-project" ng-if="!value[0].companyInfo.editCompanyFlag">
                         <span><b>{{value[0].companyInfo.name}}</b>
                             <a href="" ng-click="$ctrl.toggleEditCompany(value[0].companyInfo.id)">
                                     <span class="glyphicon glyphicon-pencil">
@@ -25,7 +25,7 @@
                     <!-- view company-->
 
                     <!-- edit company-->
-                    <form name="personCompany" class="col-md-4 form-horizontal animate"
+                    <form name="personCompany" class="col-md-4 form-horizontal"
                           ng-if="value[0].companyInfo.editCompanyFlag"
                           ng-submit="$ctrl.submitCompany(value[0].companyInfo.id, personCompany)">
                         <div class="form-group">
@@ -89,7 +89,7 @@
 
                 <!-- view project-->
                 <div class="person-detail-project" ng-repeat="project in value">
-                    <div class="col-md-12 animate" ng-if="!project.editProjectFlag">
+                    <div class="col-md-12" ng-if="!project.editProjectFlag">
                         <div class="row">
                             <div class="col-md-12">
                             <span><b>{{project.position.name}}</b>
@@ -143,7 +143,7 @@
                     <!-- view project-->
 
                     <!-- edit project-->
-                    <form name="personProject" class="form-horizontal col-md-12 animate"
+                    <form name="personProject" class="form-horizontal col-md-12"
                           ng-submit="$ctrl.submitProject(project.id, personProject)"
                           ng-if="project.editProjectFlag">
                         <div class="form-group">
@@ -194,7 +194,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                                <div class="form-group animate" ng-if="project.addSkillFlag">
+                                <div class="form-group" ng-if="project.addSkillFlag">
                                     <div class="col-md-6">
                                         <input type="text" ng-model="project.newSkill" placeholder="skill"
                                                uib-typeahead="skill as skill.name for skill in $ctrl.getSkill($viewValue, project.id)"
@@ -217,7 +217,7 @@
                                             class="glyphicon glyphicon-refresh"></i>
                                     </div>
                                 </div>
-                                <div ng-if="!project.addSkillFlag" class="animate">
+                                <div ng-if="!project.addSkillFlag" class="">
                                     <a href="" ng-click="$ctrl.toggleNewSkill(project.id)">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </a>

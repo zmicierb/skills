@@ -1,6 +1,6 @@
 <div class="flex-container">
     <div class="flex-inner">
-        <div ng-if="!$ctrl.editFlag" class="animate">
+        <div ng-if="!$ctrl.editFlag" class="person-detail-header">
             <h3>{{$ctrl.person.name}}<a href="" ng-click="$ctrl.toggleEditFlag()">
                 <span class="glyphicon glyphicon-pencil"></span>
             </a></h3>
@@ -12,61 +12,59 @@
 
         <!--for edit-->
 
-        <div class="animate" ng-if="$ctrl.editFlag">
-            <form name="personDetail" class="" ng-submit="$ctrl.submit(personDetail)">
-                <div class="">
+        <div class="person-detail-header" ng-if="$ctrl.editFlag">
+            <form name="personDetail" class="form-horizontal" ng-submit="$ctrl.submit(personDetail)">
+                <div class="flex-container">
                     <div>
                         <input required type="text" ng-model="$ctrl.person.name"
-                               placeholder="name" class="">
+                               placeholder="name" class="form-control">
                     </div>
                 </div>
-                <div class="">
+                <div class="flex-container">
                     <div>
                         <input required type="email" ng-model="$ctrl.person.email"
-                               placeholder="email" class="">
+                               placeholder="email" class="form-control">
                     </div>
                 </div>
-                <div class="">
+                <div class="flex-container">
                     <div>
-                        <p class="">
-                            <input type="text" ng-model="$ctrl.person.dt" class=""
-                                   uib-datepicker-popup is-open="$ctrl.popup.opened"
-                                   datepicker-popup-template-url="templates/datepopup-template.html"
-                                   datepicker-options="$ctrl.dateOptions" close-text="Close"/>
-                            <span class="">
-                            <button type="button" class="btn btn-default" ng-click="$ctrl.open()"><i
-                                    class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
+                        <input type="text" ng-model="$ctrl.person.dt" class="form-control"
+                               uib-datepicker-popup is-open="$ctrl.popup.opened"
+                               datepicker-popup-template-url="templates/datepopup-template.html"
+                               datepicker-options="$ctrl.dateOptions" close-text="Close"/>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-default" ng-click="$ctrl.open()"><i
+                                class="glyphicon glyphicon-calendar"></i></button>
                     </div>
                 </div>
-                <div class="">
+                <div class="flex-container">
                     <div>
                         <input type="text" ng-model="$ctrl.person.position"
                                placeholder="position"
                                uib-typeahead="position as position.name for position in $ctrl.getPosition($viewValue)"
                                typeahead-loading="loadingPositions"
-                               class=""
+                               class="form-control"
                                typeahead-min-length="0" required
                         >
                     </div>
                     <div ng-show="loadingPositions"><i class="glyphicon glyphicon-refresh"></i>
                     </div>
                 </div>
-                <div class="">
+                <div class="flex-container">
                     <div>
                         <input type="text" ng-model="$ctrl.person.department"
                                placeholder="department"
                                uib-typeahead="department as department.name for department in $ctrl.getDepartment($viewValue)"
                                typeahead-loading="loadingDepartments"
-                               class=""
+                               class="form-control"
                                typeahead-min-length="0" required
                         >
                     </div>
                     <div ng-show="loadingDepartments"><i class="glyphicon glyphicon-refresh"></i>
                     </div>
                 </div>
-                <div class="">
+                <div class="flex-container">
                     <div>
                         <button type="submit" ng-disabled="personDetail.$invalid || personDetail.$pristine"
                                 class="btn btn-primary">Save
