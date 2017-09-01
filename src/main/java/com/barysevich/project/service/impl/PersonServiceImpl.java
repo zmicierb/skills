@@ -83,4 +83,12 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
 
         return personSkillsDto;
     }
+
+    @Override
+    @Transactional
+    public Person save(Person person) {
+        person.setDepartment(departmentService.save(person.getDepartment()));
+        person.setPosition(positionService.save(person.getPosition()));
+        return personRepository.save(person);
+    }
 }

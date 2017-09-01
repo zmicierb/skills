@@ -36,7 +36,6 @@ public class Person extends AbstractPersistable<Long> {
     @OneToOne(targetEntity = Position.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Position position;
 
-    //some issue with Cascade.PERSIST in test PersonControllerTest.populateDB()
     @OneToOne(targetEntity = Department.class, fetch = FetchType.EAGER, cascade = {REFRESH, DETACH})
     private Department department;
 

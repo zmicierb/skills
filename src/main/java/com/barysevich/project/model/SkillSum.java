@@ -1,7 +1,5 @@
 package com.barysevich.project.model;
 
-import org.springframework.data.elasticsearch.annotations.Document;
-
 import javax.persistence.*;
 
 import static javax.persistence.CascadeType.DETACH;
@@ -11,7 +9,7 @@ import static javax.persistence.CascadeType.REFRESH;
  * Created by BarysevichD on 2017-03-14.
  */
 @Entity
-@Document(indexName = "skills", type = "skillSum")
+//@Document(indexName = "skills", type = "skillSum")
 public class SkillSum extends AbstractPersistable<Long> {
 
     @Id
