@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) //uncomment and remove application.properties/liquibase config from resources for test with PostgreSQL
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) //uncomment and remove test.properties/liquibase config from resources for test with PostgreSQL
 public class CompanyInfoRepositoryTest {
 
     @Autowired

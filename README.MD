@@ -9,6 +9,10 @@ export DOCKER_IP=$(hostname -i)
 $ cd ./docker
 $ docker-compose build
 $ docker-compose up -d $@
+
+$ cd ../
+$ mvn clean install
+$ java -jar ./target/skills.jar
 ```
 
 
