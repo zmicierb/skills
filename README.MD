@@ -10,11 +10,13 @@ $ cd ./docker
 $ docker-compose build
 $ docker-compose up -d $@
 
-$ cd ../
 $ mvn clean install
-$ java -jar ./target/skills.jar
+$ java -jar ../i18n-service/i18n-service-rest/target/i18n-service.jar
+$ java -jar ../mail-service/mail-service-rest/target/mail-service.jar
+$ java -jar ../web-service/target/skills.jar
 ```
 
+TODO value placeholder
 
 ### Start url
 
