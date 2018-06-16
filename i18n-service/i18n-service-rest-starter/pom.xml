@@ -14,6 +14,7 @@
     </parent>
 
     <dependencies>
+        <!-- internal -->
         <dependency>
             <groupId>com.barysevich.project</groupId>
             <artifactId>i18n-service-api</artifactId>

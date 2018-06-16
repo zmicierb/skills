@@ -18,6 +18,7 @@ public class I18nAutoConfiguration
 
     @Value("${services.i18n.url}")
     private String url;
+//    private String url = "http://localhost:8001";
 
 
     @Autowired

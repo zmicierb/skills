@@ -1,4 +1,4 @@
-package project.controller;
+package com.barysevich.project.controller;
 
 
 import javax.validation.Valid;

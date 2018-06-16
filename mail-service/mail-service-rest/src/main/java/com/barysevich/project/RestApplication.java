@@ -1,4 +1,4 @@
-package project;
+package com.barysevich.project;
 
 
 import com.google.common.base.Predicates;

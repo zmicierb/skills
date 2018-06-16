@@ -14,7 +14,7 @@ hs_err_pid*
 target/*
 .idea/
 replay_pid9924.log
-skills.iml
+*.iml
 target/
 bower_components/
 node_modules/
