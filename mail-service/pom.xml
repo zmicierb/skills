@@ -25,5 +25,6 @@
         <module>mail-service-rest</module>
         <module>mail-service-api</module>
         <module>mail-service-rest-starter</module>
+        <module>mail-service-kafka-starter</module>
     </modules>
 </project>

@@ -20,6 +20,11 @@
             <artifactId>mail-service-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.barysevich.project</groupId>
+            <artifactId>mail-service-kafka-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <!-- swagger -->
         <dependency>

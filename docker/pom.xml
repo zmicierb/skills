@@ -42,6 +42,8 @@
         <java.version>1.8</java.version>
         <hibernate.version>5.2.10.Final</hibernate.version>
         <OpenFeign-lib-version>9.5.1</OpenFeign-lib-version>
+        <!--<spring-cloud-sleuth-dependencies-version>1.3.2.RELEASE</spring-cloud-sleuth-dependencies-version>-->
+        <Guava-version>23.0</Guava-version>
         <swagger-annotation>1.5.16</swagger-annotation>
         <swagger-version>2.7.0</swagger-version>
     </properties>
