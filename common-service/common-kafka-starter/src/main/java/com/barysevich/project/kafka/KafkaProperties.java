@@ -1,6 +1,5 @@
 package com.barysevich.project.kafka;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import org.springframework.kafka.listener.AbstractMessageListenerContainer.AckMo
 
 @ConfigurationProperties(prefix = "kafka")
 public class KafkaProperties {
-    @Value("${kafka.bootstrap-servers}")
+
     private List<String> bootstrapServers;
 
     private String clientId;
