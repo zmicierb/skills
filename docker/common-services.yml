@@ -1,0 +1,18 @@
+ version: '2'
+ services:
+   default:
+#     extra_hosts:
+#      - "${DOCKER_HOSTNAME}:${DOCKER_IP}"
+     volumes:
+     - ./config/:/home/host-config:ro
+     environment:
+     - DOCKER_HOSTNAME
+     - DB_PORT=5444
+     - DB_USERNAME=skill
+     - DB_PASSWORD=skill
+     - DB_SU_NAME=postgres
+     - DB_SU_PASS=postgres
+     - DOCKER_IP
+     - TERM=xterm
+     env_file: ./.env
+   

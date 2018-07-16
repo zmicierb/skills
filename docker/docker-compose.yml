@@ -8,42 +8,90 @@ networks:
 services:
 
   mail:
-      image: djfarrelly/maildev
-      container_name: skill-mail
-      ports:
-       - "${MAIL_PORT}:25"
-       - "${MAIL_PORT_WEB}:80"
+    image: djfarrelly/maildev
+    container_name: skill-mail
+    ports:
+    - "${MAIL_PORT}:25"
+    - "${MAIL_PORT_WEB}:80"
 
   zookeeper:
-      image: skill-zookeeper
-      build: ./zookeeper
-      ports:
-        - "${ZOOKEEPER_PORT}:2181"
-      volumes:
-        - ${HOST_LOG_DIR}/zookeeper:${CONTAINER_LOG_DIR}
+    image: skill-zookeeper
+    build: ./zookeeper
+    ports:
+    - "${ZOOKEEPER_PORT}:2181"
+    volumes:
+    - ${HOST_LOG_DIR}/zookeeper:${CONTAINER_LOG_DIR}
 
   kafka:
-      image: skill-kafka
-      build: ./kafka
-      ports:
-        - "${KAFKA_PORT}:9092"
-      environment:
-        KAFKA_DELETE_TOPIC_ENABLE: "true"
-        KAFKA_ADVERTISED_HOST_NAME: "${DOCKER_IP}"
-        KAFKA_ADVERTISED_PORT: "${KAFKA_PORT}"
-        KAFKA_ZOOKEEPER_CONNECT: "${DOCKER_IP}:${ZOOKEEPER_PORT}"
-#        KAFKA_ZOOKEEPER_CONNECT: "zookeeper:${ZOOKEEPER_PORT}"
-      volumes:
-        - ${HOST_LOG_DIR}/kafka:${CONTAINER_LOG_DIR}
-      depends_on:
-      - zookeeper
+    image: skill-kafka
+    build: ./kafka
+    ports:
+    - "${KAFKA_PORT}:9092"
+    environment:
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_ADVERTISED_HOST_NAME: "${DOCKER_IP}"
+      KAFKA_ADVERTISED_PORT: "${KAFKA_PORT}"
+      KAFKA_ZOOKEEPER_CONNECT: "${DOCKER_IP}:${ZOOKEEPER_PORT}"
+#      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:${ZOOKEEPER_PORT}"
+    volumes:
+    - ${HOST_LOG_DIR}/kafka:${CONTAINER_LOG_DIR}
+    depends_on:
+    - zookeeper
 
   db:
-      image: skill-db
-      build: ./db
-      ports:
-      - "${DB_PORT}:5432"
-      environment:
-      - POSTGRES_PASSWORD=postgres
-      volumes:
-      - /tmp/skill/pgdata:${CONTAINER_PG_DATA}
+    image: skill-db
+    build: ./db
+    ports:
+    - "${DB_PORT}:5432"
+    environment:
+    - POSTGRES_PASSWORD=postgres
+    volumes:
+#    - /tmp/skill/pgdata:${CONTAINER_PG_DATA}
+    - ${CONTAINER_PG_DATA}
+
+  skill-i18n-service:
+    build: ../i18n-service/
+    extends:
+      file: common-services.yml
+      service: default
+    ports:
+     - "${I18N_SERVICE_PORT}:8080"
+    volumes:
+    - ${HOST_LOG_DIR}/skill-mail-service:${CONTAINER_LOG_DIR}
+    environment:
+    - DB_NAME=skill_i18n_service
+    depends_on:
+    - db
+    - kafka
+
+  skill-mail-service:
+    build: ../mail-service/
+    extends:
+      file: common-services.yml
+      service: default
+    ports:
+    - "${MAIL_SERVICE_PORT}:8080"
+    volumes:
+     - ${HOST_LOG_DIR}/skill-mail-service:${CONTAINER_LOG_DIR}
+    environment:
+    - _OPTIONS=-Dservices.i18n.url=http://${DOCKER_IP}:${I18N_SERVICE_PORT}
+    - DB_NAME=skill_mail_service
+    depends_on:
+    - db
+    - kafka
+
+  skill-web-service:
+    build: ../web-service/
+    extends:
+      file: common-services.yml
+      service: default
+    ports:
+    - "${WEB_SERVICE_PORT}:8080"
+    volumes:
+    - ${HOST_LOG_DIR}/skill-mail-service:${CONTAINER_LOG_DIR}
+    environment:
+    - _OPTIONS=-Dservices.mail.url=http://${DOCKER_IP}:${MAIL_SERVICE_PORT}
+    - DB_NAME=skill_web_service
+    depends_on:
+    - db
+    - kafka
