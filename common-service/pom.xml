@@ -21,6 +21,9 @@
     <modules>
         <module>common-api</module>
         <module>common-kafka-starter</module>
+        <module>db-queue</module>
+        <module>db-queue-starter</module>
+        <module>db-utils</module>
     </modules>
 
 </project>

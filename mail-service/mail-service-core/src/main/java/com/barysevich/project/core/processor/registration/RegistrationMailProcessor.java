@@ -4,7 +4,7 @@ package com.barysevich.project.core.processor.registration;
 import java.util.Optional;
 
 import com.barysevich.project.api.NotificationType;
-import com.barysevich.project.api.request.SendMailRequest;
+import com.barysevich.project.core.model.NotificationData;
 import com.barysevich.project.core.processor.NotificationProcessor;
 import com.barysevich.project.core.template.TemplateManager;
 import com.barysevich.project.core.template.mail.MailTemplate;
@@ -31,15 +31,15 @@ public class RegistrationMailProcessor extends NotificationProcessor
 
 
     @Override
-    protected Optional<MailTemplate> getTemplate(final SendMailRequest request)
+    protected Optional<MailTemplate> getTemplate(final NotificationData data)
     {
 //        final RegistrationInvitationMailPayload templateData = SerializationUtils
 //            .fromJson(request.getMessageData(), RegistrationInvitationMailPayload.class);
 
         final MailTemplate mailTemplate = RegistrationTemplate.builder()
             .withFromAddress("test@test.com")
-            .withToAddress(request.getEmail().asString())
-            .withLocale(request.getLocale())
+            .withToAddress(data.getEmail().asString())
+            .withLocale(data.getLocale())
             .build()
             .done();
 

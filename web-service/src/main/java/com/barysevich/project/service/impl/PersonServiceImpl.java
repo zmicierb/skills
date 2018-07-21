@@ -1,9 +1,9 @@
 package com.barysevich.project.service.impl;
 
 
-import com.barysevich.project.api.MailService;
 import com.barysevich.project.api.NotificationType;
-import com.barysevich.project.api.request.SendMailRequest;
+import com.barysevich.project.api.async.exporter.MailNotificationExporter;
+import com.barysevich.project.api.model.MailNotificationMessage;
 import com.barysevich.project.controller.dto.PersonSkillsDto;
 import com.barysevich.project.controller.dto.SkillDto;
 import com.barysevich.project.email.Email;
@@ -45,7 +45,7 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
     private SkillSumRepository skillSumRepository;
 
     @Autowired
-    private MailService mailService;
+    private MailNotificationExporter mailNotificationExporter;
 
 
     @Autowired
@@ -118,7 +118,7 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
         person.setDepartment(departmentService.save(person.getDepartment()));
         person.setPosition(positionService.save(person.getPosition()));
 
-        mailService.sendMail(SendMailRequest.builder()
+        mailNotificationExporter.exportMessage(MailNotificationMessage.builder()
             .withEmail(new Email(person.getEmail()))
             .withLocale(new Locale("EN"))
             .withMessageData("test")

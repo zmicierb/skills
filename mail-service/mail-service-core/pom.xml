@@ -33,6 +33,12 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- Project Starters -->
+        <dependency>
+            <groupId>com.barysevich.project</groupId>
+            <artifactId>db-queue-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.barysevich.project</groupId>
             <artifactId>i18n-service-rest-starter</artifactId>

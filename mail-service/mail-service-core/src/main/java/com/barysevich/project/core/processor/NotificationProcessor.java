@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.barysevich.project.api.MailResult;
 import com.barysevich.project.api.NotificationType;
-import com.barysevich.project.api.request.SendMailRequest;
+import com.barysevich.project.core.model.NotificationData;
 import com.barysevich.project.core.template.TemplateManager;
 import com.barysevich.project.core.template.mail.MailTemplate;
 import com.barysevich.project.core.transport.MailTransport;
@@ -33,12 +33,12 @@ public abstract class NotificationProcessor
     /**
      * Формирует шаблон письма и отправляет его пользователю.
      */
-    public MailResult process(final SendMailRequest request)
+    public MailResult process(final NotificationData data)
     {
-        final Optional<MailTemplate> mailTemplateOptional = getTemplate(request);
+        final Optional<MailTemplate> mailTemplateOptional = getTemplate(data);
         if (!mailTemplateOptional.isPresent())
         {
-            logger.warn("Can't create mailTemplate: notificationId={}", request.getNotificationId());
+            logger.warn("Can't create mailTemplate: notificationId={}", data.getNotificationId());
             return MailResult.failed();
         }
         final MailTemplate mailTemplate = mailTemplateOptional.get();
@@ -56,7 +56,7 @@ public abstract class NotificationProcessor
     /**
      * Возвращает объект, в котором содержится всё необходимая информация для отправки письма.
      */
-    abstract protected Optional<MailTemplate> getTemplate(final SendMailRequest request);
+    abstract protected Optional<MailTemplate> getTemplate(final NotificationData data);
 
 
     /**

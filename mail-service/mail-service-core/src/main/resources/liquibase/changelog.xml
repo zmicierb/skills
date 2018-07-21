@@ -3,8 +3,12 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
+    <includeAll path="changelogs" relativeToChangelogFile="true"/>
+
+    <!-- external -->
+    <include file="classpath:liquibase/scripts/add_task_table.sql"/>
 
     <!-- internal -->
-    <include file="liquibase/scripts/mail_service_export_log.sql"/>
+    <include file="classpath:liquibase/scripts/mail_service_export_log.sql"/>
     
 </databaseChangeLog>

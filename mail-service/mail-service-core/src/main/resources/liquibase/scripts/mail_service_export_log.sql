@@ -1,6 +1,6 @@
 --liquibase format sql
 
---changeset
+--changeset barysevich:mail_service_export_log_table
 
 CREATE TABLE mail_service_export_log
 (
