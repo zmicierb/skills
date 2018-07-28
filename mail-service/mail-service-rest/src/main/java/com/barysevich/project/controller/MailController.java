@@ -9,10 +9,10 @@
 //import com.barysevich.project.result.Result;
 //import io.swagger.annotations.ApiOperation;
 //import org.springframework.http.MediaType;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.project.bind.annotation.GetMapping;
+//import org.springframework.project.bind.annotation.RequestBody;
+//import org.springframework.project.bind.annotation.RequestMapping;
+//import org.springframework.project.bind.annotation.RestController;
 //
 //
 //@RestController

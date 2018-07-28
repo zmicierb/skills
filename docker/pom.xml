@@ -26,6 +26,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
+                <module>../authorization-service</module>
                 <module>../common-service</module>
                 <module>../i18n-service</module>
                 <module>../mail-service</module>

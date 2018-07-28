@@ -80,6 +80,21 @@ services:
     - db
     - kafka
 
+  skill-authorization-service:
+      build: ../authorization-service/
+      extends:
+        file: common-services.yml
+        service: default
+      ports:
+       - "${I18N_SERVICE_PORT}:8080"
+      volumes:
+      - ${HOST_LOG_DIR}/skill-authorization-service:${CONTAINER_LOG_DIR}
+      environment:
+      - DB_NAME=skill_authorization_service
+      depends_on:
+      - db
+      - kafka
+
   skill-web-service:
     build: ../web-service/
     extends:
