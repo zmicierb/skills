@@ -1,34 +1,39 @@
 package com.barysevich.authorization.core.async;
 
+
 import com.barysevich.authorization.api.async.AuthorizationRegistrationListener;
-import com.barysevich.authorization.api.async.RegistrationResult;
+import com.barysevich.authorization.api.async.RegistrationInfoMessage;
 import com.barysevich.authorization.core.queue.RegistrationQueue;
 import com.barysevich.authorization.core.queue.RegistrationQueueData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 /**
- * Слушатель сообщений из кафки, которые имеют тип {@link RegistrationResult}.
+ * Слушатель сообщений из кафки, которые имеют тип {@link RegistrationInfoMessage}.
  */
 @Component
-public class AuthorizationRegistrationListenerImpl implements AuthorizationRegistrationListener {
+public class AuthorizationRegistrationListenerImpl implements AuthorizationRegistrationListener
+{
 
     private final RegistrationQueue registrationQueue;
 
 
     @Autowired
     public AuthorizationRegistrationListenerImpl(
-            final RegistrationQueue registrationQueue) {
+        final RegistrationQueue registrationQueue)
+    {
         this.registrationQueue = registrationQueue;
     }
 
 
     @Override
-    public void onReceive(final RegistrationResult registrationResult) {
+    public void onReceive(final RegistrationInfoMessage registrationInfoMessage)
+    {
         final RegistrationQueueData registrationQueueData = RegistrationQueueData.create()
-                .withId(registrationResult.getId())
-                .withRegistrationServiceStatuses(registrationResult.getRegistrationStatus())
-                .build();
+            .withId(registrationInfoMessage.getId())
+            .withEmail(registrationInfoMessage.getEmail())
+            .build();
 
         registrationQueue.enqueue(registrationQueueData);
     }

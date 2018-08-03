@@ -1,34 +1,43 @@
 package com.barysevich.authorization.core.queue;
 
-import com.barysevich.authorization.api.async.RegistrationStatus;
+
+import com.barysevich.project.email.Email;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RegistrationQueueData {
-    private final RegistrationStatus registrationStatus;
 
+public class RegistrationQueueData
+{
     private final Long id;
+
+    private final Email email;
+
 
     @JsonCreator
     private RegistrationQueueData(
-            @JsonProperty("registrationStatus") RegistrationStatus registrationStatus,
-            @JsonProperty("id") Long id) {
-        this.registrationStatus = registrationStatus;
+        @JsonProperty("email") Email email,
+        @JsonProperty("id") Long id)
+    {
+        this.email = email;
         this.id = id;
     }
+
 
     public static Builder create()
     {
         return new Builder();
     }
 
-    @JsonProperty("registrationStatus")
-    public RegistrationStatus getRegistrationStatus() {
-        return registrationStatus;
+
+    @JsonProperty("email")
+    public Email getEmail() {
+        return email;
     }
 
+
     @JsonProperty("id")
-    public Long getId() {
+    public Long getId()
+    {
         return id;
     }
 
@@ -36,15 +45,14 @@ public class RegistrationQueueData {
     @Override
     public String toString() {
         return "RegistrationQueueData{" +
-                "registrationStatus=" + registrationStatus +
-                ", id=" + id +
+                "id=" + id +
+                ", email=" + email +
                 '}';
     }
 
-
     public static class Builder
     {
-        private RegistrationStatus registrationStatus;
+        private Email email;
 
         private Long id;
 
@@ -61,16 +69,16 @@ public class RegistrationQueueData {
         }
 
 
-        public Builder withRegistrationServiceStatuses(final RegistrationStatus registrationStatus)
+        public Builder withEmail(final Email email)
         {
-            this.registrationStatus = registrationStatus;
+            this.email = email;
             return this;
         }
 
 
         public RegistrationQueueData build()
         {
-            return new RegistrationQueueData(registrationStatus, id);
+            return new RegistrationQueueData(email, id);
         }
     }
 }

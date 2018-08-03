@@ -18,11 +18,10 @@ import static javax.persistence.CascadeType.REFRESH;
 public class Person extends AbstractPersistable<Long> {
 
     @Id
-    @SequenceGenerator(name = "person_id_seq",
-            sequenceName = "person_id_seq",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "person_id_seq")
+//    @SequenceGenerator(name = "person_id_seq",
+//            sequenceName = "person_id_seq",
+//            allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @Column(name = "name", length = 1000)

@@ -7,6 +7,8 @@
     <include file="classpath:liquibase/scripts/add_task_table.sql"/>
 
     <!-- internal -->
-    <include file="classpath:liquibase/scripts/mail_service_export_log.sql"/>
-    
+    <include file="classpath:liquibase/scripts/sequences.sql"/>
+    <include file="classpath:liquibase/scripts/user_states.sql"/>
+    <include file="classpath:liquibase/scripts/users.sql"/>
+
 </databaseChangeLog>

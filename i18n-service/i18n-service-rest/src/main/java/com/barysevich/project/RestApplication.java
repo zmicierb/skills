@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @Configuration
-@ComponentScan("com.barysevich.project")
+@ComponentScan("com.barysevich")
 @EnableAutoConfiguration
 @EnableSwagger2
 public class RestApplication extends SpringBootServletInitializer

@@ -22,9 +22,9 @@
 
     <modules>
         <module>authorization-service-core</module>
-        <!--<module>authorization-service-rest</module>-->
+        <module>authorization-service-rest</module>
         <module>authorization-service-api</module>
-        <!--<module>authorization-service-rest-starter</module>-->
+        <module>authorization-service-rest-starter</module>
         <module>authorization-service-kafka-starter</module>
     </modules>
 </project>

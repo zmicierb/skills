@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 import com.barysevich.project.kafka.api.MessageExporter;
 //import com.google.common.collect.ImmutableMap;
 import com.barysevich.project.utils.SerializationUtils;
+import com.barysevich.project.utils.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.cloud.sleuth.Span;
@@ -22,11 +23,11 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Осуществляет экспорт сообщений в кафку.
- *
+ * <p>
  * Оборачивает экспортируемый объект в {@link MessageWrapper}
- *
+ * <p>
  * При сборке враппера добавляет в хэдеры данные о трассировке.
- *
+ * <p>
  * WARN: Использовать данный экспортер следует при полной уверенности, что листенеры умеют распаковывать враппер.
  */
 public class KafkaMessageExporter implements MessageExporter
@@ -70,7 +71,7 @@ public class KafkaMessageExporter implements MessageExporter
         final CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         final ListenableFuture<SendResult<String, String>> listenableFuture = Objects.isNull(key)
-                ? kafkaTemplate.send(topic, message) : kafkaTemplate.send(topic, key, message);
+            ? kafkaTemplate.send(topic, message) : kafkaTemplate.send(topic, key, message);
 
         listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, String>>()
         {
@@ -92,17 +93,7 @@ public class KafkaMessageExporter implements MessageExporter
             }
         });
 
-        // todo заменить бы эту штуку на что-то другое
-//        return Try.apply(future::get).orElse(false);
-        try {
-            return future.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        return false;
+        return Try.apply(future::get).orElse(false);
     }
 
 

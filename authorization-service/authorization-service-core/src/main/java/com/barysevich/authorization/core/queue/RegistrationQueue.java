@@ -1,5 +1,6 @@
 package com.barysevich.authorization.core.queue;
 
+
 import com.barysevich.authorization.api.async.RegistrationStatus;
 import com.barysevich.authorization.core.dao.RegistrationDAO;
 import com.barysevich.project.commons.queue.BaseQueue;
@@ -9,41 +10,49 @@ import com.barysevich.project.commons.queue.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
-public class RegistrationQueue extends BaseQueue<RegistrationQueueData> {
+
+public class RegistrationQueue extends BaseQueue<RegistrationQueueData>
+{
     private static final Logger logger = LoggerFactory.getLogger(RegistrationQueue.class);
 
     private final RegistrationDAO registrationDAO;
 
 
     public RegistrationQueue(
-            final QueueBuilder<RegistrationQueueData> queueBuilder,
-            final RegistrationDAO registrationDAO) {
+        final QueueBuilder<RegistrationQueueData> queueBuilder,
+        final RegistrationDAO registrationDAO)
+    {
         super(queueBuilder);
         this.registrationDAO = registrationDAO;
     }
 
 
     @Override
-    public QueueAction process(final Task<RegistrationQueueData> task) {
+    public QueueAction process(final Task<RegistrationQueueData> task)
+    {
         final RegistrationQueueData registrationQueueData = task.getData();
         logger.debug("Registration queue income data={}", registrationQueueData);
 
         final Optional<RegistrationStatus> registrationStatus = registrationDAO.getRegistrationStatus(
                 registrationQueueData.getId());
 
-        if (registrationStatus.isPresent()) {
-            logger.debug("Queue process : registration result already has status={}, {}",
+        if (registrationStatus.isPresent() && registrationStatus.get() != RegistrationStatus.NEW)
+        {
+            logger.debug("Queue process: registration result already has status={}, {}",
                     registrationStatus.get(), registrationQueueData);
             return QueueAction.DEQUEUE;
         }
 
-        final boolean isSuccessRegistration = registrationDAO.storeRegistrationStatus(
+        final boolean isSuccessRegistration = registrationDAO.addCredentials(
                 registrationQueueData.getId(),
-                registrationQueueData.getRegistrationStatus().getCode());
+                registrationQueueData.getEmail().asString(),
+                new Timestamp(System.currentTimeMillis()));
 
-        if (!isSuccessRegistration) {
+        if (!isSuccessRegistration)
+        {
             return QueueAction.REENQUEUE_ON_ERROR;
         }
 

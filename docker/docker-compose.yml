@@ -86,7 +86,7 @@ services:
         file: common-services.yml
         service: default
       ports:
-       - "${I18N_SERVICE_PORT}:8080"
+       - "${AUTHORIZATION_PORT}:8080"
       volumes:
       - ${HOST_LOG_DIR}/skill-authorization-service:${CONTAINER_LOG_DIR}
       environment:
@@ -105,7 +105,7 @@ services:
     volumes:
     - ${HOST_LOG_DIR}/skill-mail-service:${CONTAINER_LOG_DIR}
     environment:
-    - _OPTIONS=-Dservices.mail.url=http://${DOCKER_IP}:${MAIL_SERVICE_PORT}
+    - _OPTIONS=-Dservices.mail.url=http://${DOCKER_IP}:${MAIL_SERVICE_PORT} -Dservices.auth.url=http://${DOCKER_IP}:${AUTHORIZATION_PORT}
     - DB_NAME=skill_web_service
     depends_on:
     - db

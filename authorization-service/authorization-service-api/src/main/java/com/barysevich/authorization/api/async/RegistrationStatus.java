@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
  * Статусы ответов от сервисов о процедуре регистрации.
  */
 public enum RegistrationStatus {
-    NEW(0),
-    ACTIVE(1),
-    BLOCKED(2);
+    NEW(1),
+    ACTIVE(2),
+    BLOCKED(3);
 
     private static final Map<Integer, RegistrationStatus> STATUSES_MAP = Arrays.stream(RegistrationStatus.values())
             .collect(Collectors.toMap(RegistrationStatus::getCode, Function.identity()));

@@ -2,7 +2,7 @@ package com.barysevich.authorization.kafka.exporter;
 
 
 import com.barysevich.authorization.api.async.AuthorizationRegistrationExporter;
-import com.barysevich.authorization.api.async.RegistrationResult;
+import com.barysevich.authorization.api.async.RegistrationInfoMessage;
 import com.barysevich.project.kafka.api.MessageExporter;
 
 
@@ -25,8 +25,8 @@ public class AuthorizationRegistrationKafkaExporter implements AuthorizationRegi
 
 
     @Override
-    public boolean exportRegistrationResult(final RegistrationResult registrationResult)
+    public boolean exportRegistrationResult(final RegistrationInfoMessage registrationInfoMessage)
     {
-        return messageExporter.export(resultTopic, registrationResult);
+        return messageExporter.export(resultTopic, registrationInfoMessage);
     }
 }

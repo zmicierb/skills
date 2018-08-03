@@ -2,8 +2,8 @@ package com.barysevich.authorization.api.async;
 
 public interface AuthorizationRegistrationListener {
     /**
-     * Слушатель ответов по регистрации от сервиса авторизации
-     * @param registrationResult - идентификатор, статус, код ошибки
+     * Слушатель ответов на регистрацию
+     * @param registrationInfoMessage - идентификатор, email
      */
-    void onReceive(final RegistrationResult registrationResult);
+    void onReceive(final RegistrationInfoMessage registrationInfoMessage);
 }

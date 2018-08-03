@@ -1,4 +1,4 @@
-package com.barysevich.project;
+package com.barysevich.authorization;
 
 
 import com.google.common.base.Predicates;
@@ -54,7 +54,7 @@ public class RestApplication extends SpringBootServletInitializer
     private ApiInfo apiInfo()
     {
         return new ApiInfoBuilder()
-                .title("Mail service API")
+                .title("Authorization service API")
                 .description("Contains methods for external clients")
                 .build();
     }

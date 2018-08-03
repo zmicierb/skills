@@ -1,5 +1,6 @@
 package com.barysevich.authorization.kafka;
 
+
 import com.barysevich.authorization.api.async.AuthorizationRegistrationExporter;
 import com.barysevich.authorization.api.async.AuthorizationRegistrationListener;
 import com.barysevich.authorization.kafka.exporter.AuthorizationRegistrationKafkaExporter;
@@ -14,16 +15,20 @@ import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 @AutoConfigureBefore(KafkaAutoConfiguration.class)
-public class AuthorizationServiceKafkaAutoConfiguration {
+public class AuthorizationServiceKafkaAutoConfiguration
+{
     @Value("${kafka-topics.authorization_service}")
     private String resultTopic;
 
 
     @Bean
     @ConditionalOnMissingBean(AuthorizationRegistrationExporter.class)
-    public AuthorizationRegistrationKafkaExporter authorizationRegistrationExporter(final MessageExporter messageExporter) {
+    public AuthorizationRegistrationKafkaExporter authorizationRegistrationExporter(
+        final MessageExporter messageExporter)
+    {
         return new AuthorizationRegistrationKafkaExporter(messageExporter, resultTopic);
     }
 
@@ -31,8 +36,9 @@ public class AuthorizationServiceKafkaAutoConfiguration {
     @Bean
     @ConditionalOnBean(AuthorizationRegistrationListener.class)
     public AuthorizationRegistrationKafkaListener authorizationRegistrationListener(
-            final AuthorizationRegistrationListener authorizationRegistrationListener,
-            final KafkaProcessor kafkaProcessor) {
+        final AuthorizationRegistrationListener authorizationRegistrationListener,
+        final KafkaProcessor kafkaProcessor)
+    {
         return new AuthorizationRegistrationKafkaListener(authorizationRegistrationListener, kafkaProcessor);
     }
 }

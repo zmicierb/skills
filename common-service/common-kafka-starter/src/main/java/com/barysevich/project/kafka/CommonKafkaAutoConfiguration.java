@@ -1,7 +1,5 @@
 package com.barysevich.project.kafka;
 
-//import com.barysevich.project.kafka.api.KafkaProcessor;
-//import com.barysevich.project.kafka.api.MessageExporter;
 import com.barysevich.project.kafka.api.KafkaProcessor;
 import com.barysevich.project.kafka.api.MessageExporter;
 import org.apache.kafka.common.serialization.StringDeserializer;

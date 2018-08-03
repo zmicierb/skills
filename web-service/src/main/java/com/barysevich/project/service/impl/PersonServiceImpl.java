@@ -1,6 +1,9 @@
 package com.barysevich.project.service.impl;
 
 
+import com.barysevich.authorization.api.AuthorizationService;
+import com.barysevich.authorization.api.async.AuthorizationRegistrationExporter;
+import com.barysevich.authorization.api.async.RegistrationInfoMessage;
 import com.barysevich.project.api.NotificationType;
 import com.barysevich.project.api.async.exporter.MailNotificationExporter;
 import com.barysevich.project.api.model.MailNotificationMessage;
@@ -43,6 +46,12 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
 
     @Autowired
     private SkillSumRepository skillSumRepository;
+
+    @Autowired
+    private AuthorizationService authorizationService;
+
+    @Autowired
+    private AuthorizationRegistrationExporter authorizationRegistrationExporter;
 
     @Autowired
     private MailNotificationExporter mailNotificationExporter;
@@ -97,12 +106,10 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
     {
         HashMap<Long, PersonSkillsDto> personSkillsDto = new HashMap<>();
         skillSumRepository.findByPersonId(id).forEach(a -> {
-            if (personSkillsDto.containsKey(a.getRowId()))
-            {
+            if (personSkillsDto.containsKey(a.getRowId())) {
                 personSkillsDto.get(a.getRowId()).getSkills()
-                    .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getPosition()));
-            } else
-            {
+                        .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getPosition()));
+            } else {
                 personSkillsDto.put(a.getRowId(), new PersonSkillsDto(a));
             }
         });
@@ -112,19 +119,33 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, Long> implemen
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public Person save(Person person)
     {
+        final long reservedId = authorizationService.reserveId();
+        person.setId(reservedId);
         person.setDepartment(departmentService.save(person.getDepartment()));
         person.setPosition(positionService.save(person.getPosition()));
 
+        final boolean isExported = authorizationRegistrationExporter.exportRegistrationResult(
+                RegistrationInfoMessage.builder()
+                        .withId(reservedId)
+                        .withEmail(new Email(person.getEmail()))
+                        .build());
+
+        // TODO move to auth service
         mailNotificationExporter.exportMessage(MailNotificationMessage.builder()
-            .withEmail(new Email(person.getEmail()))
-            .withLocale(new Locale("EN"))
-            .withMessageData("test")
-            .withNotificationId(UUID.randomUUID())
-            .withNotificationType(NotificationType.USER_REGISTERED)
-            .build());
+                .withEmail(new Email(person.getEmail()))
+                .withLocale(new Locale("EN"))
+                .withMessageData("test")
+                .withNotificationId(UUID.randomUUID())
+                .withNotificationType(NotificationType.USER_REGISTERED)
+                .build());
+
+        if (!isExported)
+        {
+            throw new RuntimeException();
+        }
 
         return personRepository.save(person);
     }
