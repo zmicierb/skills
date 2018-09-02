@@ -49,6 +49,20 @@ services:
 #    - /tmp/skill/pgdata:${CONTAINER_PG_DATA}
     - ${CONTAINER_PG_DATA}
 
+  mongodb:
+    image: skill-mongo
+    build: ./mongodb
+    ports:
+    - "${MONGO_PORT}:27017"
+    environment:
+    - MONGO_INITDB_DATABASE=skills
+    - MONGO_INITDB_ROOT_USERNAME=root
+    - MONGO_INITDB_ROOT_PASSWORD=skill
+    volumes:
+    - ${CONTAINER_MONGO_DATA}
+    command:
+      mongod --auth
+
   skill-i18n-service:
     build: ../i18n-service/
     extends:
@@ -109,4 +123,5 @@ services:
     - DB_NAME=skill_web_service
     depends_on:
     - db
+    - mongodb
     - kafka

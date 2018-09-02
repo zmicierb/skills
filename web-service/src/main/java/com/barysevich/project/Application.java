@@ -2,19 +2,13 @@ package com.barysevich.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.util.UrlPathHelper;
 
-/**
- * Created by BarysevichD on 2017-03-15.
- */
 @SpringBootApplication
-//@EntityScan(basePackages = {"com.barysevich.project.model"})
-//@EnableJpaRepositories(basePackages = {"com.barysevich.project.repository"})
-//@ComponentScan(basePackages = {"com.barysevich.project.controller", "com.barysevich.project.service"})
-@EnableJpaRepositories("com.barysevich.project.repository")
+//@EnableMongoRepositories
+//@EnableJpaRepositories("com.barysevich.project.repository")
 public class Application extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {

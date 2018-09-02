@@ -11,9 +11,6 @@ import org.springframework.validation.ObjectError;
 
 import java.util.Locale;
 
-/**
- * Created by BarysevichD on 2017-03-15.
- */
 public class Response<T> {
 
     private static final String SUCCESS_TEXT = "Completed successfully";
