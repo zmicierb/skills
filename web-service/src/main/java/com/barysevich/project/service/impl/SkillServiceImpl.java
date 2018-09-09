@@ -1,36 +1,39 @@
 package com.barysevich.project.service.impl;
 
-import com.barysevich.project.model.Skills;
+import com.barysevich.project.model.Skill;
 import com.barysevich.project.repository.SkillRepository;
-import com.barysevich.project.repository.SkillsRepository;
-import com.barysevich.project.service.SkillsService;
-import com.google.common.collect.ObjectArrays;
+import com.barysevich.project.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 @Service
-public class SkillsServiceImpl extends GenericServiceImpl<Skills, String> implements SkillsService
+public class SkillServiceImpl extends GenericServiceImpl<Skill, String> implements SkillService
 {
 
-    final private SkillsRepository skillsRepository;
+    final private SkillRepository skillRepository;
+
 
     @Autowired
-    public SkillsServiceImpl(final SkillsRepository skillsRepository)
+    public SkillServiceImpl(final SkillRepository repository)
     {
-        super(skillsRepository);
-        this.skillsRepository = skillsRepository;
+        super(repository);
+        this.skillRepository = repository;
     }
+
 
     @Override
-    public Skills findByPersonId(final String personId)
+    public Iterable<Skill> findByNameRegEx(final String name, final Pageable pageable)
     {
-        return skillsRepository.findByPersonId(personId);
+        return skillRepository.findByNameRegEx(name, pageable);
     }
 
+    //    @Override
+//    public Iterable<Skill> findByNameContainingIgnoreCase(String name, Pageable pageable)
+//    {
+//        return skillRepository.findByNameContainingIgnoreCase(name, pageable);
+//    }
+//
 //
 //    @Override
 //    @Transactional

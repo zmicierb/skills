@@ -2,69 +2,69 @@
 
 angular.module('skillsApp').component('personProject', {
     templateUrl: 'person-project/person-project.template.html',
-    controller: ['$routeParams', '$filter', 'PersonProjectSrv', 'PositionSrv', 'PositionFindSrv', 'ProjectSrv', 'CompanySrv', 'SkillSrv', 'SkillFindSrv',
-        function PersonDetailController($routeParams, $filter, PersonProjectSrv, PositionSrv, PositionFindSrv, ProjectSrv, CompanySrv, SkillSrv, SkillFindSrv) {
+    controller: ['$routeParams', '$filter', 'PersonProjectSrv', 'ProjectSrv', 'CompanySrv', 'SkillSrv', 'SkillFindSrv',
+        function PersonDetailController($routeParams, $filter, PersonProjectSrv, ProjectSrv, CompanySrv, SkillSrv, SkillFindSrv) {
             var self = this;
             var queryPersonProjects = function () {
                 var personProjects = PersonProjectSrv.query({personId: $routeParams.personId}, function () {
-                    personProjects.data.forEach(function (project) {
-                        //sort skills in environment rows by position
-                        project.environmentSkills.sort(function (a, b) {
-                            return a.position - b.position;
-                        });
-                        //convert for datepicker
-                        project.companyInfo.startDt = Date.parse(project.companyInfo.startDate);
-                        project.companyInfo.endDt = Date.parse(project.companyInfo.endDate);
-                        project.companyInfo.startOpened = false;
-                        project.companyInfo.endOpened = false;
-
-                        //due to issue with grouping by company name
-                        project.companyInfo.nameTemp = project.companyInfo.name;
-                    });
-                    self.personProjects = personProjects.data;
+                    // personProjects.data.forEach(function (project) {
+                    //     //sort skills in environment rows by position
+                    //     project.environmentSkills.sort(function (a, b) {
+                    //         return a.position - b.position;
+                    //     });
+                    //     //convert for datepicker
+                    //     project.companyInfo.startDt = Date.parse(project.companyInfo.startDate);
+                    //     project.companyInfo.endDt = Date.parse(project.companyInfo.endDate);
+                    //     project.companyInfo.startOpened = false;
+                    //     project.companyInfo.endOpened = false;
+                    //
+                    //     //due to issue with grouping by company name
+                    //     project.companyInfo.nameTemp = project.companyInfo.name;
+                    // });
+                    self.personCompanies = personProjects.data;
                 });
             };
 
-            var queryPersonProject = function (projectId) {
-                var personProject = ProjectSrv.get({projectId: projectId}, function () {
-                    //sort skills in environment rows by position
-                    personProject.data.environmentSkills.sort(function (a, b) {
-                        return a.position - b.position;
-                    });
-                    self.personProjects.some(function (item) {
-                        if (item.id == projectId || item.id == null) {
-                            item.id = personProject.data.id;
-                            item.environmentSkills = personProject.data.environmentSkills;
-                            item.position = personProject.data.position;
-                            item.responsibility = personProject.data.responsibility;
-                            item.result = personProject.data.result;
-                            item.description = personProject.data.description;
-                            item.editProjectFlag = true;
-                            return true;
-                        }
-                    })
-                })
-            };
+            // var queryPersonProject = function (projectId) {
+            //     var personProject = ProjectSrv.get({projectId: projectId}, function () {
+            //         //sort skills in environment rows by position
+            //         personProject.data.environmentSkills.sort(function (a, b) {
+            //             return a.position - b.position;
+            //         });
+            //         self.personProjects.some(function (item) {
+            //             if (item.id == projectId || item.id == null) {
+            //                 item.id = personProject.data.id;
+            //                 item.environmentSkills = personProject.data.environmentSkills;
+            //                 item.position = personProject.data.position;
+            //                 item.responsibility = personProject.data.responsibility;
+            //                 item.result = personProject.data.result;
+            //                 item.description = personProject.data.description;
+            //                 item.editProjectFlag = true;
+            //                 return true;
+            //             }
+            //         })
+            //     })
+            // };
 
-            var queryPersonCompany = function (companyId) {
-                var personCompany = CompanySrv.get({companyId: companyId}, function () {
-                    self.personProjects.forEach(function (item) {
-                        if (item.companyInfo.id == companyId || item.id == null) {
-                            item.companyInfo = personCompany.data;
-                            item.companyInfo.editCompanyFlag = true;
-
-                            //convert for datepicker
-                            item.companyInfo.startDt = Date.parse(item.companyInfo.startDate);
-                            item.companyInfo.endDt = Date.parse(item.companyInfo.endDate);
-                            item.companyInfo.startOpened = false;
-                            item.companyInfo.endOpened = false;
-
-                            //due to issue with grouping by company name
-                            item.companyInfo.nameTemp = item.companyInfo.name;
-                        }
-                    })
-                })
-            };
+            // var queryPersonCompany = function (companyId) {
+            //     var personCompany = CompanySrv.get({companyId: companyId}, function () {
+            //         self.personProjects.forEach(function (item) {
+            //             if (item.companyInfo.id == companyId || item.id == null) {
+            //                 item.companyInfo = personCompany.data;
+            //                 item.companyInfo.editCompanyFlag = true;
+            //
+            //                 //convert for datepicker
+            //                 item.companyInfo.startDt = Date.parse(item.companyInfo.startDate);
+            //                 item.companyInfo.endDt = Date.parse(item.companyInfo.endDate);
+            //                 item.companyInfo.startOpened = false;
+            //                 item.companyInfo.endOpened = false;
+            //
+            //                 //due to issue with grouping by company name
+            //                 item.companyInfo.nameTemp = item.companyInfo.name;
+            //             }
+            //         })
+            //     })
+            // };
 
             self.dateOptions = {
                 formatYear: 'yyyy',
@@ -141,20 +141,6 @@ angular.module('skillsApp').component('personProject', {
                         return true;
                     }
                 })
-            };
-
-            self.getPosition = function (val) {
-                if (val) {
-                    return PositionFindSrv.get({query: val, page: 0, size: 10}).$promise.then(function (response) {
-                            return response.data;
-                        }
-                    );
-                } else {
-                    return PositionSrv.get({page: 0, size: 10}).$promise.then(function (response) {
-                            return response.data;
-                        }
-                    );
-                }
             };
 
             self.getSkill = function (val, projectId) {

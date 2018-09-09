@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class PersonServiceImpl extends GenericServiceImpl<Person, String> implements PersonService
 {
 
-    private PersonRepository personRepository;
+    final private PersonRepository personRepository;
 //
 //    @Autowired
 //    private PositionService positionService;
@@ -59,19 +59,13 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, String> implem
 //    }
 //
 //
+
 //    @Transactional
-//    @Override
-//    public Person update(Long id, Person person)
-//    {
-//        Person update = personRepository.findOne(id);
-//        update.setName(person.getName());
-//        update.setEmail(person.getEmail());
-//        update.setBirthDate(person.getBirthDate());
-//        update.setPosition(positionService.save(person.getPosition()));
-//        update.setDepartment(departmentService.save(person.getDepartment()));
-//
-//        return personRepository.save(update);
-//    }
+    @Override
+    public Person update(Person person)
+    {
+        return personRepository.save(person);
+    }
 //
 //
 //    public Map<Long, PersonSkillsDto> findSkillsById(Long id)

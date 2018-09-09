@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class PersonController
 {
 
-    private PersonService personService;
+    private final PersonService personService;
 
 //    @Autowired
 //    private ProjectService projectService;
@@ -21,39 +21,33 @@ public class PersonController
 //    @Autowired
 //    private SkillSumService skillSumService;
 
+
     @Autowired
     public PersonController(final PersonService personService)
     {
         this.personService = personService;
     }
 
+
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Person>>> findAll(Pageable pageable)
+    public ResponseEntity<Response<Iterable<Person>>> findAll(final Pageable pageable)
     {
         return ResponseEntity.ok(Response.success(personService.findAll(pageable)));
     }
 
 
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<Response<Person>> getById(@PathVariable Long id)
-//    {
-//        return ResponseEntity.ok(Response.success(personService.findOne(id)));
-//    }
-//
-//
-//    @RequestMapping(method = RequestMethod.POST)
-//    public ResponseEntity<Response<Person>> save(@RequestBody Person person)
-//    {
-//        return ResponseEntity.ok(Response.success(personService.save(person)));
-//    }
-//
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-//    public ResponseEntity<Response<Person>> updatePerson(@PathVariable Long id, @RequestBody Person person)
-//    {
-//        Person update = personService.update(id, person);
-//        return ResponseEntity.ok(Response.success(personService.save(update)));
-//    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Response<Person>> getById(@PathVariable final String id)
+    {
+        return ResponseEntity.ok(Response.success(personService.findOne(id)));
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Response<Person>> saveOrUpdatePerson(@RequestBody final Person person)
+    {
+        return ResponseEntity.ok(Response.success(personService.save(person)));
+    }
 //
 //
 //    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

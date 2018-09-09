@@ -6,7 +6,6 @@ import java.util.Objects;
 import com.barysevich.project.localization.Locale;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,7 +18,6 @@ public class GetTemplateRequest
     /**
      * наименование шаблона
      */
-    @NotEmpty
     private final String templateName;
 
     /**

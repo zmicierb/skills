@@ -61,7 +61,7 @@ services:
     volumes:
     - ${CONTAINER_MONGO_DATA}
     command:
-      mongod --auth
+      mongod --auth --replSet 'replocal'
 
   skill-i18n-service:
     build: ../i18n-service/

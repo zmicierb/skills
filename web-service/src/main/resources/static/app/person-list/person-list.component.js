@@ -4,10 +4,10 @@ angular.module('skillsApp').component('personList', {
     templateUrl: 'person-list/person-list.template.html',
     controller: ['PersonSrv', 'PersonFindSrv', 'PersonSearchFormSrv', 'SkillSearchSrv',
         function PersonListController(PersonSrv, PersonFindSrv, PersonSearchFormSrv, SkillSearchSrv) {
-            var self = this;
-            var serviceFlag = false; //added due to issue with ng-model = "currentPage" while loading html-template
-            var personsQuery = function (query, page, size) {
-                var persons;
+            let self = this;
+            let serviceFlag = false; //added due to issue with ng-model = "currentPage" while loading html-template
+            const personsQuery = function (query, page, size) {
+                let persons;
                 if (query) {
                     persons = SkillSearchSrv.get({query: query, page: page - 1, size: size}, function () {
                         self.persons = persons.data;

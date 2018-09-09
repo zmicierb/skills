@@ -2,12 +2,11 @@
 
 angular.module('core.personSkillSrv').factory('PersonSkillSrv', ['$resource',
     function ($resource) {
-        return $resource('/api/person/:personId/skills', {}, {
+        return $resource('/api/skills/person/:personId', {}, {
             query: {
                 method: 'GET'
                 , isArray: false
             }
-            , update: {method: 'PUT'}
         });
     }
 ]);

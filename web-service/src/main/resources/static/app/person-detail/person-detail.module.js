@@ -5,8 +5,4 @@ angular.module('personDetail', [
     , 'ngAnimate'
     , 'ui.bootstrap'
     , 'core.personSrv'
-    , 'core.positionSrv'
-    , 'core.positionFindSrv'
-    , 'core.departmentSrv'
-    , 'core.departmentFindSrv'
 ]);

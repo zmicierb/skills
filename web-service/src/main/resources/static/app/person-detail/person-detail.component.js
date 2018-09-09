@@ -5,12 +5,12 @@ angular.module('skillsApp').component('personDetail', {
     bindings: {
         new: '<'
     },
-    controller: ['$http', '$filter', '$location', '$routeParams', 'PersonSrv', 'PositionSrv', 'PositionFindSrv', 'DepartmentSrv', 'DepartmentFindSrv',
-        function PersonDetailController($http, $filter, $location, $routeParams, PersonSrv, PositionSrv, PositionFindSrv, DepartmentSrv, DepartmentFindSrv) {
-            var self = this;
+    controller: ['$http', '$filter', '$location', '$routeParams', 'PersonSrv',
+        function PersonDetailController($http, $filter, $location, $routeParams, PersonSrv) {
+            let self = this;
             self.isNew = !(self.new == undefined || self.new === false);
-            var getPerson = function () {
-                var person = PersonSrv.get({personId: $routeParams.personId}, function () {
+            const getPerson = function () {
+                const person = PersonSrv.get({personId: $routeParams.personId}, function () {
                     self.person = person.data;
                     self.person.dt = Date.parse(self.person.birthDate);
                 });
@@ -26,34 +26,6 @@ angular.module('skillsApp').component('personDetail', {
 
             self.toggleEditFlag = function () {
                 self.editFlag = true;
-            };
-
-            self.getPosition = function (val) {
-                if (val) {
-                    return PositionFindSrv.get({query: val, page: 0, size: 10}).$promise.then(function (response) {
-                            return response.data;
-                        }
-                    );
-                } else {
-                    return PositionSrv.get({page: 0, size: 10}).$promise.then(function (response) {
-                            return response.data;
-                        }
-                    );
-                }
-            };
-
-            self.getDepartment = function (val) {
-                if (val) {
-                    return DepartmentFindSrv.get({query: val, page: 0, size: 10}).$promise.then(function (response) {
-                            return response.data;
-                        }
-                    );
-                } else {
-                    return DepartmentSrv.get({page: 0, size: 10}).$promise.then(function (response) {
-                            return response.data;
-                        }
-                    );
-                }
             };
 
             self.clear = function () {
@@ -76,7 +48,7 @@ angular.module('skillsApp').component('personDetail', {
             self.submit = function (form) {
                 self.person.birthDate = $filter('date')(self.person.dt, "yyyy/MM/dd");
                 if (!self.isNew)
-                    PersonSrv.update({personId: $routeParams.personId}, self.person).$promise.then(function (response) {
+                    PersonSrv.save(self.person).$promise.then(function (response) {
                         self.person = response.data;
                         self.person.dt = Date.parse(self.person.birthDate);
                         form.$setPristine();

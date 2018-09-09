@@ -27,10 +27,12 @@ public class Response<T> {
     private int numberOfElements;
     private Sort sort;
 
-    private Response() {
+    private Response()
+    {
     }
 
-    public static Response<Object> error(Errors result, MessageSource ms, Locale locale) {
+    public static Response<Object> error(final Errors result, final MessageSource ms, final Locale locale)
+    {
         Response<Object> r = new Response<>();
         r.setSuccess(false);
         MultiValueMap<String, String> errors = new LinkedMultiValueMap<>();
@@ -49,7 +51,8 @@ public class Response<T> {
         return r;
     }
 
-    public static Response<Object> error(Errors result) {
+    public static Response<Object> error(final Errors result)
+    {
         Response<Object> r = new Response<>();
         r.setSuccess(false);
         MultiValueMap<String, String> errors = new LinkedMultiValueMap<>();
@@ -68,7 +71,8 @@ public class Response<T> {
         return r;
     }
 
-    public static <T> Response<T> success(T data) {
+    public static <T> Response<T> success(final T data)
+    {
         Response<T> r = new Response<>();
         r.setSuccess(true);
         r.setMessage(SUCCESS_TEXT);
@@ -76,14 +80,16 @@ public class Response<T> {
         return r;
     }
 
-    public static <T> Response<T> error(T data) {
+    public static <T> Response<T> error(final T data)
+    {
         Response<T> r = new Response<>();
         r.setSuccess(false);
         r.setDataForPageable(data);
         return r;
     }
 
-    public static <T> Response<T> success(T data, String message) {
+    public static <T> Response<T> success(final T data, final String message)
+    {
         Response<T> r = new Response<>();
         r.setSuccess(true);
         r.setMessage(message == null ? SUCCESS_TEXT : message);
@@ -91,7 +97,8 @@ public class Response<T> {
         return r;
     }
 
-    public static <T> Response<T> error(T data, String message) {
+    public static <T> Response<T> error(final T data, final String message)
+    {
         Response<T> r = new Response<>();
         r.setSuccess(false);
         r.setMessage(message);
@@ -99,28 +106,32 @@ public class Response<T> {
         return r;
     }
 
-    public static Response success(String msg) {
+    public static Response success(final String msg)
+    {
         Response r = new Response<Object>();
         r.setSuccess(true);
         r.setMessage(msg);
         return r;
     }
 
-    public static Response error(String msg) {
+    public static Response error(final String msg)
+    {
         Response r = new Response<Object>();
         r.setSuccess(false);
         r.setMessage(msg);
         return r;
     }
 
-    public static Response success() {
+    public static Response success()
+    {
         Response r = new Response<Object>();
         r.setSuccess(true);
         r.setMessage(SUCCESS_TEXT);
         return r;
     }
 
-    private void setDataForPageable(T data) {
+    private void setDataForPageable(final T data)
+    {
         if (data instanceof Page) {
             this.setData((T) ((Page) data).getContent());
             this.setFirst(((Page) data).isFirst());
@@ -140,7 +151,7 @@ public class Response<T> {
         return success;
     }
 
-    public void setSuccess(Boolean success) {
+    public void setSuccess(final Boolean success) {
         this.success = success;
     }
 
@@ -148,7 +159,7 @@ public class Response<T> {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 
@@ -156,7 +167,7 @@ public class Response<T> {
         return errors;
     }
 
-    public void setErrors(MultiValueMap<String, String> errors) {
+    public void setErrors(final MultiValueMap<String, String> errors) {
         this.errors = errors;
     }
 
@@ -164,7 +175,7 @@ public class Response<T> {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(final T data) {
         this.data = data;
     }
 
@@ -172,7 +183,7 @@ public class Response<T> {
         return first;
     }
 
-    public void setFirst(boolean first) {
+    public void setFirst(final boolean first) {
         this.first = first;
     }
 
@@ -180,7 +191,7 @@ public class Response<T> {
         return last;
     }
 
-    public void setLast(boolean last) {
+    public void setLast(final boolean last) {
         this.last = last;
     }
 
@@ -188,7 +199,7 @@ public class Response<T> {
         return totalPages;
     }
 
-    public void setTotalPages(int totalPages) {
+    public void setTotalPages(final int totalPages) {
         this.totalPages = totalPages;
     }
 
@@ -196,7 +207,7 @@ public class Response<T> {
         return totalElements;
     }
 
-    public void setTotalElements(long totalElements) {
+    public void setTotalElements(final long totalElements) {
         this.totalElements = totalElements;
     }
 
@@ -204,7 +215,7 @@ public class Response<T> {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(final int size) {
         this.size = size;
     }
 
@@ -212,7 +223,7 @@ public class Response<T> {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(final int number) {
         this.number = number;
     }
 
@@ -220,7 +231,7 @@ public class Response<T> {
         return numberOfElements;
     }
 
-    public void setNumberOfElements(int numberOfElements) {
+    public void setNumberOfElements(final int numberOfElements) {
         this.numberOfElements = numberOfElements;
     }
 
@@ -228,7 +239,7 @@ public class Response<T> {
         return sort;
     }
 
-    public void setSort(Sort sort) {
+    public void setSort(final Sort sort) {
         this.sort = sort;
     }
 }

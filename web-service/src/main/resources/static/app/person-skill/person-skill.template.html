@@ -6,7 +6,7 @@
             </a></h4>
             <div ng-repeat="(listName, list) in $ctrl.models.lists" class="row draggableTag">
                 <div class="col-md-2">
-                    <span>{{listName}}</span>
+                    <span>{{list.name}}</span>
                 </div>
                 <div class="col-md-6">
                     <ul dnd-list="list.skills"
@@ -14,7 +14,7 @@
                         dnd-disable-if="true">
                         <li ng-repeat="skill in list.skills" dnd-type="list.type"
                             dnd-draggable="skill" dnd-moved="list.skills.splice($index, 1)"
-                            dnd-effect-allowed="move">{{skill.skillName}}
+                            dnd-effect-allowed="move">{{skill}}
                         </li>
                     </ul>
                 </div>
@@ -28,7 +28,7 @@
             <form name="personSkills" class="form-horizontal" ng-submit="$ctrl.submit(personSkills)">
                 <div ng-repeat="(listName, list) in $ctrl.models.lists" class="row draggableTag">
                     <div class="col-md-2">
-                        <span>{{listName}}</span>
+                        <span>{{list.name}}</span>
                     </div>
                     <div class="col-md-10 tag-list">
                         <ul dnd-list="list.skills"
@@ -36,8 +36,8 @@
                             dnd-disable-if="false">
                             <li ng-repeat="skill in list.skills" dnd-type="list.type"
                                 dnd-draggable="skill" dnd-moved="list.skills.splice($index, 1);personSkills.$setDirty()"
-                                dnd-effect-allowed="move">{{skill.skillName}}
-                                <a href="" ng-click="$ctrl.removeSkill(skill.skillName, listName, personSkills)">
+                                dnd-effect-allowed="move">{{skill}}
+                                <a href="" ng-click="$ctrl.removeSkill(skill, listName, personSkills)">
                                     <span class="glyphicon glyphicon-remove tag-list-remove"></span>
                                 </a>
                             </li>
@@ -80,19 +80,6 @@
                         <button type="button" class="btn" ng-disabled="!personSkills.$pristine"
                                 ng-click="$ctrl.cancel()">Back
                         </button>
-                        <div class="btn-group" uib-dropdown>
-                            <button id="row-button" type="button" class="btn btn-primary" uib-dropdown-toggle
-                                    ng-disabled="$ctrl.rows.length == 0">
-                                Add skills summary<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                <li ng-repeat="row in $ctrl.rows" role="menuitem">
-                                    <button type="button" class="btn dropdown-btn" ng-click="$ctrl.addRow(row)">
-                                        {{row.name}}
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </form>

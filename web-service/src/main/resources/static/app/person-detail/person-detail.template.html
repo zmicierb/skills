@@ -6,8 +6,8 @@
             </a></h3>
             <p>{{$ctrl.person.email}}</p>
             <p>{{$ctrl.person.birthDate}}</p>
-            <p>{{$ctrl.person.position.name}}</p>
-            <p>{{$ctrl.person.department.name}}</p>
+            <p>{{$ctrl.person.position}}</p>
+            <p>{{$ctrl.person.department}}</p>
         </div>
 
         <!--for edit-->
@@ -41,27 +41,13 @@
                 <div class="flex-container">
                     <div>
                         <input type="text" ng-model="$ctrl.person.position"
-                               placeholder="position"
-                               uib-typeahead="position as position.name for position in $ctrl.getPosition($viewValue)"
-                               typeahead-loading="loadingPositions"
-                               class="form-control"
-                               typeahead-min-length="0" required
-                        >
-                    </div>
-                    <div ng-show="loadingPositions"><i class="glyphicon glyphicon-refresh"></i>
+                               placeholder="position" class="form-control"required>
                     </div>
                 </div>
                 <div class="flex-container">
                     <div>
                         <input type="text" ng-model="$ctrl.person.department"
-                               placeholder="department"
-                               uib-typeahead="department as department.name for department in $ctrl.getDepartment($viewValue)"
-                               typeahead-loading="loadingDepartments"
-                               class="form-control"
-                               typeahead-min-length="0" required
-                        >
-                    </div>
-                    <div ng-show="loadingDepartments"><i class="glyphicon glyphicon-refresh"></i>
+                               placeholder="department" class="form-control" required>
                     </div>
                 </div>
                 <div class="flex-container">

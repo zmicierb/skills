@@ -1,15 +1,10 @@
 package com.barysevich.project.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.List;
 
-@Document(collection = "projects")
 public class Project
 {
-    @Id
-    private final String id;
-
-    private final String[] skills;
+    private final List<String> environment;
 
     private final String position;
 
@@ -19,27 +14,21 @@ public class Project
 
     private final String result;
 
-    public Project(final String id,
-                   final String[] skills,
+    public Project(final List<String> environment,
                    final String position,
                    final String description,
                    final String responsibility,
                    final String result)
     {
-        this.id = id;
-        this.skills = skills;
+        this.environment = environment;
         this.position = position;
         this.description = description;
         this.responsibility = responsibility;
         this.result = result;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String[] getSkills() {
-        return skills;
+    public List<String> getEnvironment() {
+        return environment;
     }
 
     public String getPosition() {

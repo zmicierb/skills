@@ -7,19 +7,18 @@
                                     </span>
                 </a>
             </h4>
-            <div ng-repeat="(key, value) in $ctrl.personProjects | orderBy:'-companyInfo.startDt'
-            | groupBy: '[companyInfo.nameTemp, companyInfo.startDt, companyInfo.endDt]'">
+            <div ng-repeat="(key, value) in $ctrl.personCompanies">
                 <div class="row">
                     <!-- view company-->
-                    <div class="col-md-4 person-company-project" ng-if="!value[0].companyInfo.editCompanyFlag">
-                        <span><b>{{value[0].companyInfo.name}}</b>
+                    <div class="col-md-4 person-company-project" ng-if="!value.companyInfo.editCompanyFlag">
+                        <span><b>{{value.name}}</b>
                             <a href="" ng-click="$ctrl.toggleEditCompany(value[0].companyInfo.id)">
                                     <span class="glyphicon glyphicon-pencil">
                                     </span>
                                 </a></span>
                         <br/>
-                        <span>{{value[0].companyInfo.startDt | date:'MMM yyyy'}} -
-                                {{value[0].companyInfo.endDate == null ? "now" : value[0].companyInfo.endDt | date:'MMM yyyy'}}
+                        <span>{{value.startDate}} -
+                                {{value.endDate == null ? "now" : value.endDate}}
                         </span>
                     </div>
                     <!-- view company-->
@@ -88,11 +87,11 @@
                 <!-- edit company-->
 
                 <!-- view project-->
-                <div class="person-detail-project" ng-repeat="project in value">
+                <div class="person-detail-project" ng-repeat="project in value.projects">
                     <div class="col-md-12" ng-if="!project.editProjectFlag">
                         <div class="row">
                             <div class="col-md-12">
-                            <span><b>{{project.position.name}}</b>
+                            <span><b>{{project.position}}</b>
                                 <a href="" ng-click="$ctrl.toggleEditProject(project.id)">
                                     <span class="glyphicon glyphicon-pencil">
                                     </span>
@@ -118,15 +117,15 @@
                                 <span>Environment:</span>
                             </div>
                             <div class="col-md-10">
-                                <ul dnd-list="project.environmentSkills"
-                                    dnd-allowed-types="[project.id]"
+                                <ul dnd-list="project.environment"
+                                    dnd-allowed-types="[project.description]"
                                     dnd-disable-if="true">
-                                    <li ng-repeat="skill in project.environmentSkills"
-                                        dnd-type="project.id.toString(10)"
+                                    <li ng-repeat="skill in project.environment"
+                                        dnd-type="project.description"
                                         dnd-draggable="skill"
-                                        dnd-moved="project.environmentSkills.splice($index, 1)"
+                                        dnd-moved="project.environment.splice($index, 1)"
                                         dnd-effect-allowed="move">
-                                        {{skill.skill.name}}
+                                        {{skill}}
                                     </li>
                                 </ul>
                             </div>

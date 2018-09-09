@@ -1,7 +1,11 @@
 package com.barysevich.project.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document(collection = "skills")
 public class Skills
@@ -9,27 +13,32 @@ public class Skills
     @Id
     private final String id;
 
-    private final String[] langs;
+    private final String personId;
 
-    private final String[] techs;
+    private final List<String> langs;
 
-    private final String[] servers;
+    private final List<String> techs;
 
-    private final String[] dbs;
+    private final List<String> servers;
 
-    private final String[] systems;
+    private final List<String> dbs;
 
-    private final String[] others;
+    private final List<String> systems;
 
-    public Skills(final String id,
-                  final String[] langs,
-                  final String[] techs,
-                  final String[] servers,
-                  final String[] dbs,
-                  final String[] systems,
-                  final String[] others)
+    private final List<String> others;
+
+    @JsonCreator
+    public Skills(@JsonProperty(value = "id") final String id,
+                  @JsonProperty(value = "personId") final String personId,
+                  @JsonProperty(value = "langs") final List<String> langs,
+                  @JsonProperty(value = "techs") final List<String> techs,
+                  @JsonProperty(value = "servers") final List<String> servers,
+                  @JsonProperty(value = "dbs") final List<String> dbs,
+                  @JsonProperty(value = "systems") final List<String> systems,
+                  @JsonProperty(value = "others") final List<String> others)
     {
         this.id = id;
+        this.personId = personId;
         this.langs = langs;
         this.techs = techs;
         this.servers = servers;
@@ -38,31 +47,43 @@ public class Skills
         this.others = others;
     }
 
+    @JsonProperty(value = "id")
     public String getId() {
         return id;
     }
 
-    public String[] getLangs() {
+    @JsonProperty(value = "personId")
+    public String getPersonId() {
+        return personId;
+    }
+
+    @JsonProperty(value = "langs")
+    public List<String> getLangs() {
         return langs;
     }
 
-    public String[] getTechs() {
+    @JsonProperty(value = "techs")
+    public List<String> getTechs() {
         return techs;
     }
 
-    public String[] getServers() {
+    @JsonProperty(value = "servers")
+    public List<String> getServers() {
         return servers;
     }
 
-    public String[] getDbs() {
+    @JsonProperty(value = "dbs")
+    public List<String> getDbs() {
         return dbs;
     }
 
-    public String[] getSystems() {
+    @JsonProperty(value = "systems")
+    public List<String> getSystems() {
         return systems;
     }
 
-    public String[] getOthers() {
+    @JsonProperty(value = "others")
+    public List<String> getOthers() {
         return others;
     }
 }
