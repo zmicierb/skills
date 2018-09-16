@@ -46,7 +46,7 @@ public class PersonController
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Response<Person>> saveOrUpdatePerson(@RequestBody final Person person)
     {
-        return ResponseEntity.ok(Response.success(personService.save(person)));
+        return ResponseEntity.ok(Response.success(personService.update(person)));
     }
 //
 //

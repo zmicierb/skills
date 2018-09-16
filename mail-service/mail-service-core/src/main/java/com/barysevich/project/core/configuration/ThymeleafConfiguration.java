@@ -21,7 +21,7 @@ public class ThymeleafConfiguration
     {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 
-//        templateEngine.setTemplateResolvers(templateResolvers);
+        templateEngine.setTemplateResolvers(templateResolvers);
 
         return templateEngine;
     }
@@ -31,10 +31,10 @@ public class ThymeleafConfiguration
     public ITemplateResolver springResourceTemplateResolver()
     {
         final SpringResourceTemplateResolver springResourceTemplateResolver = new SpringResourceTemplateResolver();
-//        springResourceTemplateResolver.setPrefix("classpath:/templates/");
-//        springResourceTemplateResolver.setOrder(Integer.MAX_VALUE);
-//        springResourceTemplateResolver.setSuffix(".html");
-//        springResourceTemplateResolver.setCacheable(false);
+        springResourceTemplateResolver.setPrefix("classpath:/templates/");
+        springResourceTemplateResolver.setOrder(Integer.MAX_VALUE);
+        springResourceTemplateResolver.setSuffix(".html");
+        springResourceTemplateResolver.setCacheable(false);
 
         return springResourceTemplateResolver;
     }

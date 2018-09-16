@@ -1,5 +1,5 @@
 let res = [
-    rs.initiate({_id: 'replocal', members: [{_id: 0, host: "192.168.0.101:27017"}] }),
+    // rs.initiate({_id: 'replocal', members: [{_id: 0, host: "192.168.0.101:27017"}] }),
 
     db.createUser(
         {

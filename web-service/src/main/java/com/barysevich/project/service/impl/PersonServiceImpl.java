@@ -1,16 +1,23 @@
 package com.barysevich.project.service.impl;
 
+import com.barysevich.project.api.NotificationType;
+import com.barysevich.project.api.async.exporter.MailNotificationExporter;
+import com.barysevich.project.api.model.MailNotificationMessage;
+import com.barysevich.project.email.Email;
+import com.barysevich.project.localization.Locale;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.repository.PersonRepository;
 import com.barysevich.project.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class PersonServiceImpl extends GenericServiceImpl<Person, String> implements PersonService
 {
 
-    final private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 //
 //    @Autowired
 //    private PositionService positionService;
@@ -27,14 +34,16 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, String> implem
 //    @Autowired
 //    private AuthorizationRegistrationExporter authorizationRegistrationExporter;
 //
-//    @Autowired
-//    private MailNotificationExporter mailNotificationExporter;
+
+    private final MailNotificationExporter mailNotificationExporter;
 
     @Autowired
-    public PersonServiceImpl(final PersonRepository repository)
+    public PersonServiceImpl(final PersonRepository repository,
+                             final MailNotificationExporter mailNotificationExporter)
     {
         super(repository);
         this.personRepository = repository;
+        this.mailNotificationExporter = mailNotificationExporter;
     }
 
 //    @Transactional
@@ -64,6 +73,18 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, String> implem
     @Override
     public Person update(Person person)
     {
+        if (person.getId() == null)
+        {
+            // TODO move to auth service
+            mailNotificationExporter.exportMessage(MailNotificationMessage.builder()
+                    .withEmail(new Email(person.getEmail()))
+                    .withLocale(new Locale("EN"))
+                    .withMessageData("test")
+                    .withNotificationId(UUID.randomUUID())
+                    .withNotificationType(NotificationType.USER_REGISTERED)
+                    .build());
+        }
+
         return personRepository.save(person);
     }
 //
