@@ -9,7 +9,5 @@ angular.module('core', [
     , 'core.personProjectSrv'
     , 'core.skillSrv'
     , 'core.skillFindSrv'
-    , 'core.projectSrv'
-    , 'core.companySrv'
     , 'core.skillSearchSrv'
 ]);

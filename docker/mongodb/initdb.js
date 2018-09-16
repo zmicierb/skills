@@ -1,13 +1,13 @@
 let res = [
     // rs.initiate({_id: 'replocal', members: [{_id: 0, host: "192.168.0.101:27017"}] }),
 
-    db.createUser(
-        {
-            user: "skill",
-            pwd: "skill",
-            roles: [{role: "readWrite", db: "skills"}],
-        }
-    ),
+    // db.createUser(
+    //     {
+    //         user: "skill",
+    //         pwd: "skill",
+    //         roles: [{role: "readWrite", db: "skills"}],
+    //     }
+    // ),
 
     db.persons.drop(),
     db.skills.drop(),

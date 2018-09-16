@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/company")
+@RequestMapping("/api/company/person")
 public class CompanyController
 {
 
@@ -23,7 +23,7 @@ public class CompanyController
     }
 
 
-    @RequestMapping(value = "/person/{personId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{personId}", method = RequestMethod.GET)
     public ResponseEntity<Response<Iterable<Company>>> getByPersonId(@PathVariable final String personId)
     {
         return ResponseEntity.ok(Response.success(companyService.findByPersonId(personId)));
@@ -31,7 +31,7 @@ public class CompanyController
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Response<Company>> save(@RequestBody final Company company)
+    public ResponseEntity<Response<Company>> saveOrUpdatePerson(@RequestBody final Company company)
     {
         return ResponseEntity.ok(Response.success(companyService.save(company)));
     }
