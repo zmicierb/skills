@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/company/person")
 public class CompanyController
 {
-
     private final CompanyService companyService;
 
 
@@ -31,24 +32,17 @@ public class CompanyController
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Response<Company>> saveOrUpdatePerson(@RequestBody final Company company)
+    public ResponseEntity<Response<Company>> saveOrUpdateCompany(@RequestBody final List<Company> companies)
     {
-        return ResponseEntity.ok(Response.success(companyService.save(company)));
+        companyService.save(companies);
+        return ResponseEntity.ok(Response.success());
     }
-//
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-//    public ResponseEntity<Response<CompanyInfo>> update(@PathVariable Long id, @RequestBody CompanyInfo company)
-//    {
-//        return ResponseEntity.ok(Response.success(companyInfoService.update(id, company)));
-//    }
-//
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-//    public ResponseEntity<Response> delete(@PathVariable Long id)
-//    {
-//        companyInfoService.remove(id);
-//        return ResponseEntity.ok(Response.success());
-//    }
 
+
+    @RequestMapping(value = "/{companyId}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable final String companyId)
+    {
+        companyService.delete(companyId);
+        return ResponseEntity.ok(Response.success());
+    }
 }

@@ -1,11 +1,13 @@
 package com.barysevich.project.service.impl;
 
+
 import com.barysevich.project.service.GenericService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.io.Serializable;
 import java.util.Optional;
+
 
 public class GenericServiceImpl<T, ID extends Serializable> implements GenericService<T, ID>
 {
@@ -57,5 +59,11 @@ public class GenericServiceImpl<T, ID extends Serializable> implements GenericSe
     {
         getRepository().save(entity);
         return entity;
+    }
+
+    @Override
+    public void save(final Iterable<T> entities)
+    {
+        getRepository().saveAll(entities);
     }
 }

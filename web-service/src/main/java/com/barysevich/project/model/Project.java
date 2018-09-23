@@ -1,5 +1,8 @@
 package com.barysevich.project.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Project
@@ -14,11 +17,13 @@ public class Project
 
     private final String result;
 
-    public Project(final List<String> environment,
-                   final String position,
-                   final String description,
-                   final String responsibility,
-                   final String result)
+
+    @JsonCreator
+    public Project(@JsonProperty(value = "environment") final List<String> environment,
+                   @JsonProperty(value = "position") final String position,
+                   @JsonProperty(value = "description") final String description,
+                   @JsonProperty(value = "responsibility") final String responsibility,
+                   @JsonProperty(value = "result") final String result)
     {
         this.environment = environment;
         this.position = position;
@@ -27,23 +32,38 @@ public class Project
         this.result = result;
     }
 
-    public List<String> getEnvironment() {
+
+    @JsonProperty(value = "environment")
+    public List<String> getEnvironment()
+    {
         return environment;
     }
 
-    public String getPosition() {
+
+    @JsonProperty(value = "position")
+    public String getPosition()
+    {
         return position;
     }
 
-    public String getDescription() {
+
+    @JsonProperty(value = "description")
+    public String getDescription()
+    {
         return description;
     }
 
-    public String getResponsibility() {
+
+    @JsonProperty(value = "responsibility")
+    public String getResponsibility()
+    {
         return responsibility;
     }
 
-    public String getResult() {
+
+    @JsonProperty(value = "result")
+    public String getResult()
+    {
         return result;
     }
 }

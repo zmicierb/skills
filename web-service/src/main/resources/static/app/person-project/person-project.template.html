@@ -2,18 +2,18 @@
     <div class="row">
         <div class="col-md-12">
             <h4 class="person-detail-separator">PROFESSIONAL EXPERIENCE
-                <a href="" ng-click="$ctrl.addCompany()" ng-if="!$ctrl.addCompanyFlag">
+                <a href="" ng-click="$ctrl.addCompany()" ng-if="!$ctrl.edit">
                                     <span class="glyphicon glyphicon-plus">
                                     </span>
                 </a>
             </h4>
-            <div class="row" ng-repeat="(keyCompany, value) in $ctrl.personCompanies">
+            <div class="row" ng-repeat="(companyKey, value) in $ctrl.personCompanies">
                 <!-- view company-->
                 <div class="col-md-12" ng-if="!value.editCompanyFlag">
                     <div class="row">
                         <div class="col-md-4 person-company-project">
                         <span><b>{{value.name}}</b>
-                            <a href="" ng-click="$ctrl.toggleEditCompany(value.id)">
+                            <a href="" ng-click="$ctrl.toggleEditCompany(companyKey)">
                                     <span class="glyphicon glyphicon-pencil">
                                     </span>
                                 </a></span>
@@ -76,7 +76,7 @@
                 <!-- edit company-->
                 <div class="row" ng-if="value.editCompanyFlag">
                     <form name="personCompany" class="col-md-12"
-                          ng-submit="$ctrl.submitCompany(value.id, personCompany)">
+                          ng-submit="$ctrl.submit(personCompany)">
                         <div class="row">
                             <div class="col-md-4">
                                 <input type="text" class="form-control" ng-model="value.name"
@@ -111,7 +111,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div ng-repeat="(keyProject, project) in value.projects">
+                        <div ng-repeat="(projectKey, project) in value.projects">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -143,15 +143,15 @@
                                     </div>
                                     <div class="col-md-10 tag-list">
                                         <ul dnd-list="project.environment"
-                                            dnd-allowed-types="[keyProject]"
+                                            dnd-allowed-types="[projectKey]"
                                             dnd-disable-if="false">
                                             <li ng-repeat="skill in project.environment"
-                                                dnd-type="keyProject.toString(10)"
+                                                dnd-type="projectKey.toString(10)"
                                                 dnd-draggable="skill"
-                                                dnd-moved="project.environment.splice($index, 1);personProject.$setDirty()"
+                                                dnd-moved="project.environment.splice($index, 1);personCompany.$setDirty()"
                                                 dnd-effect-allowed="move">{{skill}}
                                                 <a href=""
-                                                   ng-click="$ctrl.removeSkill(skill, keyProject, personProject)">
+                                                   ng-click="$ctrl.removeSkill(skill, companyKey, projectKey, personCompany)">
                                                     <span class="glyphicon glyphicon-remove tag-list-remove"></span>
                                                 </a>
                                             </li>
@@ -159,7 +159,7 @@
                                         <div class="form-group" ng-if="project.addSkillFlag">
                                             <div class="col-md-6">
                                                 <input type="text" ng-model="project.newSkill" placeholder="skill"
-                                                       uib-typeahead="skill as skill.name for skill in $ctrl.getSkill($viewValue, keyCompany, keyProject)"
+                                                       uib-typeahead="skill as skill.name for skill in $ctrl.getSkill($viewValue, companyKey, projectKey)"
                                                        typeahead-loading="loadingSkill" class="form-control"
                                                        typeahead-min-length="0"
                                                 >
@@ -167,13 +167,13 @@
                                             <div class="col-md-2">
                                                 <button type="button" class="btn btn-success"
                                                         ng-disabled="project.newSkill < 1"
-                                                        ng-click="$ctrl.addNewSkill(project.newSkill, keyCompany, keyProject, personProject)">
+                                                        ng-click="$ctrl.addNewSkill(project.newSkill, companyKey, projectKey, personCompany)">
                                                     OK
                                                 </button>
                                             </div>
                                             <div class="col-md-2">
                                                 <button type="button" class="btn"
-                                                        ng-click="$ctrl.toggleNewSkill(keyCompany, keyProject)">Cancel
+                                                        ng-click="$ctrl.toggleNewSkill(companyKey, projectKey)">Cancel
                                                 </button>
                                             </div>
                                             <div class="col-md-2" ng-show="loadingSkill"><i
@@ -181,7 +181,7 @@
                                             </div>
                                         </div>
                                         <div ng-if="!project.addSkillFlag" class="">
-                                            <a href="" ng-click="$ctrl.toggleNewSkill(keyCompany, keyProject)">
+                                            <a href="" ng-click="$ctrl.toggleNewSkill(companyKey, projectKey)">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </a>
                                         </div>
@@ -199,7 +199,7 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <button type="button" class="btn btn-danger"
-                                                ng-click="$ctrl.deleteProject(project.id)">Delete
+                                                ng-click="$ctrl.deleteProject(companyKey, projectKey, personCompany)">Delete project
                                         </button>
                                     </div>
                                 </div>
@@ -207,28 +207,33 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-8">
-                                <button type="submit" ng-disabled="personCompany.$invalid || personCompany.$pristine"
-                                        class="btn btn-primary" ng-if="!$ctrl.addCompanyFlag">Save
-                                </button>
-                                <button type="button" class="btn" ng-disabled="personCompany.$pristine"
-                                        ng-if="!$ctrl.addCompanyFlag"
-                                        ng-click="$ctrl.resetCompany(value.id, personCompany)">Reset
-                                </button>
                                 <button type="button" class="btn" ng-disabled="!personCompany.$pristine"
-                                        ng-if="!$ctrl.addCompanyFlag"
-                                        ng-click="$ctrl.toggleEditCompany(value.id)">Back
+                                        ng-if="value.editCompanyFlag"
+                                        ng-click="$ctrl.toggleEditCompany(companyKey)">Back
                                 </button>
-                                <button type="button" class="btn btn-success" ng-if="!$ctrl.addCompanyFlag"
-                                        ng-click="$ctrl.addProject(value.id)">Add project
+                                <button type="button" class="btn btn-success" ng-if="value.editCompanyFlag"
+                                        ng-click="$ctrl.addProject(companyKey)">Add project
                                 </button>
-                                <button type="button" class="btn btn-danger" ng-if="!$ctrl.addCompanyFlag"
-                                        ng-click="$ctrl.deleteCompany(value.id)">Delete
+                                <button type="button" class="btn btn-danger" ng-if="value.editCompanyFlag"
+                                        ng-click="$ctrl.deleteCompany(companyKey, personCompany)">Delete company
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <!-- edit company-->
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <button type="button" class="btn btn-primary"
+                            ng-if="$ctrl.edit"
+                            ng-click="$ctrl.submit()">Save
+                    </button>
+                    <button type="button" class="btn"
+                            ng-if="$ctrl.edit"
+                            ng-click="$ctrl.resetCompany()">Reset
+                    </button>
+                </div>
             </div>
         </div>
     </div>

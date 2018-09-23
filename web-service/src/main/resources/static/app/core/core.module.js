@@ -6,7 +6,7 @@ angular.module('core', [
     , 'core.personFindSrv'
     , 'core.personSearchFormSrv'
     , 'core.personSkillSrv'
-    , 'core.personProjectSrv'
+    , 'core.personCompanySrv'
     , 'core.skillSrv'
     , 'core.skillFindSrv'
     , 'core.skillSearchSrv'

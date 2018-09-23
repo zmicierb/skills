@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('core.personProjectSrv').factory('PersonProjectSrv', ['$resource',
+angular.module('core.personCompanySrv').factory('PersonCompanySrv', ['$resource',
     function ($resource) {
         return $resource('/api/company/person/:personId', {}, {
             query: {

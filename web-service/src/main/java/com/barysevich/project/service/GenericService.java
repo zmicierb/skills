@@ -12,5 +12,7 @@ public interface GenericService<T, ID extends Serializable>
 
     void delete(ID id);
 
-    T save(T entities);
+    T save(T entity);
+
+    void save(Iterable<T> entities);
 }
