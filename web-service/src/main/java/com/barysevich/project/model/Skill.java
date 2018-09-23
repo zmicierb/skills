@@ -1,13 +1,16 @@
 package com.barysevich.project.model;
 
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 @Document(collection = "skill")
-public class Skill {
+public class Skill
+{
     @Id
     private final String id;
 
@@ -23,13 +26,17 @@ public class Skill {
         this.name = name;
     }
 
+
     @JsonProperty(value = "id")
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
+
     @JsonProperty(value = "name")
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 }
