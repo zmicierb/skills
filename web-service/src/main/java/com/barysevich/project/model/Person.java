@@ -1,5 +1,6 @@
 package com.barysevich.project.model;
 
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+
 
 @Document(collection = "persons")
 public class Person
@@ -25,6 +27,7 @@ public class Person
     @JsonFormat(pattern = "yyyy/MM/dd")
     private final LocalDate birthDate;
 
+
     @JsonCreator
     public Person(@JsonProperty(value = "id") final String id,
                   @JsonProperty(value = "name") final String name,
@@ -41,20 +44,27 @@ public class Person
         this.birthDate = birthDate;
     }
 
+
     @JsonProperty(value = "id")
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
+
     @JsonProperty(value = "name")
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
+
     @JsonProperty(value = "email")
-    public String getEmail() {
+    public String getEmail()
+    {
         return email;
     }
+
 
     @JsonProperty(value = "position")
     public String getPosition()
@@ -62,13 +72,30 @@ public class Person
         return position;
     }
 
+
     @JsonProperty(value = "department")
     public String getDepartment() {
         return department;
     }
 
+
     @JsonProperty(value = "birthDate")
-    public LocalDate getBirthDate() {
+    public LocalDate getBirthDate()
+    {
         return birthDate;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "Person{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", position='" + position + '\'' +
+                ", department='" + department + '\'' +
+                ", birthDate=" + birthDate +
+                '}';
     }
 }

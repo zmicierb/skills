@@ -66,4 +66,17 @@ public class Project
     {
         return result;
     }
+
+
+    @Override
+    public String toString()
+    {
+        return "Project{" +
+                "environment=" + environment +
+                ", position='" + position + '\'' +
+                ", description='" + description + '\'' +
+                ", responsibility='" + responsibility + '\'' +
+                ", result='" + result + '\'' +
+                '}';
+    }
 }

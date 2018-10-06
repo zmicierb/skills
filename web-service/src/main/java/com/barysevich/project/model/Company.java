@@ -1,12 +1,15 @@
 package com.barysevich.project.model;
 
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.util.List;
+
 
 @Document(collection = "companies")
 public class Company
@@ -14,6 +17,7 @@ public class Company
     @Id
     private final String id;
 
+    @Indexed
     private final String personId;
 
     private final String name;
@@ -50,11 +54,13 @@ public class Company
         return id;
     }
 
+
     @JsonProperty(value = "personId")
     public String getPersonId()
     {
         return personId;
     }
+
 
     @JsonProperty(value = "name")
     public String getName()
@@ -62,11 +68,13 @@ public class Company
         return name;
     }
 
+
     @JsonProperty(value = "startDate")
     public LocalDate getStartDate()
     {
         return startDate;
     }
+
 
     @JsonProperty(value = "endDate")
     public LocalDate getEndDate()
@@ -74,9 +82,24 @@ public class Company
         return endDate;
     }
 
+
     @JsonProperty(value = "projects")
     public List<Project> getProjects()
     {
         return projects;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "Company{" +
+                "id='" + id + '\'' +
+                ", personId='" + personId + '\'' +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", projects=" + projects +
+                '}';
     }
 }

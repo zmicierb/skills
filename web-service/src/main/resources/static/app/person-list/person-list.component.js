@@ -9,7 +9,7 @@ angular.module('skillsApp').component('personList', {
             const personsQuery = function (query, page, size) {
                 let persons;
                 if (query) {
-                    persons = SkillSearchSrv.get({query: query, page: page - 1, size: size}, function () {
+                    persons = SkillSearchSrv.query({skills: query.split(","), page: page - 1, size: size}, function () {
                         self.persons = persons.data;
                         self.totalItems = persons.totalElements;
                     });

@@ -2,6 +2,8 @@
 
 angular.module('core.skillSearchSrv').factory('SkillSearchSrv', ['$resource',
     function ($resource) {
-        return $resource('/api/search/find/:query', {}, {});
+        return $resource('/api/search/find', {}, {
+            'query':  {method: 'POST', isArray: false}
+        });
     }
 ]);

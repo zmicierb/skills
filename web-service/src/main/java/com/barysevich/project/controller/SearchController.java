@@ -2,20 +2,20 @@ package com.barysevich.project.controller;
 
 
 import com.barysevich.project.controller.dto.Response;
+import com.barysevich.project.model.Person;
+import com.barysevich.project.model.request.SearchBySkillsRequest;
 import com.barysevich.project.repository.SkillsAggregationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/search")
+@RequestMapping(value = "/api/search",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class SearchController
 {
     private final SkillsAggregationRepository repository;
@@ -28,16 +28,14 @@ public class SearchController
     }
 
 
-    @RequestMapping(value = "/find/{query}", method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<String>>> searchPersonsBySkills(@PathVariable String query, Pageable pageable)
+    @PostMapping(value = "/find")
+    public ResponseEntity<Response<Iterable<Person>>> searchPersonsBySkills(
+            @RequestBody final SearchBySkillsRequest request, final Pageable pageable)
     {
-        return ResponseEntity.ok(
-                Response.success(
-                        repository.findPersonIdsBySkill(
-                                Arrays.asList(query),
-                                pageable.getOffset(),
-                                pageable.getPageSize()
-                        )));
+        return ResponseEntity.ok(Response.success(
+                repository.findPersonIdsBySkills(
+                        request.getSkills(),
+                        pageable.getOffset(),
+                        pageable.getPageSize())));
     }
-
 }
