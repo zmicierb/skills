@@ -9,10 +9,17 @@ angular.module('skillsApp').component('personList', {
             const personsQuery = function (query, page, size) {
                 let persons;
                 if (query) {
-                    persons = SkillSearchSrv.query({skills: query.split(","), page: page - 1, size: size}, function () {
-                        self.persons = persons.data;
-                        self.totalItems = persons.totalElements;
-                    });
+                    persons = SkillSearchSrv.query({
+                            skills: query.split(",").map(function (item) {
+                                return item.trim();
+                            }),
+                            page: page - 1,
+                            size: size
+                        },
+                        function () {
+                            self.persons = persons.data;
+                            self.totalItems = persons.totalElements;
+                        });
                 } else {
                     persons = PersonSrv.query({page: page - 1, size: size}, function () {
                         self.persons = persons.data;

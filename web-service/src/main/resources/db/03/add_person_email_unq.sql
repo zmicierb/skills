@@ -1,1 +1,0 @@
-ALTER TABLE person ADD CONSTRAINT email_unq UNIQUE (email);

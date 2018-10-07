@@ -11,11 +11,19 @@ public class SearchBySkillsRequest
 {
     private final List<String> skills;
 
+    private final int page;
+
+    private final int size;
+
 
     @JsonCreator
-    public SearchBySkillsRequest(@JsonProperty(value = "skills") final List<String> skills)
+    public SearchBySkillsRequest(@JsonProperty(value = "skills") final List<String> skills,
+                                 @JsonProperty(value = "page") final int page,
+                                 @JsonProperty(value = "size") final int size)
     {
         this.skills = skills;
+        this.page = page;
+        this.size = size;
     }
 
 
@@ -25,11 +33,24 @@ public class SearchBySkillsRequest
     }
 
 
-    @Override
-    public String toString()
+    public int getPage()
     {
+        return page;
+    }
+
+
+    public int getSize()
+    {
+        return size;
+    }
+
+
+    @Override
+    public String toString() {
         return "SearchBySkillsRequest{" +
                 "skills=" + skills +
+                ", page=" + page +
+                ", size=" + size +
                 '}';
     }
 }

@@ -31,7 +31,7 @@ public class PersonIdBySkillsSearchResult
     @Override
     public String toString()
     {
-        return "PersonIdBySkillSearchResult{" +
+        return "PersonIdBySkillsSearchResult{" +
                 "personId='" + personId + '\'' +
                 ", weight=" + weight +
                 '}';

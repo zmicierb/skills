@@ -4,13 +4,14 @@ package com.barysevich.project.repository.impl;
 import com.barysevich.project.model.Category;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.model.Skills;
+import com.barysevich.project.model.result.PagedResult;
 import com.barysevich.project.model.result.PersonIdBySkillsSearchResult;
 import com.barysevich.project.repository.PersonRepository;
 import com.barysevich.project.repository.SkillsAggregationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -48,7 +49,7 @@ public class SkillsAggregationRepositoryImpl implements SkillsAggregationReposit
 
 
     @Override
-    public List<Person> findPersonIdsBySkills(final List<String> skills, final long offset, final long limit)
+    public Page<Person> findPersonIdsBySkills(final List<String> skills, final int page, final int size)
     {
         logger.info("Searched skills={}", skills);
 
@@ -154,14 +155,12 @@ public class SkillsAggregationRepositoryImpl implements SkillsAggregationReposit
                         .as(Category.OTHERS.getName()),
 
                 project()
-                        .and(
-                                SetOperators.SetUnion.arrayAsSet(Category.LANGS.getName())
-                                        .union(Category.TECHS.getName(),
-                                                Category.SERVERS.getName(),
-                                                Category.DBS.getName(),
-                                                Category.SYSTEMS.getName(),
-                                                Category.OTHERS.getName())
-                        )
+                        .and(ArrayOperators.ConcatArrays.arrayOf(Category.LANGS.getName())
+                                .concat(Category.TECHS.getName())
+                                .concat(Category.SERVERS.getName())
+                                .concat(Category.DBS.getName())
+                                .concat(Category.SYSTEMS.getName())
+                                .concat(Category.OTHERS.getName()))
                         .as("skills"),
                 unwind("skills"),
                 group("skills.personId")
@@ -169,22 +168,33 @@ public class SkillsAggregationRepositoryImpl implements SkillsAggregationReposit
                         .as(PERSON_ID)
                         .sum("skills.weight")
                         .as(WEIGHT),
-                sort(new Sort(Sort.Direction.DESC, WEIGHT)),
-                skip(0L),
-                limit(5L)
+                facet()
+                        .and(
+                                sort(new Sort(Sort.Direction.DESC, WEIGHT)),
+                                skip(page * size),
+                                limit(size)
+                        )
+                        .as("pagedResult")
+                        .and(
+                                group().count().as("total")
+                        )
+                        .as("total")
         );
 
-        final AggregationResults<PersonIdBySkillsSearchResult> result = template.aggregate(
-                aggregation, Skills.class, PersonIdBySkillsSearchResult.class);
+        final PagedResult result = template.aggregate(
+                aggregation, Skills.class, PagedResult.class).getUniqueMappedResult();
 
-        logger.info("Search result={}", result.getMappedResults());
+        logger.info("Search result={}", result);
 
-        final List<String> personIds = result.getMappedResults().stream()
+        // TODO check empty result; refactor PagedResult
+        final List<String> personIds = result.getPagedResult().stream()
                 .map(PersonIdBySkillsSearchResult::getPersonId)
                 .collect(Collectors.toList());
 
-        return personIds.stream()
+        final List<Person> persons = personIds.stream()
                 .map(personId -> personRepository.findById(personId).orElse(null))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(persons, PageRequest.of(page, size), result.getTotal().get(0).getTotal());
     }
 }

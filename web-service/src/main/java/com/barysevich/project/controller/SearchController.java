@@ -6,7 +6,6 @@ import com.barysevich.project.model.Person;
 import com.barysevich.project.model.request.SearchBySkillsRequest;
 import com.barysevich.project.repository.SkillsAggregationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +29,12 @@ public class SearchController
 
     @PostMapping(value = "/find")
     public ResponseEntity<Response<Iterable<Person>>> searchPersonsBySkills(
-            @RequestBody final SearchBySkillsRequest request, final Pageable pageable)
+            @RequestBody final SearchBySkillsRequest request)
     {
         return ResponseEntity.ok(Response.success(
                 repository.findPersonIdsBySkills(
                         request.getSkills(),
-                        pageable.getOffset(),
-                        pageable.getPageSize())));
+                        request.getPage(),
+                        request.getSize())));
     }
 }
