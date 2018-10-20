@@ -18,7 +18,7 @@ public class Company
     private final String id;
 
     @Indexed
-    private final String personId;
+    private final Long personId;
 
     private final String name;
 
@@ -33,7 +33,7 @@ public class Company
 
     @JsonCreator
     public Company(@JsonProperty(value = "id") final String id,
-                   @JsonProperty(value = "personId") final String personId,
+                   @JsonProperty(value = "personId") final Long personId,
                    @JsonProperty(value = "name") final String name,
                    @JsonProperty(value = "startDate") final LocalDate startDate,
                    @JsonProperty(value = "endDate") final LocalDate endDate,
@@ -56,7 +56,7 @@ public class Company
 
 
     @JsonProperty(value = "personId")
-    public String getPersonId()
+    public Long getPersonId()
     {
         return personId;
     }
@@ -95,7 +95,7 @@ public class Company
     {
         return "Company{" +
                 "id='" + id + '\'' +
-                ", personId='" + personId + '\'' +
+                ", personId=" + personId +
                 ", name='" + name + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +

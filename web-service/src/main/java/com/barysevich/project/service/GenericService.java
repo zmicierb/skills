@@ -6,13 +6,13 @@ import java.io.Serializable;
 
 public interface GenericService<T, ID extends Serializable>
 {
-    T findOne(ID id);
+    T findOne(final ID id);
 
-    Iterable<T> findAll(Pageable pageable);
+    Iterable<T> findAll(final Pageable pageable);
 
-    void delete(ID id);
+    void delete(final ID id);
 
-    T save(T entity);
+    T save(final T entity);
 
-    void save(Iterable<T> entities);
+    void save(final Iterable<T> entities);
 }

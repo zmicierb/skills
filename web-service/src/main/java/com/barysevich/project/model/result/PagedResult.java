@@ -1,32 +1,54 @@
 package com.barysevich.project.model.result;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.ImmutableList;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class PagedResult
 {
-    private final List<PersonIdBySkillsSearchResult> pagedResult;
+    @NotNull
+    private final List<PersonIdBySkillsSearchResult> pagedResult = new ArrayList<>();
 
-    private final List<Total> total;
+    @NotNull
+    private List<Total> total = ImmutableList.of(new Total(0));
 
 
-    public PagedResult(final List<PersonIdBySkillsSearchResult> pagedResult, final List<Total> total)
+    @SuppressWarnings("unused")
+    PagedResult() {}
+
+
+    @JsonCreator
+    private PagedResult(@JsonProperty(value = "pagedResult") final List<PersonIdBySkillsSearchResult> pagedResult,
+                        @JsonProperty(value = "total") final List<Total> total)
     {
-        this.pagedResult = pagedResult;
+        this.pagedResult.addAll(pagedResult);
         this.total = total;
     }
 
 
+    @JsonProperty(value = "pagedResult")
     public List<PersonIdBySkillsSearchResult> getPagedResult()
     {
         return pagedResult;
     }
 
 
+    @JsonProperty(value = "total")
     public List<Total> getTotal()
     {
         return total;
+    }
+
+
+    public boolean isEmpty()
+    {
+        return this.total.isEmpty() || this.total.get(0).getTotal() == 0;
     }
 
 

@@ -5,5 +5,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface SkillsRepository extends PagingAndSortingRepository<Skills, String>
 {
-    Skills findByPersonId(String personId);
+    Skills findByPersonId(final Long personId);
 }

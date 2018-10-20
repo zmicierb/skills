@@ -1,27 +1,32 @@
 package com.barysevich.project.model.result;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PersonIdBySkillsSearchResult
 {
-    private final String personId;
+    private final Long personId;
 
     private final int weight;
 
-
-    public PersonIdBySkillsSearchResult(final String personId,
-                                        final int weight)
+    @JsonCreator
+    private PersonIdBySkillsSearchResult(@JsonProperty(value = "personId") final Long personId,
+                                         @JsonProperty(value = "weight") final int weight)
     {
         this.personId = personId;
         this.weight = weight;
     }
 
 
-    public String getPersonId()
+    @JsonProperty(value = "personId")
+    public Long getPersonId()
     {
         return personId;
     }
 
 
+    @JsonProperty(value = "weight")
     public int getWeight()
     {
         return weight;
@@ -32,7 +37,7 @@ public class PersonIdBySkillsSearchResult
     public String toString()
     {
         return "PersonIdBySkillsSearchResult{" +
-                "personId='" + personId + '\'' +
+                "personId=" + personId +
                 ", weight=" + weight +
                 '}';
     }

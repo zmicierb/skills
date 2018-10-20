@@ -1,5 +1,9 @@
 package com.barysevich.project.service.impl;
 
+
+import com.barysevich.authorization.api.AuthorizationService;
+import com.barysevich.authorization.api.async.AuthorizationRegistrationExporter;
+import com.barysevich.authorization.api.async.RegistrationInfoMessage;
 import com.barysevich.project.api.NotificationType;
 import com.barysevich.project.api.async.exporter.MailNotificationExporter;
 import com.barysevich.project.api.model.MailNotificationMessage;
@@ -8,66 +12,40 @@ import com.barysevich.project.localization.Locale;
 import com.barysevich.project.model.Person;
 import com.barysevich.project.repository.PersonRepository;
 import com.barysevich.project.service.PersonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+
 @Service
 public class PersonServiceImpl extends GenericServiceImpl<Person, String> implements PersonService
 {
+    private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private final PersonRepository personRepository;
-//
-//    @Autowired
-//    private PositionService positionService;
-//
-//    @Autowired
-//    private DepartmentService departmentService;
-//
-//    @Autowired
-//    private SkillSumRepository skillSumRepository;
-//
-//    @Autowired
-//    private AuthorizationService authorizationService;
-//
-//    @Autowired
-//    private AuthorizationRegistrationExporter authorizationRegistrationExporter;
-//
+
+    private final AuthorizationService authorizationService;
+
+    private final AuthorizationRegistrationExporter authorizationRegistrationExporter;
 
     private final MailNotificationExporter mailNotificationExporter;
 
+
     @Autowired
     public PersonServiceImpl(final PersonRepository repository,
+                             final AuthorizationService authorizationService,
+                             final AuthorizationRegistrationExporter authorizationRegistrationExporter,
                              final MailNotificationExporter mailNotificationExporter)
     {
         super(repository);
         this.personRepository = repository;
+        this.authorizationService = authorizationService;
+        this.authorizationRegistrationExporter = authorizationRegistrationExporter;
         this.mailNotificationExporter = mailNotificationExporter;
     }
-
-//    @Transactional
-//    @Override
-//    public void remove(Long id)
-//    {
-//        personRepository.remove(id);
-//    }
-//
-//
-//    @Override
-//    public Page<Person> findByNameContainingIgnoreCase(String name, Pageable pageable)
-//    {
-//        return personRepository.findByNameContainingIgnoreCase(name, pageable);
-//    }
-//
-//
-//    @Override
-//    public Iterable<Person> findByNameContainingIgnoreCaseForTest(String name)
-//    {
-//        return personRepository.findByNameContainingIgnoreCaseForTest(name);
-//    }
-//
-//
 
 //    @Transactional
     @Override
@@ -75,6 +53,20 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, String> implem
     {
         if (person.getId() == null)
         {
+            final long reservedId = authorizationService.reserveId();
+
+            final boolean isExported = authorizationRegistrationExporter.exportRegistrationResult(
+                RegistrationInfoMessage.builder()
+                        .withId(reservedId)
+                        .withEmail(new Email(person.getEmail()))
+                        .build());
+
+            if (!isExported)
+            {
+                logger.info("Auth registration export for reservedId={} is failed", reservedId);
+                return null;
+            }
+
             // TODO move to auth service
             mailNotificationExporter.exportMessage(MailNotificationMessage.builder()
                     .withEmail(new Email(person.getEmail()))
@@ -83,57 +75,20 @@ public class PersonServiceImpl extends GenericServiceImpl<Person, String> implem
                     .withNotificationId(UUID.randomUUID())
                     .withNotificationType(NotificationType.USER_REGISTERED)
                     .build());
+
+            return personRepository.save(Person.builder()
+                    .withPerson(person)
+                    .withPersonId(reservedId)
+                    .build());
         }
 
         return personRepository.save(person);
     }
-//
-//
-//    public Map<Long, PersonSkillsDto> findSkillsById(Long id)
-//    {
-//        HashMap<Long, PersonSkillsDto> personSkillsDto = new HashMap<>();
-//        skillSumRepository.findByPersonId(id).forEach(a -> {
-//            if (personSkillsDto.containsKey(a.getRowId())) {
-//                personSkillsDto.get(a.getRowId()).getSkills()
-//                        .add(new SkillDto(a.getSkillId(), a.getSkill().getName(), a.getPosition()));
-//            } else {
-//                personSkillsDto.put(a.getRowId(), new PersonSkillsDto(a));
-//            }
-//        });
-//
-//        return personSkillsDto;
-//    }
-//
-//
-//    @Override
-//    @Transactional(rollbackFor=Exception.class)
-//    public Person save(Person person)
-//    {
-//        final long reservedId = authorizationService.reserveId();
-//        person.setId(reservedId);
-//        person.setDepartment(departmentService.save(person.getDepartment()));
-//        person.setPosition(positionService.save(person.getPosition()));
-//
-//        final boolean isExported = authorizationRegistrationExporter.exportRegistrationResult(
-//                RegistrationInfoMessage.builder()
-//                        .withId(reservedId)
-//                        .withEmail(new Email(person.getEmail()))
-//                        .build());
-//
-//        // TODO move to auth service
-//        mailNotificationExporter.exportMessage(MailNotificationMessage.builder()
-//                .withEmail(new Email(person.getEmail()))
-//                .withLocale(new Locale("EN"))
-//                .withMessageData("test")
-//                .withNotificationId(UUID.randomUUID())
-//                .withNotificationType(NotificationType.USER_REGISTERED)
-//                .build());
-//
-//        if (!isExported)
-//        {
-//            throw new RuntimeException();
-//        }
-//
-//        return personRepository.save(person);
-//    }
+
+
+    @Override
+    public Person findByPersonId(final Long personId)
+    {
+        return personRepository.findByPersonId(personId).orElse(null);
+    }
 }

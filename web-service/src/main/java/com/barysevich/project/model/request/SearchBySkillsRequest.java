@@ -17,9 +17,9 @@ public class SearchBySkillsRequest
 
 
     @JsonCreator
-    public SearchBySkillsRequest(@JsonProperty(value = "skills") final List<String> skills,
-                                 @JsonProperty(value = "page") final int page,
-                                 @JsonProperty(value = "size") final int size)
+    private SearchBySkillsRequest(@JsonProperty(value = "skills") final List<String> skills,
+                                  @JsonProperty(value = "page") final int page,
+                                  @JsonProperty(value = "size") final int size)
     {
         this.skills = skills;
         this.page = page;

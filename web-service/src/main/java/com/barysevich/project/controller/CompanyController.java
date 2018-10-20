@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/company/person")
 public class CompanyController
@@ -25,7 +26,7 @@ public class CompanyController
 
 
     @RequestMapping(value = "/{personId}", method = RequestMethod.GET)
-    public ResponseEntity<Response<Iterable<Company>>> getByPersonId(@PathVariable final String personId)
+    public ResponseEntity<Response<Iterable<Company>>> getByPersonId(@PathVariable final Long personId)
     {
         return ResponseEntity.ok(Response.success(companyService.findByPersonId(personId)));
     }

@@ -42,7 +42,7 @@ public class PopulateFakeData
         final List<Skill> skills = new ArrayList<>();
         skillService.findAll(Pageable.unpaged()).forEach(skill -> skills.add(skill));
 
-        for (int i = 0; i < 500; i++)
+        for (int i = 0; i < 100; i++)
         {
             final Faker faker = new Faker();
 
@@ -53,6 +53,7 @@ public class PopulateFakeData
             final Date date = faker.date().between(new Date(0L), new Date());
 
             final Person person = personService.update(new Person(
+                    null,
                     null,
                     name,
                     email,
@@ -70,7 +71,7 @@ public class PopulateFakeData
 
             skillsService.save(new Skills(
                     null,
-                    person.getId(),
+                    person.getPersonId(),
                     langs,
                     techs,
                     servers,
@@ -96,7 +97,7 @@ public class PopulateFakeData
 
                 companyService.save(new Company(
                         null,
-                        person.getId(),
+                        person.getPersonId(),
                         faker.company().name(),
                         convertDate(faker.date().between((new Date(date.getTime())), new Date())),
                         convertDate(j == 1 ? null : new Date()),

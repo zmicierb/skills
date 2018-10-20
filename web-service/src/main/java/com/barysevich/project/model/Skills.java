@@ -17,7 +17,7 @@ public class Skills
     private final String id;
 
     @Indexed(unique = true)
-    private final String personId;
+    private final Long personId;
 
     @Indexed
     private final List<String> langs;
@@ -40,7 +40,7 @@ public class Skills
 
     @JsonCreator
     public Skills(@JsonProperty(value = "id") final String id,
-                  @JsonProperty(value = "personId") final String personId,
+                  @JsonProperty(value = "personId") final Long personId,
                   @JsonProperty(value = "langs") final List<String> langs,
                   @JsonProperty(value = "techs") final List<String> techs,
                   @JsonProperty(value = "servers") final List<String> servers,
@@ -67,7 +67,7 @@ public class Skills
 
 
     @JsonProperty(value = "personId")
-    public String getPersonId()
+    public Long getPersonId()
     {
         return personId;
     }
@@ -120,7 +120,7 @@ public class Skills
     {
         return "Skills{" +
                 "id='" + id + '\'' +
-                ", personId='" + personId + '\'' +
+                ", personId=" + personId +
                 ", langs=" + langs +
                 ", techs=" + techs +
                 ", servers=" + servers +

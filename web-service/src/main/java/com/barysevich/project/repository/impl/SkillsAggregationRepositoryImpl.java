@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -186,13 +187,17 @@ public class SkillsAggregationRepositoryImpl implements SkillsAggregationReposit
 
         logger.info("Search result={}", result);
 
-        // TODO check empty result; refactor PagedResult
-        final List<String> personIds = result.getPagedResult().stream()
+        if (result.getPagedResult().isEmpty())
+        {
+            return new PageImpl<>(new ArrayList<>(), PageRequest.of(page, size), 0);
+        }
+
+        final List<Long> personIds = result.getPagedResult().stream()
                 .map(PersonIdBySkillsSearchResult::getPersonId)
                 .collect(Collectors.toList());
 
         final List<Person> persons = personIds.stream()
-                .map(personId -> personRepository.findById(personId).orElse(null))
+                .map(personId -> personRepository.findByPersonId(personId).orElse(null))
                 .collect(Collectors.toList());
 
         return new PageImpl<>(persons, PageRequest.of(page, size), result.getTotal().get(0).getTotal());

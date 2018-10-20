@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CompanyRepository extends PagingAndSortingRepository<Company, String>
 {
-    List<Company> findByPersonId(String personId);
+    List<Company> findByPersonId(final Long personId);
 }

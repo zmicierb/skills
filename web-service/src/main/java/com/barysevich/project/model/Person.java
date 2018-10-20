@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -15,6 +16,9 @@ public class Person
 {
     @Id
     private final String id;
+
+    @Indexed(unique = true)
+    private final Long personId;
 
     private final String name;
 
@@ -30,6 +34,7 @@ public class Person
 
     @JsonCreator
     public Person(@JsonProperty(value = "id") final String id,
+                  @JsonProperty(value = "personId") final Long personId,
                   @JsonProperty(value = "name") final String name,
                   @JsonProperty(value = "email") final String email,
                   @JsonProperty(value = "position") final String position,
@@ -37,6 +42,7 @@ public class Person
                   @JsonProperty(value = "birthDate") final LocalDate birthDate)
     {
         this.id = id;
+        this.personId = personId;
         this.name = name;
         this.email = email;
         this.position = position;
@@ -45,10 +51,23 @@ public class Person
     }
 
 
+    public static Builder builder()
+    {
+        return new Builder();
+    }
+
+
     @JsonProperty(value = "id")
     public String getId()
     {
         return id;
+    }
+
+
+    @JsonProperty(value = "personId")
+    public Long getPersonId()
+    {
+        return personId;
     }
 
 
@@ -91,11 +110,47 @@ public class Person
     {
         return "Person{" +
                 "id='" + id + '\'' +
+                ", personId=" + personId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", position='" + position + '\'' +
                 ", department='" + department + '\'' +
                 ", birthDate=" + birthDate +
                 '}';
+    }
+
+
+    public static final class Builder
+    {
+        private Person person;
+
+        private Long personId;
+
+
+        public Builder withPerson(final Person person)
+        {
+            this.person = person;
+            return this;
+        }
+
+
+        public Builder withPersonId(final Long personId)
+        {
+            this.personId = personId;
+            return this;
+        }
+
+
+        public Person build()
+        {
+            return new Person(
+                    person.getId(),
+                    personId,
+                    person.getName(),
+                    person.getEmail(),
+                    person.getPosition(),
+                    person.getDepartment(),
+                    person.getBirthDate());
+        }
     }
 }
